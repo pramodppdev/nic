@@ -1,0 +1,94 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'poppins',sans-serif;
+}
+html,body{
+    height: 100%;
+}
+
+body{
+    display: grid;
+    place-items: center;
+    text-align: center;
+    background: #ecf0f3;
+}
+.content{
+    width: 330px;
+    background: #ecf0f3;
+    border-radius: 10px;
+    padding: 40px 30px;
+    box-shadow: -3px -3px 7px #ffffff,
+    3px 3px 5px #ceced1 ;
+}
+
+.content .text{
+    font-size: 33px;
+    font-weight: 600;
+    margin-bottom: 35px;
+    color: black;
+}
+.content  img{
+    height: 50px;
+    width: 40px;
+}
+.content .field{
+    height: 50px;
+    width: 100%;
+    margin-bottom: 20px;
+    display: flex;
+    position: relative;
+}
+.field input{
+    height: 100%;
+    width: 100%;
+    padding-left: 30px;
+    font-size: 18px;
+    outline: none;
+    border: none;
+    color: black;
+    background: #ecf0f3;
+    border-radius: 25px;
+    box-shadow: inset -3px -3px 7px #ffffff,
+    inset 3px 3px 5px #ceced1 ;
+}
+
+.field label{
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    pointer-events: none;
+    color: black;
+    transform: translateY(-50%);
+}
+.field input:focus ~ label{
+    opacity: 0 ;
+}
+.pass{
+    text-align: left;
+    margin: 10px 0 10px 5px;
+}
+.pass a{
+    font-size: 16px;
+    color: black;
+    text-decoration: none;
+}
+.pass:hover a{
+    text-decoration: underline;
+}
+
+.login-btn {
+    padding: 10px;
+    padding-left: 100px;
+    padding-right:100px ;
+    background-color: black;
+    text-decoration: none;
+    color: #ffffff;
+    border-radius: 20px;
+}
+#login
+{
+    margin-top: 25px;
+
+}

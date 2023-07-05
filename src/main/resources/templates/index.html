@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>NIC</title>
+  <link rel="stylesheet" href="/css/main.css">
+<!-- <script src="script/script.js"></script>-->
+</head>
+<body>
+
+<div th:replace="~{fragment/nav :: nav}"> </div>
+
+
+  <main>
+    <div class="card-container">
+      <div class="card" id="inspection">
+        <div class="card-content">
+          <div class="number">100</div>
+          <div class="card-name">Number of Inspections</div>
+        </div>
+      </div>
+      <div class="card" id="pending">
+        <div class="card-content">
+          <div class="number">10</div>
+          <div class="card-name">Pending Inspections</div>
+        </div>
+      </div>
+      <div class="card" id="completed">
+        <div class="card-content">
+          <div class="number">90</div>
+          <div class="card-name">Completed Inspections</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-content">
+          <div class="number"></div>
+          <div class="card-name"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

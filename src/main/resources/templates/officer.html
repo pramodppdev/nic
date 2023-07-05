@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>NIC</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/form.css">
+  <link rel="stylesheet" href="css/table.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="script/script.js"></script>
+</head>
+<body>
+<div th:replace="~{fragment/nav :: nav}"> </div>
+
+  <main>
+    <div class="grid" id="saveOffbody">
+        <div class="wrapper">
+            <input type="text" id="OfficerCode" required>
+            <label >Officer code</label>
+        </div>
+        <div class="wrapper">
+            <input type="text" id="OfficerName" required>
+            <label >Officer Name</label>
+        </div>
+        <div class="wrapper">
+            <input type="tel" id="OfficerMob" required>
+            <label>Mobile number</label>
+        </div>
+        <div class="wrapper">
+            <input type="text" id="Taluk" required>
+            <label >Taluk</label>
+        </div>
+        <div class="wrapper">
+            <input type="text"  id="OfficerDept" required>
+            <label >Department</label>
+        </div>
+
+        <div>
+            <button class="submit-btn">Submit</button>
+            <button class="cancel-btn">Cancel</button>
+        </div>
+  </div>
+
+
+  <div id="tablelist">
+  <div class="table-name">
+
+      <div onclick="addDepartment()" class="btn">
+          <button  class="submit-btn">Add Department</button>
+      </div>
+    <h1>Officers list</h1>
+   </div>
+        <div class="table-container">
+            
+            <table>
+              <thead>
+                <tr>
+                  <th>Officer Code</th>
+                  <th>Office Name</th>
+                  <th>Officer Department</th>
+                  <th>Officer Mobile</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="infraList">
+
+              </tbody>
+            </table>
+          </div>
+  </div>
+  </main>
+
+
+
+
+<script>
+
+    $(document).ready(function() {
+
+            $("#tablelist").show();
+            $("#saveOffbody").hide();
+
+        var infraList="";
+        $.ajax({
+            contentType: "application/json;charset=UTF-8",
+            url: "/api/department/getAllDept",
+            dataType: "json",
+            type: "GET",
+            async:false,
+            success:function(data){
+               for(i=0;i<data.length;i++){
+               infraList=infraList+'<tr>';
+               infraList=infraList+' <td>'+data[i].OfficerCode +'</td>';
+               infraList=infraList+' <td>'+data[i].OfficerName +'</td>';
+               infraList=infraList+' <td>'+data[i].OfficerDept +'</td>';
+               infraList=infraList+' <td>'+data[i].OfficerMob +'</td>';
+
+               infraList=infraList+' <td>';
+               infraList=infraList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
+               infraList=infraList+'<i class="fa fa-pencil" ></i> </a>';
+               infraList=infraList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
+               infraList=infraList+'<i class="pe-7s-trash" ></i> </a>';
+               infraList=infraList+'</td></tr>';
+
+               }
+                $("#infraList").html(infraList);
+            }
+        });
+      });
+
+        function saveDept(){
+
+                        var userData={
+
+
+                        officerName:$("#OfficerName").val(),
+                        officerCode:$("#OfficerCode").val(),
+                         officerMob:$("#OfficerMob").val(),
+                        officerDept:$("#OfficerDept").val(),
+                        taluk:$("#Taluk").val()
+
+
+
+
+                    }
+
+                        $.ajax({
+                        contentType: "application/json;charset=UTF-8",
+                        url: "/api/department/save",
+                        dataType: "json",
+                        type: "POST",
+                        cache: !1,
+                        processData: !1,
+                        data: JSON.stringify(userData),
+                        complete:function(xhr) {
+                        console.log(data)
+
+                        }
+                 });
+      }
+
+      function addDepartment(){
+
+            $("#tablelist").hide();
+            $("#saveOffbody").show();
+
+
+      }
+
+
+
+
+	</script>
+</body>
+</html>
