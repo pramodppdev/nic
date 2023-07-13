@@ -1,11 +1,8 @@
 package insp.nic.Service;
 
-
-import insp.nic.model.Department;
 import org.springframework.stereotype.Service;
-
+import insp.nic.model.Department;
 import java.util.List;
-
 @Service
 public interface DepartmentService {
 
