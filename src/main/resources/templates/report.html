@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>NIC</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/form.css">
+  <link rel="stylesheet" href="/css/table.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="script/script.js"></script>
+
+
+</head>
+<body>
+<div th:replace="~{fragment/nav :: nav}"> </div>
+  <main>
+
+    <div class="table-name">
+      <h1>Reports</h1>
+    </div>
+    <div class="table-container">
+
+        <table>
+          <thead>
+            <tr>
+              <th>Inspection ID</th>
+              <th>Description</th>
+              <th>Officers assignment</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>0001</td>
+              <td></td>
+              <td></td>
+              <td><span class="status-flag in-created">Created</span></td>
+              <td><a href="#">&#9997;&#xFE0E;</a>
+                <a href="#">&#x1F441;</a></td>
+            </tr>
+            <tr>
+                <td>0002</td>
+              <td></td>
+              <td></td>
+                <td><span class="status-flag in-progress" >In progress</span></td>
+                <td><a href="#">&#9997;&#xFE0E;</a>
+                  <a href="#">&#x1F441;</a></td>
+            </tr>
+            <tr>
+                <td>0003</td>
+              <td></td>
+              <td></td>
+                <td><span class="status-flag completed">Completed</span></td>
+                <td><a href="#">&#9997;&#xFE0E;</a>
+                  <a href="#">&#x1F441;</a></td>
+            </tr>
+            <tr>
+              <td>0004</td>
+              <td></td>
+              <td></td>
+              <td><span  class="status-flag pending">Pending</span></td>
+              <td><a href="#">&#9997;&#xFE0E;</a>
+                <a href="#">&#x1F441;</a></td>
+              </tr>
+              <tr>
+                <td>0001</td>
+                <td></td>
+                <td></td>
+              <td><span class="status-flag in-created">Created</span></td>
+              <td><a href="#">&#9997;&#xFE0E;</a>
+                <a href="#">&#x1F441;</a></td>
+              </tr>
+              <tr>
+               
+              </tr>
+              <tr>
+                <td>0002</td>
+                <td></td>
+                <td></td>
+                <td><span class="status-flag in-progress" >In progress</span></td>
+                <td><a href="#">&#9997;&#xFE0E;</a>
+                  <a href="#">&#x1F441;</a></td>
+              </tr>
+              <tr>
+                <td>0003</td>
+                <td></td>
+                <td></td>
+                <td><span class="status-flag completed">Completed</span></td>
+                <td><a href="#">&#9997;&#xFE0E;</a>
+                  <a href="#">&#x1F441;</a></td>
+              </tr>
+            <!-- Add more rows as needed -->
+          </tbody>
+        </table>
+      </div>
+
+</main>
+<script>
+
+    $(document).ready(function() {
+
+            $("#tablelist").show();
+            $("#saveOffbody").show();
+
+        var infraList="";
+        $.ajax({
+            contentType: "application/json;charset=UTF-8",
+            url: "/api/Inspection/getAllInsp",
+            dataType: "json",
+            type: "GET",
+            async:false,
+            success:function(data){
+               for(i=0;i<data.length;i++){
+               infraList=infraList+'<tr>';
+               infraList=infraList+' <td>'+data[i].inspId +'</td>';
+               infraList=infraList+' <td>'+data[i].description +'</td>';
+               infraList=infraList+' <td>'+data[i].assignedOfficer +'</td>';
+               infraList=infraList+' <td>'+data[i].status +'</td>';
+
+               infraList=infraList+' <td>';
+               infraList=infraList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
+               infraList=infraList+'<i>&#9997;&#xFE0E;</i> </a>';
+               infraList=infraList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
+               infraList=infraList+'<i>&#x1F441;</i> </a>';
+               infraList=infraList+'</td></tr>';
+
+               }
+                $("#infraList").html(infraList);
+            }
+        });
+      });
+</body>
+</html>

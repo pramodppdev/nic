@@ -18,18 +18,21 @@ public class Inspection {
 
     private String lastDate;
 
-    private String officeAssigned;
+    private String status;
+
+    private String assignedOfficer;
 
     public Inspection() {
     }
 
-    public Inspection(String inspId, String taluk, String department, String description, String lastDate, String officeAssigned) {
+    public Inspection(String inspId, String taluk, String department, String description, String lastDate, String status, String assignedOfficer) {
         this.inspId = inspId;
         this.taluk = taluk;
         this.department = department;
         this.description = description;
         this.lastDate = lastDate;
-        this.officeAssigned = officeAssigned;
+        this.status = status;
+        this.assignedOfficer = assignedOfficer;
     }
 
     public String getInspId() {
@@ -72,11 +75,20 @@ public class Inspection {
         this.lastDate = lastDate;
     }
 
-    public String getOfficeAssigned() {
-        return officeAssigned;
+    public String getStatus() {
+        return status;
     }
 
-    public void setOfficeAssigned(String officeAssigned) {
-        this.officeAssigned = officeAssigned;
+    public void setStatus(String status) {
+        this.status = status;
     }
+
+    public String getAssignedOff() {
+        return assignedOfficer;
+    }
+
+    public void setAssignedOff(String assignedOff) {
+        this.assignedOfficer = assignedOff;
+    }
+
 }

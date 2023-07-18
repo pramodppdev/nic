@@ -12,24 +12,24 @@ public class Officer {
 
     private String officerName;
 
-    private String officerCode;
-
     private Long officerMob;
 
     private String officerDept;
 
     private String taluk;
 
+    private String designation;
+
     public Officer() {
     }
 
-    public Officer(String officerId, String officerName, String officerCode, Long officerMob, String officerDept, String taluk) {
+    public Officer(String officerId, String officerName, Long officerMob, String officerDept, String taluk, String designation) {
         this.officerId = officerId;
         this.officerName = officerName;
-        this.officerCode = officerCode;
         this.officerMob = officerMob;
         this.officerDept = officerDept;
         this.taluk = taluk;
+        this.designation = designation;
     }
 
     public String getOfficerId() {
@@ -46,14 +46,6 @@ public class Officer {
 
     public void setOfficerName(String officerName) {
         this.officerName = officerName;
-    }
-
-    public String getOfficerCode() {
-        return officerCode;
-    }
-
-    public void setOfficerCode(String officerCode) {
-        this.officerCode = officerCode;
     }
 
     public Long getOfficerMob() {
@@ -78,5 +70,13 @@ public class Officer {
 
     public void setTaluk(String taluk) {
         this.taluk = taluk;
+    }
+
+    public String getDesignation() {
+        return designation;
+    }
+
+    public void setDesignation(String designation) {
+        this.designation = designation;
     }
 }

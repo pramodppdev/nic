@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>NIC</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/form.css">
+  <link rel="stylesheet" href="/css/table.css">
+  <link rel="stylesheet" href="/css/alert.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ <script src="script/script.js"></script>
+
+
+</head>
+<body>
+<div th:replace="~{fragment/nav :: nav}"> </div>
+  <main>
+    <div class="card-container">
+    <a href="/addconfiguration">
+      <div class="card">
+        <div class="card-content">   
+          <div class="card-name">Add Configuration</div>
+        </div>
+      </div>
+    </a>
+    <a href="/setconfiguration">
+      <div class="card">
+        <div class="card-content">
+          <div class="card-name">Set Configuration</div>
+        </div>
+      </div>  
+      </a>
+    </div>
+  </main>
+</body>
+</html>

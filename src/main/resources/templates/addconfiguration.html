@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>NIC</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+
+</head>
+
+<body>
+<div th:replace="~{fragment/nav :: nav}"> </div>
+  <main>
+    <div class="card-container">
+        <a href="/addtaluk">
+      <div class="card">
+        <div class="card-content">
+          <div class="card-name">Add Taluk</div>
+        </div>
+      </div>
+    </a>
+    <a href="/adddistrict">
+      <div class="card">
+        <div class="card-content">
+          <div class="card-name">Add Distict</div>
+        </div>
+      </div>  
+    </a>
+    </div>
+  </main>

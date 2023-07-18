@@ -10,16 +10,14 @@ public class Department {
     private String deptId;
 
     private String deptName;
-
-    private String deptCode;
+    
 
     public Department() {
     }
 
-    public Department(String deptId, String deptName, String deptCode) {
+    public Department(String deptId, String deptName) {
         this.deptId = deptId;
         this.deptName = deptName;
-        this.deptCode = deptCode;
     }
 
     public String getDeptId() {
@@ -38,11 +36,4 @@ public class Department {
         this.deptName = deptName;
     }
 
-    public String getDeptCode() {
-        return deptCode;
-    }
-
-    public void setDeptCode(String deptCode) {
-        this.deptCode = deptCode;
-    }
 }

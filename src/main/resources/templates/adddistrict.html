@@ -2,38 +2,27 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>NIC</title>
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/form.css">
-  <link rel="stylesheet" href="css/table.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/form.css">
+  <link rel="stylesheet" href="/css/table.css">
     <link rel="stylesheet" href="/css/alert.css">
     <script src="/script/alert.js"></script>
- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+
 </head>
+
 <body>
 <div th:replace="~{fragment/nav :: nav}"> </div>
-
   <main>
-      <div class="grid">
-          <div class="wrapper">
-              <select name="" id="Taluk">
-                  <option value="Select Taluk">Select Taluk</option>
-                  <option value="">Sirguppa</option>
-                  <option value="">Sandur</option>
-                  <option value="">Kudligi</option>
-              </select>
-          </div>
-          <div class="wrapper">
-              <input type="text" id="Department" required>
-              <label>Department</label>
-          </div>
+    <div class="grid">
+        <div class="wrapper">
+            <input type="text" id="DistrictName" required>
+            <label>District</label>
+        </div>
 
-      </div>
-      <div class="wrapper">
-          <textarea name="" id="Description" cols="30" rows="10" placeholder="Enter the description"></textarea>
-      </div>
+        </div>
       <div>
-          <button onclick="saveInspection()" class="submit-btn">Submit</button>
-          <button class="cancel-btn">Cancel</button>
+          <button class="submit-btn" onclick="saveDistrict()">ADD</button>
       </div>
       <div class="alert-container" id="alertContainer">
           <div class="alert-message">
@@ -42,18 +31,13 @@
           <button class="alert-button-ok" onclick="hideAlert()">OK</button>
           <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
       </div>
-  <div class="table-name">
-    <h1>Inspection list</h1>
-   </div>
         <div class="table-container">
-            
             <table>
               <thead>
                 <tr>
-                  <th>Inspection ID</th>
-                    <th>Description</th>
-                  <th>Department</th>
-                  <th>Actions</th>
+                  <th>District ID</th>
+                  <th>District name</th>
+                    <th>Actions</th>
                 </tr>
               </thead>
               <tbody id="infraList">
@@ -61,31 +45,26 @@
               </tbody>
             </table>
           </div>
-
   </main>
 <script>
 
     $(document).ready(function() {
 
             $("#tablelist").show();
-            $("#saveInspbody").show();
+            $("#saveDistrictbody").show();
 
         var infraList="";
         $.ajax({
             contentType: "application/json;charset=UTF-8",
-            url: "/api/inspection/getAllInsp",
+            url: "/api/district/getAllDistrict",
             dataType: "json",
-            type: "GET",
             type: "GET",
             async:false,
             success:function(data){
                for(i=0;i<data.length;i++){
                infraList=infraList+'<tr>';
-               infraList=infraList+' <td>'+data[i].inspId +'</td>';
-               infraList=infraList+' <td>'+data[i].description +'</td>';
-               infraList=infraList+' <td>'+data[i].department +'</td>'
-
-
+               infraList=infraList+' <td>'+data[i].districtId +'</td>';
+               infraList=infraList+' <td>'+data[i].districtName +'</td>';
 
                infraList=infraList+' <td>';
                infraList=infraList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
@@ -100,22 +79,20 @@
         });
       });
 
-        function saveInspection(){
+function saveDistrict(){
 
                         var userData={
 
 
-                        taluk:$("#Taluk").val(),
-                        department:$("#Department").val(),
-                        description:$("#Description").val(),
 
+                        districtName:$("#DistrictName").val(),
 
 
                     }
 
                         $.ajax({
                         contentType: "application/json;charset=UTF-8",
-                        url: "/api/inspection/save",
+                        url: "/api/district/save",
                         dataType: "json",
                         type: "POST",
                         cache: !1,
@@ -128,28 +105,19 @@
                  });
                  showAlert()
       }
+    function showAlert() {
+          var alertContainer = document.getElementById('alertContainer');
+          alertContainer.style.display = 'block';
 
-      function addInspection(){
+        }
 
-            $("#tablelist").hide();
-            $("#saveOffbody").show();
-
-
-      }
-
-function showAlert() {
-      var alertContainer = document.getElementById('alertContainer');
-      alertContainer.style.display = 'block';
-
-    }
-
-    function hideAlert() {
-      location.reload();
-      var alertContainer = document.getElementById('alertContainer');
-      alertContainer.style.display = 'none';
-    }
+        function hideAlert() {
+          location.reload();
+          var alertContainer = document.getElementById('alertContainer');
+          alertContainer.style.display = 'none';
+        }
 
 
-	</script>
+</script>
 </body>
 </html>

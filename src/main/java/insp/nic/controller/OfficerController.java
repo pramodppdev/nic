@@ -20,10 +20,10 @@ public class OfficerController {
 
     @PostMapping("/save")
     public ResponseEntity<Officer> saveOfficer(@RequestBody Officer officer){
-        return new ResponseEntity<Officer>(officerService.saveOfficer(officer), HttpStatus.CREATED);
+            return new ResponseEntity<Officer>(officerService.saveOfficer(officer), HttpStatus.CREATED);
     }
 
-    @GetMapping("/gatAllOfficer")
+    @GetMapping("/getAllOfficer")
     public List<Officer> getAllOfficer(){
         return officerService.getAllOfficer();
     }

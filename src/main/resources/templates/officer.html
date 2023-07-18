@@ -1,65 +1,73 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>NIC</title>
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/form.css">
-  <link rel="stylesheet" href="css/table.css">
+    <title>NIC</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/table.css">
+    <link rel="stylesheet" href="/css/alert.css">
+    <script src="/script/alert.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <script src="script/script.js"></script>
+    <script src="/script/script.js"></script>
 </head>
+
 <body>
 <div th:replace="~{fragment/nav :: nav}"> </div>
 
   <main>
-    <div class="grid" id="saveOffbody">
-        <div class="wrapper">
-            <input type="text" id="OfficerCode" required>
-            <label >Officer code</label>
-        </div>
-        <div class="wrapper">
-            <input type="text" id="OfficerName" required>
-            <label >Officer Name</label>
-        </div>
-        <div class="wrapper">
-            <input type="tel" id="OfficerMob" required>
-            <label>Mobile number</label>
-        </div>
-        <div class="wrapper">
-            <input type="text" id="Taluk" required>
-            <label >Taluk</label>
-        </div>
-        <div class="wrapper">
-            <input type="text"  id="OfficerDept" required>
-            <label >Department</label>
-        </div>
-
-        <div>
-            <button class="submit-btn">Submit</button>
-            <button class="cancel-btn">Cancel</button>
-        </div>
-  </div>
-
+      <div class="grid" id="saveOffbody">
+          <div class="wrapper">
+              <input type="text" id="OfficerName" required>
+              <label>Officer Name</label>
+          </div>
+          <div class="wrapper">
+              <input type="tel" id="OfficerMob" required>
+              <label>Mobile number</label>
+          </div>
+          <div class="wrapper">
+              <div class="wrapper">
+                  <select name="" id="Taluk">
+                      <option value="Select Taluk">Select Taluk</option>
+                      <option value="">Sirguppa</option>
+                      <option value="">Sandur</option>
+                      <option value="">Kudligi</option>
+                  </select>
+              </div>
+          </div>
+          <div class="wrapper">
+              <input type="text" id="OfficerDept" required>
+              <label>Department</label>
+          </div>
+          <div class="wrapper">
+              <input type="text" id="Designation" required>
+              <label>Designation</label>
+          </div>
+      </div>
+      <div>
+          <button onclick="saveOfficer()" class="submit-btn">Submit</button>
+          <button class="cancel-btn">Cancel</button>
+      </div>
+      <div class="alert-container" id="alertContainer">
+          <div class="alert-message">
+              Submitted Successfully!
+          </div>
+          <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+          <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
+      </div>
 
   <div id="tablelist">
   <div class="table-name">
-
-      <div onclick="addDepartment()" class="btn">
-          <button  class="submit-btn">Add Department</button>
-      </div>
     <h1>Officers list</h1>
    </div>
         <div class="table-container">
-            
             <table>
               <thead>
                 <tr>
-                  <th>Officer Code</th>
-                  <th>Office Name</th>
-                  <th>Officer Department</th>
-                  <th>Officer Mobile</th>
-                  <th>Actions</th>
+                    <th>Officer ID</th>
+                    <th>Office Name</th>
+                    <th>Officer Department</th>
+                    <th>Officer Mobile</th>
+                    <th>Actions</th>
                 </tr>
               </thead>
               <tbody id="infraList">
@@ -78,28 +86,28 @@
     $(document).ready(function() {
 
             $("#tablelist").show();
-            $("#saveOffbody").hide();
+            $("#saveOffbody").show();
 
         var infraList="";
         $.ajax({
             contentType: "application/json;charset=UTF-8",
-            url: "/api/department/getAllDept",
+            url: "/api/officer/getAllOfficer",
             dataType: "json",
             type: "GET",
             async:false,
             success:function(data){
                for(i=0;i<data.length;i++){
                infraList=infraList+'<tr>';
-               infraList=infraList+' <td>'+data[i].OfficerCode +'</td>';
-               infraList=infraList+' <td>'+data[i].OfficerName +'</td>';
-               infraList=infraList+' <td>'+data[i].OfficerDept +'</td>';
-               infraList=infraList+' <td>'+data[i].OfficerMob +'</td>';
+               infraList=infraList+' <td>'+data[i].officerId +'</td>';
+               infraList=infraList+' <td>'+data[i].officerName +'</td>';
+               infraList=infraList+' <td>'+data[i].officerDept +'</td>';
+               infraList=infraList+' <td>'+data[i].officerMob +'</td>';
 
                infraList=infraList+' <td>';
                infraList=infraList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
-               infraList=infraList+'<i class="fa fa-pencil" ></i> </a>';
+               infraList=infraList+'<i>&#9997;&#xFE0E;</i> </a>';
                infraList=infraList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
-               infraList=infraList+'<i class="pe-7s-trash" ></i> </a>';
+               infraList=infraList+'<i>&#x1F441;</i> </a>';
                infraList=infraList+'</td></tr>';
 
                }
@@ -108,16 +116,16 @@
         });
       });
 
-        function saveDept(){
+        function saveOfficer(){
 
                         var userData={
 
 
                         officerName:$("#OfficerName").val(),
-                        officerCode:$("#OfficerCode").val(),
-                         officerMob:$("#OfficerMob").val(),
+                        officerMob:$("#OfficerMob").val(),
                         officerDept:$("#OfficerDept").val(),
-                        taluk:$("#Taluk").val()
+                        designation:$("#Designation").val(),
+                        taluk:$("#Taluk").val(),
 
 
 
@@ -126,7 +134,7 @@
 
                         $.ajax({
                         contentType: "application/json;charset=UTF-8",
-                        url: "/api/department/save",
+                        url: "/api/officer/save",
                         dataType: "json",
                         type: "POST",
                         cache: !1,
@@ -137,9 +145,10 @@
 
                         }
                  });
+                 showAlert()
       }
 
-      function addDepartment(){
+      function addOfficer(){
 
             $("#tablelist").hide();
             $("#saveOffbody").show();
@@ -149,7 +158,17 @@
 
 
 
+function showAlert() {
+      var alertContainer = document.getElementById('alertContainer');
+      alertContainer.style.display = 'block';
 
+    }
+
+    function hideAlert() {
+      location.reload();
+      var alertContainer = document.getElementById('alertContainer');
+      alertContainer.style.display = 'none';
+    }
 	</script>
 </body>
 </html>
