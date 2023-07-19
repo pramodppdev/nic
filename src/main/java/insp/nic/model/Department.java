@@ -10,14 +10,19 @@ public class Department {
     private String deptId;
 
     private String deptName;
-    
+
+    private String createdAt;
+
+    private String createdBy;
 
     public Department() {
     }
 
-    public Department(String deptId, String deptName) {
+    public Department(String deptId, String deptName, String createdAt, String createdBy) {
         this.deptId = deptId;
         this.deptName = deptName;
+        this.createdAt = createdAt;
+        this.createdBy = createdBy;
     }
 
     public String getDeptId() {
@@ -36,4 +41,19 @@ public class Department {
         this.deptName = deptName;
     }
 
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
 }

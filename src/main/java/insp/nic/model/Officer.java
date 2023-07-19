@@ -18,18 +18,27 @@ public class Officer {
 
     private String taluk;
 
+    private String district;
+
     private String designation;
+
+    private String createdAt;
+
+    private String createdBy;
 
     public Officer() {
     }
 
-    public Officer(String officerId, String officerName, Long officerMob, String officerDept, String taluk, String designation) {
+    public Officer(String officerId, String officerName, Long officerMob, String officerDept, String taluk, String district, String designation, String createdAt, String createdBy) {
         this.officerId = officerId;
         this.officerName = officerName;
         this.officerMob = officerMob;
         this.officerDept = officerDept;
         this.taluk = taluk;
+        this.district = district;
         this.designation = designation;
+        this.createdAt = createdAt;
+        this.createdBy = createdBy;
     }
 
     public String getOfficerId() {
@@ -72,6 +81,14 @@ public class Officer {
         this.taluk = taluk;
     }
 
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
     public String getDesignation() {
         return designation;
     }
@@ -79,4 +96,21 @@ public class Officer {
     public void setDesignation(String designation) {
         this.designation = designation;
     }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
 }

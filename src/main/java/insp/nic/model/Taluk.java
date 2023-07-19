@@ -14,13 +14,19 @@ public class Taluk {
 
     private String district;
 
+    private String createdAt;
+
+    private String createdBy;
+
     public Taluk() {
     }
 
-    public Taluk(String talukId, String talukName, String district) {
+    public Taluk(String talukId, String talukName, String district, String createdAt, String createdBy) {
         this.talukId = talukId;
         this.talukName = talukName;
         this.district = district;
+        this.createdAt = createdAt;
+        this.createdBy = createdBy;
     }
 
     public String getTalukId() {
@@ -45,5 +51,21 @@ public class Taluk {
 
     public void setDistrict(String district) {
         this.district = district;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 }

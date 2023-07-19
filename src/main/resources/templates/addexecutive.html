@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>NIC</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/form.css">
+  <link rel="stylesheet" href="/css/table.css">
+  <link rel="stylesheet" href="/css/alert.css">
+  <script src="/script/script.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+
+</head>
+
+<body>
+<div th:replace="~{fragment/nav :: nav}"> </div>
+<main>
+  <div class="grid">
+    <div class="wrapper">
+      <input type="text" id="ExecutiveName" required>
+      <label>Executive Name</label>
+    </div>
+    <div class="wrapper">
+      <input type="text" id="ExecutiveUserName" required>
+      <label>User name</label>
+    </div>
+    <div class="wrapper">
+      <input type="password" id="ExecutivePasswd" required>
+      <label>Password</label>
+    </div>
+    <div class="wrapper">
+      <select name="" id="District">
+        <option value="Select Taluk">Select District</option>
+        <option value="">Ballari</option>
+        <option value="">Bengaluru</option>
+        <option value="">Mysuru</option>
+      </select>
+    </div>
+    <div class="wrapper">
+      <input type="tel" id="ExecutiveMob" required>
+      <label>Mobile Number</label>
+    </div>
+  </div>
+  <div>
+    <button class="submit-btn" onclick="saveExecutive()">ADD</button>
+  </div>
+  <div class="alert-container" id="alertContainer">
+    <div class="alert-message">
+      Successfully Added
+    </div>
+    <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+    <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
+  </div>
+  <div class="table-container">
+    <table>
+      <thead>
+      <tr>
+        <th>Executive ID</th>
+        <th>Executive Name</th>
+        <th>District</th>
+        <th>Mobile No</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody id="infraList">
+
+      </tbody>
+    </table>
+  </div>
+</main>
+<script>
+
+    $(document).ready(function() {
+
+            $("#tablelist").show();
+            $("#saveExebody").show();
+
+        var infraList="";
+        $.ajax({
+            contentType: "application/json;charset=UTF-8",
+            url: "/api/executive/getAllExe",
+            dataType: "json",
+            type: "GET",
+            async:false,
+            success:function(data){
+               for(i=0;i<data.length;i++){
+               infraList=infraList+'<tr>';
+               infraList=infraList+' <td>'+data[i].executiveId +'</td>';
+               infraList=infraList+' <td>'+data[i].executiveName +'</td>';
+               infraList=infraList+' <td>'+data[i].district +'</td>';
+               infraList=infraList+' <td>'+data[i].executiveMob +'</td>';
+
+               infraList=infraList+' <td>';
+               infraList=infraList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
+               infraList=infraList+'<i>&#9997;&#xFE0E;</i> </a>';
+               infraList=infraList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
+               infraList=infraList+'<i>&#x1F441;</i> </a>';
+               infraList=infraList+'</td></tr>';
+
+               }
+                $("#infraList").html(infraList);
+            }
+        });
+      });
+
+function saveExecutive(){
+
+                        var userData={
+
+                        executiveName:$("#ExecutiveName").val(),
+                        executiveUserName:$("#ExecutiveUserName").val(),
+                        executivePasswd:$("#ExecutivePasswd").val(),
+                        district:$("#District").val(),
+                        executiveMob:$("#ExecutiveMob").val(),
+
+
+                    }
+
+                        $.ajax({
+                        contentType: "application/json;charset=UTF-8",
+                        url: "/api/executive/save",
+                        dataType: "json",
+                        type: "POST",
+                        cache: !1,
+                        processData: !1,
+                        data: JSON.stringify(userData),
+                        complete:function(xhr) {
+                        console.log(data)
+
+                        }
+                 });
+                 showAlert()
+      }
+    function showAlert() {
+          var alertContainer = document.getElementById('alertContainer');
+          alertContainer.style.display = 'block';
+
+        }
+
+        function hideAlert() {
+          location.reload();
+          var alertContainer = document.getElementById('alertContainer');
+          alertContainer.style.display = 'none';
+        }
+
+
+</script>
+</body>
+</html>

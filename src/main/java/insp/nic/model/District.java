@@ -12,12 +12,18 @@ public class District {
 
     private String districtName;
 
+    private String createdAt;
+
+    private String createdBy;
+
     public District() {
     }
 
-    public District(String districtId, String districtName) {
+    public District(String districtId, String districtName, String createdAt, String createdBy) {
         this.districtId = districtId;
         this.districtName = districtName;
+        this.createdAt = createdAt;
+        this.createdBy = createdBy;
     }
 
     public String getDistrictId() {
@@ -34,5 +40,21 @@ public class District {
 
     public void setDistrictName(String districtName) {
         this.districtName = districtName;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 }

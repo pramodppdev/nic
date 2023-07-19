@@ -22,10 +22,16 @@ public class Inspection {
 
     private String assignedOfficer;
 
+    private String createdAt;
+
+    private String createdBy;
+
+    private String district;
+
     public Inspection() {
     }
 
-    public Inspection(String inspId, String taluk, String department, String description, String lastDate, String status, String assignedOfficer) {
+    public Inspection(String inspId, String taluk, String department, String description, String lastDate, String status, String assignedOfficer, String createdAt, String createdBy, String district) {
         this.inspId = inspId;
         this.taluk = taluk;
         this.department = department;
@@ -33,6 +39,9 @@ public class Inspection {
         this.lastDate = lastDate;
         this.status = status;
         this.assignedOfficer = assignedOfficer;
+        this.createdAt = createdAt;
+        this.createdBy = createdBy;
+        this.district = district;
     }
 
     public String getInspId() {
@@ -83,12 +92,35 @@ public class Inspection {
         this.status = status;
     }
 
-    public String getAssignedOff() {
+    public String getAssignedOfficer() {
         return assignedOfficer;
     }
 
-    public void setAssignedOff(String assignedOff) {
-        this.assignedOfficer = assignedOff;
+    public void setAssignedOfficer(String assignedOfficer) {
+        this.assignedOfficer = assignedOfficer;
     }
 
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
 }

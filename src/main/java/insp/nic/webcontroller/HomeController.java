@@ -45,9 +45,9 @@ public class HomeController {
         return "report";
     }
 
-    @GetMapping("/settings")
-    public String settings(){
-        return "settings";
+    @GetMapping("/administration")
+    public String administration(){
+        return "administration";
     }
 
     @GetMapping("/addconfiguration")
@@ -68,6 +68,11 @@ public class HomeController {
     @GetMapping("/adddistrict")
     public String adddistrict(){
         return "adddistrict";
+    }
+
+    @GetMapping("/addexecutive")
+    public String addexecutive(){
+        return "addexecutive";
     }
 
 }
