@@ -15,7 +15,7 @@
   <main>
 
     <div class="table-name">
-      <h1>Reports</h1>
+      <h2>Reports</h2>
     </div>
     <div class="table-container">
 
@@ -24,71 +24,71 @@
             <tr>
               <th>Inspection ID</th>
               <th>Description</th>
-              <th>Officers assignment</th>
+              <th>Officer Assigned</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>0001</td>
-              <td></td>
-              <td></td>
-              <td><span class="status-flag in-created">Created</span></td>
-              <td><a href="#">&#9997;&#xFE0E;</a>
-                <a href="#">&#x1F441;</a></td>
-            </tr>
-            <tr>
-                <td>0002</td>
-              <td></td>
-              <td></td>
-                <td><span class="status-flag in-progress" >In progress</span></td>
-                <td><a href="#">&#9997;&#xFE0E;</a>
-                  <a href="#">&#x1F441;</a></td>
-            </tr>
-            <tr>
-                <td>0003</td>
-              <td></td>
-              <td></td>
-                <td><span class="status-flag completed">Completed</span></td>
-                <td><a href="#">&#9997;&#xFE0E;</a>
-                  <a href="#">&#x1F441;</a></td>
-            </tr>
-            <tr>
-              <td>0004</td>
-              <td></td>
-              <td></td>
-              <td><span  class="status-flag pending">Pending</span></td>
-              <td><a href="#">&#9997;&#xFE0E;</a>
-                <a href="#">&#x1F441;</a></td>
-              </tr>
-              <tr>
-                <td>0001</td>
-                <td></td>
-                <td></td>
-              <td><span class="status-flag in-created">Created</span></td>
-              <td><a href="#">&#9997;&#xFE0E;</a>
-                <a href="#">&#x1F441;</a></td>
-              </tr>
-              <tr>
-               
-              </tr>
-              <tr>
-                <td>0002</td>
-                <td></td>
-                <td></td>
-                <td><span class="status-flag in-progress" >In progress</span></td>
-                <td><a href="#">&#9997;&#xFE0E;</a>
-                  <a href="#">&#x1F441;</a></td>
-              </tr>
-              <tr>
-                <td>0003</td>
-                <td></td>
-                <td></td>
-                <td><span class="status-flag completed">Completed</span></td>
-                <td><a href="#">&#9997;&#xFE0E;</a>
-                  <a href="#">&#x1F441;</a></td>
-              </tr>
+          <tbody id="infraList">
+<!--            <tr>-->
+<!--              <td>0001</td>-->
+<!--              <td></td>-->
+<!--              <td></td>-->
+<!--              <td><span class="status-flag in-created">Created</span></td>-->
+<!--              <td><a href="#">&#9997;&#xFE0E;</a>-->
+<!--                <a href="#">&#x1F441;</a></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>0002</td>-->
+<!--              <td></td>-->
+<!--              <td></td>-->
+<!--                <td><span class="status-flag in-progress" >In progress</span></td>-->
+<!--                <td><a href="#">&#9997;&#xFE0E;</a>-->
+<!--                  <a href="#">&#x1F441;</a></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>0003</td>-->
+<!--              <td></td>-->
+<!--              <td></td>-->
+<!--                <td><span class="status-flag completed">Completed</span></td>-->
+<!--                <td><a href="#">&#9997;&#xFE0E;</a>-->
+<!--                  <a href="#">&#x1F441;</a></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--              <td>0004</td>-->
+<!--              <td></td>-->
+<!--              <td></td>-->
+<!--              <td><span  class="status-flag pending">Pending</span></td>-->
+<!--              <td><a href="#">&#9997;&#xFE0E;</a>-->
+<!--                <a href="#">&#x1F441;</a></td>-->
+<!--              </tr>-->
+<!--              <tr>-->
+<!--                <td>0001</td>-->
+<!--                <td></td>-->
+<!--                <td></td>-->
+<!--              <td><span class="status-flag in-created">Created</span></td>-->
+<!--              <td><a href="#">&#9997;&#xFE0E;</a>-->
+<!--                <a href="#">&#x1F441;</a></td>-->
+<!--              </tr>-->
+<!--              <tr>-->
+<!--               -->
+<!--              </tr>-->
+<!--              <tr>-->
+<!--                <td>0002</td>-->
+<!--                <td></td>-->
+<!--                <td></td>-->
+<!--                <td><span class="status-flag in-progress" >In progress</span></td>-->
+<!--                <td><a href="#">&#9997;&#xFE0E;</a>-->
+<!--                  <a href="#">&#x1F441;</a></td>-->
+<!--              </tr>-->
+<!--              <tr>-->
+<!--                <td>0003</td>-->
+<!--                <td></td>-->
+<!--                <td></td>-->
+<!--                <td><span class="status-flag completed">Completed</span></td>-->
+<!--                <td><a href="#">&#9997;&#xFE0E;</a>-->
+<!--                  <a href="#">&#x1F441;</a></td>-->
+<!--              </tr>-->
             <!-- Add more rows as needed -->
           </tbody>
         </table>
@@ -97,34 +97,44 @@
 </main>
 <script>
 
-    $(document).ready(function() {
+   $(document).ready(function() {
 
             $("#tablelist").show();
-            $("#saveOffbody").show();
+            $("#saveInspbody").show();
 
         var infraList="";
         $.ajax({
             contentType: "application/json;charset=UTF-8",
-            url: "/api/Inspection/getAllInsp",
+            url: "/api/inspection/getAllInsp",
             dataType: "json",
+            type: "GET",
             type: "GET",
             async:false,
             success:function(data){
                for(i=0;i<data.length;i++){
-               infraList=infraList+'<tr>';
-               infraList=infraList+' <td>'+data[i].inspId +'</td>';
-               infraList=infraList+' <td>'+data[i].description +'</td>';
-               infraList=infraList+' <td>'+data[i].assignedOfficer +'</td>';
-               infraList=infraList+' <td>'+data[i].status +'</td>';
 
-               infraList=infraList+' <td>';
-               infraList=infraList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
-               infraList=infraList+'<i>&#9997;&#xFE0E;</i> </a>';
-               infraList=infraList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
-               infraList=infraList+'<i>&#x1F441;</i> </a>';
-               infraList=infraList+'</td></tr>';
+                 if(data[i].assignedOfficer!==null && data[i].lastDate!==null){
+                     infraList=infraList+'<tr>';
+                     infraList=infraList+' <td>'+data[i].inspId +'</td>';
+                     infraList=infraList+' <td>'+data[i].description +'</td>';
+
+                     infraList=infraList+' <td>'+data[i].assignedOfficer +'</td>';
+                     infraList=infraList+' <td>'+data[i].status +'</td>';
+
+
+
+
+
+                     infraList=infraList+' <td>';
+                     infraList=infraList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
+                     infraList=infraList+'<i>&#9997;&#xFE0E;</i> </a>';
+                     infraList=infraList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
+                     infraList=infraList+'<i>&#x1F441;</i> </a>';
+                     infraList=infraList+'</td></tr>';
+                 }
 
                }
+
                 $("#infraList").html(infraList);
             }
         });

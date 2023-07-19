@@ -88,8 +88,9 @@ public class Inspection {
         return status;
     }
 
-    public void setStatus(String status) {
+    public String setStatus(String status) {
         this.status = status;
+        return "created";
     }
 
     public String getAssignedOfficer() {

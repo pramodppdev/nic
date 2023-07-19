@@ -26,6 +26,7 @@
     font-weight: bold;
     font-size: 20px;
     padding-top: 11px;
+
   }
   .top-bar img{
     height:60px;
@@ -33,6 +34,7 @@
     margin-top:5px ;
   }
   .sidebar {
+
     position: absolute;
     width: 200px;
     height: calc(100% - 5px);
@@ -41,6 +43,7 @@
     3px 3px 5px #ceced1 ;
     z-index: 2;
     left: 5px;
+    margin-top:5px;
     border-radius: 10px;
     background-color: #f1f1f1;
 }

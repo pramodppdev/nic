@@ -14,50 +14,19 @@
 <div th:replace="~{fragment/nav :: nav}"> </div>
 
 <main>
-    <div class="grid">
-        <div class="wrapper">
-            <select name="" id="InspNo">
-                <option value="Inspection">Inspection</option>
-                <option value="">Inspection 1</option>
-                <option value="">Inspection 2</option>
-                <option value="">Inspection 3</option>
-            </select>
-        </div>
-        <div class="wrapper">
-            <select name="" id="AssignedOfficer">
-                <option value="Officer Assignment">Officer Assignment</option>
-                <option value=""> Officer 1</option>
-                <option value=""> Officer 2</option>
-                <option value=""> Officer 3</option>
-            </select>
-        </div>
-        <div class="wrapper">
-            <input type="date" id="LastDate">
-            <label>Due date</label>
-        </div>
 
-    </div>
-    <div>
-        <button onclick="saveInspection()" class="submit-btn" >Submit</button>
-        <button class="cancel-btn">Cancel</button>
-    </div>
-    <div class="alert-container" id="alertContainer">
-        <div class="alert-message">
-            Submitted Successfully!
-        </div>
-        <button class="alert-button-ok" onclick="hideAlert()">OK</button>
-        <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
-    </div>
     <div class="table-name">
-        <h1>Officers list</h1>
+        <h2>Assign Officers</h2>
     </div>
     <div class="table-container">
+
 
         <table>
             <thead>
             <tr>
                 <th>Inspection ID</th>
-                <th>Assigned Officer</th>
+                <th>Department</th>
+                <th>Officer Assigned</th>
                 <th>Designation</th>
                 <th>LastDate</th>
                 <th>Actions</th>
@@ -81,7 +50,6 @@
         $.ajax({
             contentType: "application/json;charset=UTF-8",
             url: "/api/inspection/getAllInsp",
-            url: "/api/officer/getAllOfficer",
             dataType: "json",
             type: "GET",
             type: "GET",
@@ -90,9 +58,29 @@
                for(i=0;i<data.length;i++){
                infraList=infraList+'<tr>';
                infraList=infraList+' <td>'+data[i].inspId +'</td>';
-               infraList=infraList+' <td>'+data[i].assignedOfficer +'</td>';
+               infraList=infraList+' <td>'+data[i].department +'</td>';
+               if(data[i].assignedOfficer==null)
+               {
+               infraList=infraList+' <td>';
+               infraList=infraList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Assign">';
+               infraList=infraList+'<button class="btn">Assign</button></a>';
+               }
+               else{
+                infraList=infraList+' <td>'+data[i].assignedOfficer +'</td>';
+
+               }
                infraList=infraList+' <td>'+data[i].designation +'</td>';
+
+               if(data[i].lastDate==null)
+               {
+               infraList=infraList+' <td>';
+               infraList=infraList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Assign">';
+               infraList=infraList+'<button class="btn">Assign</button></a>';
+               }
+               else{
                infraList=infraList+' <td>'+data[i].lastDate +'</td>'
+
+               }
 
 
 

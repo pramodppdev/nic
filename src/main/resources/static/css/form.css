@@ -42,7 +42,7 @@
     background-color: #f1f1f1;
     margin-inline-start: 15px;
     margin-top: 20px;
-    width: 100%;
+    width: 90%;
     box-shadow: inset -3px -3px 7px #ffffff,
     inset 3px 3px 5px #ceced1 ;
 }
@@ -87,6 +87,21 @@
     margin-top: 20px;
 }
 
+.add-btn{
+    background-color:#f1f1f1;
+    padding: 15px;
+    border: none;
+    box-shadow: -3px -3px 7px #ffffff,
+    3px 3px 5px #ceced1 ;
+    border-radius: 10px;
+    color: green;
+    font-size: 15px;
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+
+
 .submit-btn:hover{
     background-color:green ;
     color:  white;
@@ -114,11 +129,16 @@
 @media(max-width:1000px){
     .grid{
         grid-template-columns: repeat(1,1fr);
+        margin-right: 5px;
     }
     .wrapper input{
         width: 100%;
+
     }
     .wrapper label{
         left: 8%;
+    }
+    .wrapper select{
+        width: 100%;
     }
 }
