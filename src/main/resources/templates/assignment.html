@@ -39,9 +39,51 @@
     </div>
     </div>
 
-    <div id="assign">
-        <span id="Taluk"></span>
-        <span id="Description"></span>
+    <div id="assignment">
+        <div class="assign">
+            <div class="id" id="InspId">
+                <label class="label">Inspection-id:</label>
+                <p>INSP 0001</p>
+            </div>
+            <div class="desc" id="Description">
+                <label class="label">Inspection Description:</label>
+                <p>An inspection is, most generally, an organized examination or formal evaluation exercise.<br>In engineering activities inspection involves the measurements, tests, and gauges applied to certain characteristics in regard to an object or activity.</p>
+            </div>
+            <div class="district" id="District">
+                <label class="label">District:</label>
+                <p>Ballari</p>
+            </div>
+            <div class="dept" id="Department">
+                <label class="label">Department:</label>
+                <p>Food Department</p>
+            </div>
+        </div>
+        <div class="grid">
+            <div class="wrapper" id="AssignedOfficer">
+                <select>
+                    <option value="" disabled selected>Select Officers</option>
+                    <option value="">Pramod</option>
+                    <option value="">Raghu</option>
+                    <option value="">varun</option>
+                    <option value="">Sudhanva</option>
+                </select>
+            </div>
+            <div class="wrapper" id="LastDate">
+                <input type="date" >
+                <label>Due date</label>
+            </div>
+        </div>
+        <div class="btn">
+            <button class="submit-btn" onclick="saveAssignment()">Assign</button>
+            <button class="cancel-btn">Cancel</button>
+        </div>
+        <div class="alert-container" id="alertContainer">
+            <div class="alert-message">
+                Officer Assigned Successfully!
+            </div>
+            <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+            <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
+        </div>
     </div>
 </main>
 
@@ -49,8 +91,8 @@
 
     $(document).ready(function() {
 
-            $("#tablelist").show();
-            $("#saveInspbody").show();
+        $("#tablelist").show();
+        $("#assignment").hide();
 
         var infraList="";
         $.ajax({
@@ -69,7 +111,7 @@
                {
                infraList=infraList+' <td>';
                infraList=infraList+'<a href="javascript:getInsp(\''+data[i].id+'\')" title="Assign">';
-               infraList=infraList+'<button class="btn">Assign</button></a>';
+               infraList=infraList+'<button class="btn" id="tablelist">Assign</button></a>';
                }
                else{
                 infraList=infraList+' <td>'+data[i].assignedOfficer +'</td>';
@@ -103,7 +145,7 @@
         });
       });
 
-        function saveInspection(){
+        function saveAssignment(){
 
                         var userData={
 
@@ -138,7 +180,7 @@
 function getInsp(id){
 
         $("#tablelist").hide();
-        $("#assign").show();
+        $("#assignment").show();
 
            $.ajax({
                      contentType: "application/json;charset=UTF-8",

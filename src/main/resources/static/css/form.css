@@ -141,4 +141,15 @@
     .wrapper select{
         width: 100%;
     }
+    p{
+        font-size: 18px;
+        font-weight: bold;
+    }
+    .assign{
+       padding: 10px 25px;
+    }
+    .label{
+        font-weight: lighter;
+    }
+
 }
