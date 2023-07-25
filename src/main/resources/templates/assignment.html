@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>NIC</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/table.css">
+    <link rel="stylesheet" href="/css/alert.css">
+    <script src="/script/alert.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div th:replace="~{fragment/nav :: nav}"> </div>
+
+<main>
+    <div id="tablelist">
+    <div class="table-name">
+        <h2>Assign Officers</h2>
+    </div>
+    <div class="table-container">
+
+
+        <table>
+            <thead>
+            <tr>
+                <th>Inspection ID</th>
+                <th>Department</th>
+                <th>Officer Assigned</th>
+                <th>Designation</th>
+                <th>LastDate</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="assignList">
+
+            </tbody>
+        </table>
+    </div>
+    </div>
+
+    <div id="assignment">
+        <div class="assign">
+            <div >
+                <label class="assign-label">Inspection-id:</label>
+                <span class="assign-span" id="InspId">INSP 0001</span>
+            </div>
+            <div>
+                <label class="assign-label">Inspection Description:</label>
+                <span class="assign-span" id="Description" >An inspection is, most generally, an organized examination or formal evaluation exercise.<br>In engineering activities inspection involves the measurements, tests, and gauges applied to certain characteristics in regard to an object or activity.</span>
+            </div>
+            <div >
+                <label class="assign-label">District:</label>
+                <span class="assign-span" id="District">Ballari</span>
+            </div>
+            <div >
+                <label class="assign-label">Department:</label>
+                <span class="assign-span" id="Department">Food Department</span>
+            </div>
+        </div>
+        <div class="grid">
+            <div class="wrapper">
+                <select  id="officerDrop" ></select>
+            </div>
+            <div class="wrapper" >
+                <input type="date" id="LastDate" >
+                <label>Due date</label>
+            </div>
+        </div>
+        <div class="btn">
+            <button class="submit-btn" onclick="saveAssignment()">Assign</button>
+            <button class="cancel-btn">Cancel</button>
+        </div>
+        <div class="alert-container" id="alertContainer">
+            <div class="alert-message">
+                Officer Assigned Successfully!
+            </div>
+            <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+            <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
+        </div>
+    </div>
+</main>
+
+<script>
+
+    $(document).ready(function() {
+
+    <!--        Officer dropdown list start-->
+
+       $.ajax({
+           contentType: "application/json;charset=UTF-8",
+           type: "GET",
+           url: "/api/officer/getAllOfficer",
+           dataType: "json",
+           async:false,
+           success: function (officerData) {
+               var s = '<option value="-1">Select Officer</option>';
+               for (var i = 0; i < officerData.length; i++) {
+                   s += '<option value="' + officerData[i].officerName + '">' + officerData[i].officerName + '</option>';
+               }
+               $("#officerDrop").html(s); // Updated ID here
+           }
+        });
+
+
+    <!--        Officer dropdown list end-->
+
+        $("#tablelist").show();
+        $("#assignment").hide();
+
+        var assignList="";
+        $.ajax({
+            contentType: "application/json;charset=UTF-8",
+            url: "/api/inspection/getAllInsp",
+            dataType: "json",
+            type: "GET",
+            type: "GET",
+            async:false,
+            success:function(data){
+               for(i=0;i<data.length;i++){
+               assignList=assignList+'<tr>';
+               assignList=assignList+' <td>'+data[i].inspId +'</td>';
+               assignList=assignList+' <td>'+data[i].department +'</td>';
+               if(data[i].assignedOfficer==null)
+               {
+               assignList=assignList+' <td>';
+               assignList=assignList+'<a href="javascript:getInsp(\''+data[i].id+'\')" title="Assign">';
+               assignList=assignList+'<button class="btn" id="tablelist">Assign</button></a>';
+               }
+               else{
+                assignList=assignList+' <td>'+data[i].assignedOfficer +'</td>';
+
+               }
+               assignList=assignList+' <td>'+data[i].designation +'</td>';
+
+               if(data[i].lastDate==null)
+               {
+               assignList=assignList+' <td>';
+               assignList=assignList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Assign">';
+               assignList=assignList+'<p style="font-size:15px;">Not assigned</p>';
+               }
+               else{
+               assignList=assignList+' <td>'+data[i].lastDate +'</td>'
+
+               }
+
+
+
+               assignList=assignList+' <td>';
+               assignList=assignList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
+               assignList=assignList+'<i>&#9997;&#xFE0E;</i> </a>';
+               assignList=assignList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
+               assignList=assignList+'<i>&#x1F441;</i> </a>';
+               assignList=assignList+'</td></tr>';
+
+               }
+                $("#assignList").html(assignList);
+            }
+        });
+      });
+
+        function saveAssignment(){
+
+                        var userData={
+
+
+                        inspNo:$("#InspNo").val(),
+                        assignedOfficer:$("#officerDrop").val(),
+                        lastDate:$("#LastDate").val(),
+
+
+                    }
+
+                        $.ajax({
+                        contentType: "application/json;charset=UTF-8",
+                        url: "/api/inspection/save",
+                        dataType: "json",
+                        type: "POST",
+                        cache: !1,
+                        processData: !1,
+                        data: JSON.stringify(userData),
+                        complete:function(xhr) {
+                        console.log(data)
+
+                        }
+                 });
+                 showAlert()
+      }
+
+
+
+
+function getInsp(id){
+
+        $("#tablelist").hide();
+        $("#assignment").show();
+
+           $.ajax({
+                     contentType: "application/json;charset=UTF-8",
+                     url: "/api/inspection/getById/"+id,
+                     dataType: "json",
+                     type: "GET",
+                     cache: !1,
+                     processData: !1,
+                     success:function(data){
+                     console.log(data);
+
+                        $("#InspId").val(data.inspId);
+                        $("#Taluk").val(data.taluk);
+                        $("#Department").val(data.department);
+                        $("#Description").val(data.description);
+                        $("#LastDate").val(data.lastDate);
+                        $("#AssignedOfficer").val(data.assignedOfficer);
+                        $("#District").val(data.district);
+
+
+                     }
+           });
+
+    }
+
+
+
+
+
+      function addInspection(){
+
+            $("#tablelist").hide();
+            $("#saveOffbody").show();
+
+
+      }
+function showAlert() {
+      var alertContainer = document.getElementById('alertContainer');
+      alertContainer.style.display = 'block';
+
+    }
+
+    function hideAlert() {
+      location.reload();
+      var alertContainer = document.getElementById('alertContainer');
+      alertContainer.style.display = 'none';
+    }
+
+
+</script>
+</body>
+</html>

@@ -2,9 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>NIC</title>
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/form.css">
-  <link rel="stylesheet" href="css/table.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/form.css">
+  <link rel="stylesheet" href="/css/table.css">
+    <link rel="stylesheet" href="/css/alert.css">
+    <script src="/script/alert.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
@@ -15,40 +17,37 @@
 
     <div class="grid" id="saveDeptbody">
         <div class="wrapper">
-            <input type="text" required>
-            <label >Department id</label>
-        </div>
-        <div class="wrapper">
             <input type="text" id="DeptName" required>
             <label >Department Name</label>
         </div>
-        <div class="wrapper">
-            <input type="text" id="DeptCode" required>
-            <label >Department code</label>
-        </div>
-
+    </div>
         <div class="btn">
-            <button onclick="saveDept()" class="submit-btn">Submit</button>
+            <button onclick="saveDept()" class="submit-btn">Add</button>
             <button class="cancel-btn">Cancel</button>
         </div>
-    </div>
+      <div class="alert-container" id="alertContainer">
+          <div class="alert-message">
+              Added Data Successfully!
+          </div>
+          <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+          <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
+          </div>
    <div id="tablelist">
-    <div class="table-name" >
-        <div onclick="addDepartment()" class="btn">
-            <button  class="submit-btn">Add Department</button>
-        </div>
-      <h1>Department List</h1>
+    <div class="table-name">
+
+      <h2>Department List</h2>
      </div>
           <div class="table-container">
               <table>
                 <thead>
                   <tr>
+                    <th>ID</th>
                     <th>Department Name</th>
-                    <th>Department Code</th>
-                    <th>Actions</th>
+                      <th>Actions</th>
                   </tr>
                 </thead>
-                  <tbody id="infraList"></tbody>
+                  <tbody id="deptList">
+                  </tbody>
 
               </table>
             </div>
@@ -61,9 +60,9 @@
     $(document).ready(function() {
 
             $("#tablelist").show();
-            $("#saveDeptbody").hide();
+            $("#saveDeptbody").show();
 
-        var infraList="";
+        var deptList="";
         $.ajax({
             contentType: "application/json;charset=UTF-8",
             url: "/api/department/getAllDept",
@@ -72,19 +71,19 @@
             async:false,
             success:function(data){
                for(i=0;i<data.length;i++){
-               infraList=infraList+'<tr>';
-               infraList=infraList+' <td>'+data[i].deptName +'</td>';
-               infraList=infraList+' <td>'+data[i].deptCode +'</td>';
+               deptList=deptList+'<tr>';
+               deptList=deptList+' <td>'+data[i].deptId +'</td>';
+               deptList=deptList+' <td>'+data[i].deptName +'</td>';
 
-               infraList=infraList+' <td>';
-               infraList=infraList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
-               infraList=infraList+'<i class="fa fa-pencil" ></i> </a>';
-               infraList=infraList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
-               infraList=infraList+'<i class="pe-7s-trash" ></i> </a>';
-               infraList=infraList+'</td></tr>';
+               deptList=deptList+' <td>';
+               deptList=deptList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
+               deptList=deptList+'<i>&#9997;&#xFE0E;</i> </a>';
+               deptList=deptList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
+               deptList=deptList+'<i>&#x1F441;</i> </a>';
+               deptList=deptList+'</td></tr>';
 
                }
-                $("#infraList").html(infraList);
+                $("#deptList").html(deptList);
             }
         });
       });
@@ -95,10 +94,6 @@
 
 
                         deptName:$("#DeptName").val(),
-                        deptCode:$("#DeptCode").val()
-
-
-
 
                     }
 
@@ -114,7 +109,10 @@
                         console.log(data)
 
                         }
+
                  });
+                 showAlert()
+
       }
 
       function addDepartment(){
@@ -125,6 +123,18 @@
 
       }
 
+
+    function showAlert() {
+      var alertContainer = document.getElementById('alertContainer');
+      alertContainer.style.display = 'block';
+
+    }
+
+    function hideAlert() {
+      location.reload();
+      var alertContainer = document.getElementById('alertContainer');
+      alertContainer.style.display = 'none';
+    }
 
 
 

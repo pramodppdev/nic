@@ -18,18 +18,30 @@ public class Inspection {
 
     private String lastDate;
 
-    private String officeAssigned;
+    private String status;
+
+    private String assignedOfficer;
+
+    private String createdAt;
+
+    private String createdBy;
+
+    private String district;
 
     public Inspection() {
     }
 
-    public Inspection(String inspId, String taluk, String department, String description, String lastDate, String officeAssigned) {
+    public Inspection(String inspId, String taluk, String department, String description, String lastDate, String status, String assignedOfficer, String createdAt, String createdBy, String district) {
         this.inspId = inspId;
         this.taluk = taluk;
         this.department = department;
         this.description = description;
         this.lastDate = lastDate;
-        this.officeAssigned = officeAssigned;
+        this.status = status;
+        this.assignedOfficer = assignedOfficer;
+        this.createdAt = createdAt;
+        this.createdBy = createdBy;
+        this.district = district;
     }
 
     public String getInspId() {
@@ -72,11 +84,44 @@ public class Inspection {
         this.lastDate = lastDate;
     }
 
-    public String getOfficeAssigned() {
-        return officeAssigned;
+    public String getStatus() {
+        return status;
     }
 
-    public void setOfficeAssigned(String officeAssigned) {
-        this.officeAssigned = officeAssigned;
+    public String setStatus(String status) {
+        this.status = status;
+        return "created";
+    }
+
+    public String getAssignedOfficer() {
+        return assignedOfficer;
+    }
+
+    public void setAssignedOfficer(String assignedOfficer) {
+        this.assignedOfficer = assignedOfficer;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
     }
 }

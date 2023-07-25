@@ -5,135 +5,169 @@
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/form.css">
   <link rel="stylesheet" href="css/table.css">
- <script src="script/script.js"></script>
+    <link rel="stylesheet" href="/css/alert.css">
+    <script src="/script/alert.js"></script>
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <div th:replace="~{fragment/nav :: nav}"> </div>
 
   <main>
-    <div class="grid">
-        <div class="wrapper">
-            <input type="text" required>
-            <label for="Name">Inspection Code</label>
-        </div>
-        <div class="wrapper">
-            <input type="text" required>
-            <label for="Name">Taluk</label>
-        </div>
-        <div class="wrapper">
-            <input type="tel" required>
-            <label for="Name">Department</label>
-        </div>
-        <div class="wrapper">
-            <input type="text" required>
-            <label for="Name">Description</label>
-        </div>
-        <div class="wrapper">
-            <input type="text" required>
-            <label for="Name">Last date</label>
-        </div>
-        <div class="wrapper">
-            <input type="text" required>
-            <label for="Name">Officer assignment</label>
-        </div>
-  </div>
-  <div>
-    <button class="submit-btn">Submit</button>
-    <button class="cancel-btn">Cancel</button>
-  </div>
+      <div class="grid">
+          <div class="wrapper">
+              <select  id="talukDrop" ></select>
+          </div>
+          <div class="wrapper">
+              <input type="text" id="Department" required>
+              <label>Department</label>
+          </div>
+
+      </div>
+      <div class="wrapper">
+          <textarea name="" id="Description" cols="30" rows="10" placeholder="Enter the description"></textarea>
+      </div>
+      <div>
+          <button onclick="saveInspection()" class="submit-btn">Add</button>
+          <button class="cancel-btn">Cancel</button>
+      </div>
+      <div class="alert-container" id="alertContainer">
+          <div class="alert-message">
+              Added Data Successfully!
+          </div>
+          <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+          <button class="alert-button-cancel" onclick="hideAlert()" >Cancel</button>
+      </div>
   <div class="table-name">
-    <h1>Inspection list</h1>
+    <h2>Inspection list</h2>
    </div>
         <div class="table-container">
             
             <table>
               <thead>
                 <tr>
-                  <th>Inspection Code</th>
-                  <th>Officer assigned</th>
+                  <th>Inspection ID</th>
+                    <th>Description</th>
                   <th>Department</th>
                   <th>Actions</th>
-
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>John</td>
-                  <td>25</td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>Jane</td>
-                  <td>30</td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>Mike</td>
-                  <td>35</td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>John</td>
-                  <td>25</td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>Jane</td>
-                  <td>30</td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>Mike</td>
-                  <td>35</td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>John</td>
-                  <td>25</td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>Jane</td>
-                  <td>30</td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>Mike</td>
-                  <td>35</td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>John</td>
-                  <td>25</td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>Jane</td>
-                  <td>30</td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>Mike</td>
-                  <td>35</td>
-                  <td></td>
-                  <td></td>
-                </tr>
+              <tbody id="inspList">
 
               </tbody>
             </table>
           </div>
 
   </main>
+<script>
+
+    $(document).ready(function() {
+
+
+<!--        Taluk dropdown list start-->
+
+
+       $.ajax({
+           contentType: "application/json;charset=UTF-8",
+           type: "GET",
+           url: "/api/taluk/getAllTaluk",
+           dataType: "json",
+           async:false,
+           success: function (talukData) {
+               var s = '<option value="-1">Select Taluk</option>';
+               for (var i = 0; i < talukData.length; i++) {
+                   s += '<option value="' + talukData[i].talukName + '">' + talukData[i].talukName + '</option>';
+               }
+               $("#talukDrop").html(s); // Updated ID here
+           }
+        });
+
+
+<!--        Taluk dropdown list end-->
+
+            $("#tablelist").show();
+            $("#saveInspbody").show();
+
+        var inspList="";
+        $.ajax({
+            contentType: "application/json;charset=UTF-8",
+            url: "/api/inspection/getAllInsp",
+            dataType: "json",
+            type: "GET",
+            type: "GET",
+            async:false,
+            success:function(data){
+               for(i=0;i<data.length;i++){
+               inspList=inspList+'<tr>';
+               inspList=inspList+' <td>'+data[i].inspId +'</td>';
+               inspList=inspList+' <td>'+data[i].description +'</td>';
+               inspList=inspList+' <td>'+data[i].department +'</td>'
+
+
+
+               inspList=inspList+' <td>';
+               inspList=inspList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
+               inspList=inspList+'<i>&#9997;&#xFE0E;</i> </a>';
+               inspList=inspList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
+               inspList=inspList+'<i>&#x1F441;</i> </a>';
+               inspList=inspList+'</td></tr>';
+
+               }
+                $("#inspList").html(inspList);
+            }
+        });
+      });
+
+        function saveInspection(){
+
+                        var userData={
+
+
+                        taluk:$("#talukDrop").val(),
+                        department:$("#Department").val(),
+                        description:$("#Description").val(),
+
+
+
+                    }
+
+                        $.ajax({
+                        contentType: "application/json;charset=UTF-8",
+                        url: "/api/inspection/save",
+                        dataType: "json",
+                        type: "POST",
+                        cache: !1,
+                        processData: !1,
+                        data: JSON.stringify(userData),
+                        complete:function(xhr) {
+                        console.log(data)
+
+                        }
+                 });
+                 showAlert()
+      }
+
+      function addInspection(){
+
+            $("#tablelist").hide();
+            $("#saveOffbody").show();
+
+
+      }
+
+function showAlert() {
+      var alertContainer = document.getElementById('alertContainer');
+      alertContainer.style.display = 'block';
+
+    }
+
+
+    function hideAlert() {
+      location.reload();
+      var alertContainer = document.getElementById('alertContainer');
+      alertContainer.style.display = 'none';
+    }
+
+
+	</script>
 </body>
 </html>

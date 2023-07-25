@@ -3,7 +3,7 @@
     border-radius: 10px;
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
     overflow-y: scroll;
-    max-height: 300px; 
+    max-height: 320px;
     width: min(100% - 50px);
     box-shadow: -3px -3px 7px #ffffff,
     3px 3px 5px #ceced1 ;
@@ -12,12 +12,12 @@
     margin-left: 25px;
     margin-top: 10px;
   }
-  .table-container h1{
+  .table-container h2{
     position: sticky;
     z-index: 1;
     top: 0;
   }
-  .table-name h1{
+  .table-name h2{
   margin-top: 25px;
   margin-left: 40px;
   }
@@ -26,14 +26,20 @@
     border-collapse: collapse;
     margin-bottom: 0;
   }
-  
+
   th, td {
     padding: 10px;
     text-align: center;
     background-color: #e6e1e1;
     border-bottom: 1px solid #c7ccd4;
   }
-  
+  td a{
+    text-align: center;
+    font-size: 25px;
+    text-decoration: none;
+    color: black;
+    padding: 10px;
+  }
   th {
     background-color: #f1f1f1;
     font-weight: bold;
@@ -41,8 +47,42 @@
     z-index: 1;
     top: 0;
   }
-  
+
   tbody tr{
     background-color:#f1f1f1;
     overflow-y:scroll;
+}
+td span{
+  padding: 5px;
+  border-radius: 3px;
+  font-size: 11px;
+}
+.status-flag.in-created{
+  background-color: darkslategrey;
+  color: #fff;
+
+}
+.status-flag.in-progress {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.status-flag.completed {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.status-flag.pending {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+// used in list view
+td button{
+  padding: 15px;
+  border-radius: 3px;
+  }
+td button:hover{
+  background:  #28a745;
+  color:white;
 }

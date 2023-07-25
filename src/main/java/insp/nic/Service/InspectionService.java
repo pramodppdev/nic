@@ -1,6 +1,5 @@
 package insp.nic.Service;
 
-
 import insp.nic.model.Inspection;
 import org.springframework.stereotype.Service;
 
@@ -16,4 +15,5 @@ public interface InspectionService {
     Inspection getById(String id);
 
     void deleteInsp(String id);
+
 }

@@ -1,6 +1,5 @@
 package insp.nic.Service;
 
-
 import insp.nic.model.Officer;
 import org.springframework.stereotype.Service;
 
@@ -16,5 +15,4 @@ public interface OfficerService {
     Officer getById(String id);
 
     void deleteOfficer(String id);
-
 }

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>NIC</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/form.css">
+  <link rel="stylesheet" href="/css/table.css">
+    <link rel="stylesheet" href="/css/alert.css">
+    <script src="/script/alert.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+
+</head>
+
+<body>
+<div th:replace="~{fragment/nav :: nav}"> </div>
+  <main>
+    <div class="grid">
+        <div class="wrapper">
+            <input type="text" id="DistrictName" required>
+            <label>District</label>
+        </div>
+
+        </div>
+      <div>
+          <button class="submit-btn" onclick="saveDistrict()">Add</button>
+      </div>
+      <div class="alert-container" id="alertContainer">
+          <div class="alert-message">
+              Submitted Successfully!
+          </div>
+          <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+          <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
+      </div>
+        <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>District ID</th>
+                  <th>District name</th>
+                    <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="districtList">
+
+              </tbody>
+            </table>
+          </div>
+  </main>
+<script>
+
+    $(document).ready(function() {
+
+            $("#tablelist").show();
+            $("#saveDistrictbody").show();
+
+        var districtList="";
+        $.ajax({
+            contentType: "application/json;charset=UTF-8",
+            url: "/api/district/getAllDistrict",
+            dataType: "json",
+            type: "GET",
+            async:false,
+            success:function(data){
+               for(i=0;i<data.length;i++){
+               districtList=districtList+'<tr>';
+               districtList=districtList+' <td>'+data[i].districtId +'</td>';
+               districtList=districtList+' <td>'+data[i].districtName +'</td>';
+
+               districtList=districtList+' <td>';
+               districtList=districtList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
+               districtList=districtList+'<i>&#9997;&#xFE0E;</i> </a>';
+               districtList=districtList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
+               districtList=districtList+'<i>&#x1F441;</i> </a>';
+               districtList=districtList+'</td></tr>';
+
+               }
+                $("#districtList").html(districtList);
+            }
+        });
+      });
+
+function saveDistrict(){
+
+                        var userData={
+
+
+
+                        districtName:$("#DistrictName").val(),
+
+
+                    }
+
+                        $.ajax({
+                        contentType: "application/json;charset=UTF-8",
+                        url: "/api/district/save",
+                        dataType: "json",
+                        type: "POST",
+                        cache: !1,
+                        processData: !1,
+                        data: JSON.stringify(userData),
+                        complete:function(xhr) {
+                        console.log(data)
+
+                        }
+                 });
+                 showAlert()
+      }
+    function showAlert() {
+          var alertContainer = document.getElementById('alertContainer');
+          alertContainer.style.display = 'block';
+
+        }
+
+        function hideAlert() {
+          location.reload();
+          var alertContainer = document.getElementById('alertContainer');
+          alertContainer.style.display = 'none';
+        }
+
+
+</script>
+</body>
+</html>
