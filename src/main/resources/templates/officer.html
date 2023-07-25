@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="/css/alert.css">
     <script src="/script/alert.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="/script/script.js"></script>
 </head>
 
 <body>
@@ -25,18 +24,10 @@
               <label>Mobile number</label>
           </div>
           <div class="wrapper">
-              <div class="wrapper">
-                  <select name="" id="Taluk">
-                      <option value="Select Taluk">Select Taluk</option>
-                      <option value="">Sirguppa</option>
-                      <option value="">Sandur</option>
-                      <option value="">Kudligi</option>
-                  </select>
-              </div>
+              <select  id="talukDrop" ></select>
           </div>
-          <div class="wrapper">
-              <input type="text" id="OfficerDept" required>
-              <label>Department</label>
+          <div class="wrapper" >
+              <select  id="deptDrop" ></select>
           </div>
           <div class="wrapper">
               <input type="text" id="Designation" required>
@@ -70,7 +61,7 @@
                     <th>Actions</th>
                 </tr>
               </thead>
-              <tbody id="infraList">
+              <tbody id="officerList">
 
               </tbody>
             </table>
@@ -80,15 +71,59 @@
 
 
 
-
 <script>
 
     $(document).ready(function() {
 
+
+<!--        Department dropdown list start-->
+
+
+        $.ajax({
+           contentType: "application/json;charset=UTF-8",
+           type: "GET",
+           url: "/api/department/getAllDept",
+           dataType: "json",
+           async:false,
+           success: function (deptdata) {
+               var s = '<option value="-1">Select Department</option>';
+               for (var i = 0; i < deptdata.length; i++) {
+                   s += '<option value="' + deptdata[i].deptName + '">' + deptdata[i].deptName + '</option>';
+               }
+               $("#deptDrop").html(s);
+           }
+       });
+
+
+<!--        Department dropdown list end-->
+
+
+<!--        Taluk dropdown list start-->
+
+       $.ajax({
+           contentType: "application/json;charset=UTF-8",
+           type: "GET",
+           url: "/api/taluk/getAllTaluk",
+           dataType: "json",
+           async:false,
+           success: function (talukData) {
+               var s = '<option value="-1">Select Taluk</option>';
+               for (var i = 0; i < talukData.length; i++) {
+                   s += '<option value="' + talukData[i].talukName + '">' + talukData[i].talukName + '</option>';
+               }
+               $("#talukDrop").html(s); // Updated ID here
+           }
+        });
+
+
+<!--        Taluk dropdown list end-->
+
+
+
             $("#tablelist").show();
             $("#saveOffbody").show();
 
-        var infraList="";
+        var officerList="";
         $.ajax({
             contentType: "application/json;charset=UTF-8",
             url: "/api/officer/getAllOfficer",
@@ -97,21 +132,21 @@
             async:false,
             success:function(data){
                for(i=0;i<data.length;i++){
-               infraList=infraList+'<tr>';
-               infraList=infraList+' <td>'+data[i].officerId +'</td>';
-               infraList=infraList+' <td>'+data[i].officerName +'</td>';
-               infraList=infraList+' <td>'+data[i].officerDept +'</td>';
-               infraList=infraList+' <td>'+data[i].officerMob +'</td>';
+               officerList=officerList+'<tr>';
+               officerList=officerList+' <td>'+data[i].officerId +'</td>';
+               officerList=officerList+' <td>'+data[i].officerName +'</td>';
+               officerList=officerList+' <td>'+data[i].officerDept +'</td>';
+               officerList=officerList+' <td>'+data[i].officerMob +'</td>';
 
-               infraList=infraList+' <td>';
-               infraList=infraList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
-               infraList=infraList+'<i>&#9997;&#xFE0E;</i> </a>';
-               infraList=infraList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
-               infraList=infraList+'<i>&#x1F441;</i> </a>';
-               infraList=infraList+'</td></tr>';
+               officerList=officerList+' <td>';
+               officerList=officerList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
+               officerList=officerList+'<i>&#9997;&#xFE0E;</i> </a>';
+               officerList=officerList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
+               officerList=officerList+'<i>&#x1F441;</i> </a>';
+               officerList=officerList+'</td></tr>';
 
                }
-                $("#infraList").html(infraList);
+                $("#officerList").html(officerList);
             }
         });
       });
@@ -123,9 +158,9 @@
 
                         officerName:$("#OfficerName").val(),
                         officerMob:$("#OfficerMob").val(),
-                        officerDept:$("#OfficerDept").val(),
+                        officerDept:$("#deptDrop").val(),
                         designation:$("#Designation").val(),
-                        taluk:$("#Taluk").val(),
+                        taluk:$("#talukDrop").val(),
 
 
 
