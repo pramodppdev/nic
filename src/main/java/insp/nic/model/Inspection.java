@@ -12,6 +12,7 @@ public class Inspection {
 
     private String taluk;
 
+
     private String department;
 
     private String description;
