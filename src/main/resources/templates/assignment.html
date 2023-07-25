@@ -32,7 +32,7 @@
                 <th>Actions</th>
             </tr>
             </thead>
-            <tbody id="infraList">
+            <tbody id="assignList">
 
             </tbody>
         </table>
@@ -59,14 +59,8 @@
             </div>
         </div>
         <div class="grid">
-            <div class="wrapper" >
-                <select id="AssignedOfficer">
-                    <option value="" disabled selected>Select Officers</option>
-                    <option value="">Pramod</option>
-                    <option value="">Raghu</option>
-                    <option value="">varun</option>
-                    <option value="">Sudhanva</option>
-                </select>
+            <div class="wrapper">
+                <select  id="officerDrop" ></select>
             </div>
             <div class="wrapper" >
                 <input type="date" id="LastDate" >
@@ -91,10 +85,30 @@
 
     $(document).ready(function() {
 
+    <!--        Officer dropdown list start-->
+
+       $.ajax({
+           contentType: "application/json;charset=UTF-8",
+           type: "GET",
+           url: "/api/officer/getAllOfficer",
+           dataType: "json",
+           async:false,
+           success: function (officerData) {
+               var s = '<option value="-1">Select Officer</option>';
+               for (var i = 0; i < officerData.length; i++) {
+                   s += '<option value="' + officerData[i].officerName + '">' + officerData[i].officerName + '</option>';
+               }
+               $("#officerDrop").html(s); // Updated ID here
+           }
+        });
+
+
+    <!--        Officer dropdown list end-->
+
         $("#tablelist").show();
         $("#assignment").hide();
 
-        var infraList="";
+        var assignList="";
         $.ajax({
             contentType: "application/json;charset=UTF-8",
             url: "/api/inspection/getAllInsp",
@@ -104,43 +118,43 @@
             async:false,
             success:function(data){
                for(i=0;i<data.length;i++){
-               infraList=infraList+'<tr>';
-               infraList=infraList+' <td>'+data[i].inspId +'</td>';
-               infraList=infraList+' <td>'+data[i].department +'</td>';
+               assignList=assignList+'<tr>';
+               assignList=assignList+' <td>'+data[i].inspId +'</td>';
+               assignList=assignList+' <td>'+data[i].department +'</td>';
                if(data[i].assignedOfficer==null)
                {
-               infraList=infraList+' <td>';
-               infraList=infraList+'<a href="javascript:getInsp(\''+data[i].id+'\')" title="Assign">';
-               infraList=infraList+'<button class="btn" id="tablelist">Assign</button></a>';
+               assignList=assignList+' <td>';
+               assignList=assignList+'<a href="javascript:getInsp(\''+data[i].id+'\')" title="Assign">';
+               assignList=assignList+'<button class="btn" id="tablelist">Assign</button></a>';
                }
                else{
-                infraList=infraList+' <td>'+data[i].assignedOfficer +'</td>';
+                assignList=assignList+' <td>'+data[i].assignedOfficer +'</td>';
 
                }
-               infraList=infraList+' <td>'+data[i].designation +'</td>';
+               assignList=assignList+' <td>'+data[i].designation +'</td>';
 
                if(data[i].lastDate==null)
                {
-               infraList=infraList+' <td>';
-               infraList=infraList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Assign">';
-               infraList=infraList+'<p style="font-size:15px;">Not assigned</p>';
+               assignList=assignList+' <td>';
+               assignList=assignList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Assign">';
+               assignList=assignList+'<p style="font-size:15px;">Not assigned</p>';
                }
                else{
-               infraList=infraList+' <td>'+data[i].lastDate +'</td>'
+               assignList=assignList+' <td>'+data[i].lastDate +'</td>'
 
                }
 
 
 
-               infraList=infraList+' <td>';
-               infraList=infraList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
-               infraList=infraList+'<i>&#9997;&#xFE0E;</i> </a>';
-               infraList=infraList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
-               infraList=infraList+'<i>&#x1F441;</i> </a>';
-               infraList=infraList+'</td></tr>';
+               assignList=assignList+' <td>';
+               assignList=assignList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
+               assignList=assignList+'<i>&#9997;&#xFE0E;</i> </a>';
+               assignList=assignList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
+               assignList=assignList+'<i>&#x1F441;</i> </a>';
+               assignList=assignList+'</td></tr>';
 
                }
-                $("#infraList").html(infraList);
+                $("#assignList").html(assignList);
             }
         });
       });
@@ -151,9 +165,8 @@
 
 
                         inspNo:$("#InspNo").val(),
-                        assignedOfficer:$("#AssignedOfficer").val(),
+                        assignedOfficer:$("#officerDrop").val(),
                         lastDate:$("#LastDate").val(),
-
 
 
                     }

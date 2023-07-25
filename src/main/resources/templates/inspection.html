@@ -15,12 +15,7 @@
   <main>
       <div class="grid">
           <div class="wrapper">
-              <select name="" id="Taluk">
-                  <option value="Select Taluk">Select Taluk</option>
-                  <option value="">Sirguppa</option>
-                  <option value="">Sandur</option>
-                  <option value="">Kudligi</option>
-              </select>
+              <select  id="talukDrop" ></select>
           </div>
           <div class="wrapper">
               <input type="text" id="Department" required>
@@ -56,7 +51,7 @@
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody id="infraList">
+              <tbody id="inspList">
 
               </tbody>
             </table>
@@ -67,10 +62,32 @@
 
     $(document).ready(function() {
 
+
+<!--        Taluk dropdown list start-->
+
+
+       $.ajax({
+           contentType: "application/json;charset=UTF-8",
+           type: "GET",
+           url: "/api/taluk/getAllTaluk",
+           dataType: "json",
+           async:false,
+           success: function (talukData) {
+               var s = '<option value="-1">Select Taluk</option>';
+               for (var i = 0; i < talukData.length; i++) {
+                   s += '<option value="' + talukData[i].talukName + '">' + talukData[i].talukName + '</option>';
+               }
+               $("#talukDrop").html(s); // Updated ID here
+           }
+        });
+
+
+<!--        Taluk dropdown list end-->
+
             $("#tablelist").show();
             $("#saveInspbody").show();
 
-        var infraList="";
+        var inspList="";
         $.ajax({
             contentType: "application/json;charset=UTF-8",
             url: "/api/inspection/getAllInsp",
@@ -80,22 +97,22 @@
             async:false,
             success:function(data){
                for(i=0;i<data.length;i++){
-               infraList=infraList+'<tr>';
-               infraList=infraList+' <td>'+data[i].inspId +'</td>';
-               infraList=infraList+' <td>'+data[i].description +'</td>';
-               infraList=infraList+' <td>'+data[i].department +'</td>'
+               inspList=inspList+'<tr>';
+               inspList=inspList+' <td>'+data[i].inspId +'</td>';
+               inspList=inspList+' <td>'+data[i].description +'</td>';
+               inspList=inspList+' <td>'+data[i].department +'</td>'
 
 
 
-               infraList=infraList+' <td>';
-               infraList=infraList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
-               infraList=infraList+'<i>&#9997;&#xFE0E;</i> </a>';
-               infraList=infraList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
-               infraList=infraList+'<i>&#x1F441;</i> </a>';
-               infraList=infraList+'</td></tr>';
+               inspList=inspList+' <td>';
+               inspList=inspList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
+               inspList=inspList+'<i>&#9997;&#xFE0E;</i> </a>';
+               inspList=inspList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
+               inspList=inspList+'<i>&#x1F441;</i> </a>';
+               inspList=inspList+'</td></tr>';
 
                }
-                $("#infraList").html(infraList);
+                $("#inspList").html(inspList);
             }
         });
       });
@@ -105,7 +122,7 @@
                         var userData={
 
 
-                        taluk:$("#Taluk").val(),
+                        taluk:$("#talukDrop").val(),
                         department:$("#Department").val(),
                         description:$("#Description").val(),
 

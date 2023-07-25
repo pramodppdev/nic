@@ -15,30 +15,31 @@
 <div th:replace="~{fragment/nav :: nav}"> </div>
 <main>
   <div class="grid">
+
     <div class="wrapper">
       <input type="text" id="ExecutiveName" required>
       <label>Executive Name</label>
     </div>
+
     <div class="wrapper">
       <input type="text" id="ExecutiveUserName" required>
       <label>Username</label>
     </div>
+
     <div class="wrapper">
       <input type="password" id="ExecutivePasswd" required>
       <label>Password</label>
     </div>
+
     <div class="wrapper">
-      <select name="" id="District">
-        <option value="Select Taluk">Select District</option>
-        <option value="">Ballari</option>
-        <option value="">Bengaluru</option>
-        <option value="">Mysuru</option>
-      </select>
+      <select  id="districtDrop" ></select>
     </div>
+
     <div class="wrapper">
       <input type="tel" id="ExecutiveMob" required>
       <label>Mobile Number</label>
     </div>
+
   </div>
   <div>
     <button class="submit-btn" onclick="saveExecutive()">Add</button>
@@ -61,7 +62,7 @@
         <th>Actions</th>
       </tr>
       </thead>
-      <tbody id="infraList">
+      <tbody id="extList">
 
       </tbody>
     </table>
@@ -71,10 +72,30 @@
 
     $(document).ready(function() {
 
+    <!--        District dropdown list start-->
+
+       $.ajax({
+           contentType: "application/json;charset=UTF-8",
+           type: "GET",
+           url: "/api/district/getAllDistrict",
+           dataType: "json",
+           async:false,
+           success: function (districtData) {
+               var s = '<option value="-1">Select District</option>';
+               for (var i = 0; i < districtData.length; i++) {
+                   s += '<option value="' + districtData[i].districtName + '">' + districtData[i].districtName + '</option>';
+               }
+               $("#districtDrop").html(s); // Updated ID here
+           }
+        });
+
+
+    <!--        District dropdown list end-->
+
             $("#tablelist").show();
             $("#saveExebody").show();
 
-        var infraList="";
+        var extList="";
         $.ajax({
             contentType: "application/json;charset=UTF-8",
             url: "/api/executive/getAllExe",
@@ -83,21 +104,21 @@
             async:false,
             success:function(data){
                for(i=0;i<data.length;i++){
-               infraList=infraList+'<tr>';
-               infraList=infraList+' <td>'+data[i].executiveId +'</td>';
-               infraList=infraList+' <td>'+data[i].executiveName +'</td>';
-               infraList=infraList+' <td>'+data[i].district +'</td>';
-               infraList=infraList+' <td>'+data[i].executiveMob +'</td>';
+               extList=extList+'<tr>';
+               extList=extList+' <td>'+data[i].executiveId +'</td>';
+               extList=extList+' <td>'+data[i].executiveName +'</td>';
+               extList=extList+' <td>'+data[i].district +'</td>';
+               extList=extList+' <td>'+data[i].executiveMob +'</td>';
 
-               infraList=infraList+' <td>';
-               infraList=infraList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
-               infraList=infraList+'<i>&#9997;&#xFE0E;</i> </a>';
-               infraList=infraList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
-               infraList=infraList+'<i>&#x1F441;</i> </a>';
-               infraList=infraList+'</td></tr>';
+               extList=extList+' <td>';
+               extList=extList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
+               extList=extList+'<i>&#9997;&#xFE0E;</i> </a>';
+               extList=extList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
+               extList=extList+'<i>&#x1F441;</i> </a>';
+               extList=extList+'</td></tr>';
 
                }
-                $("#infraList").html(infraList);
+                $("#extList").html(extList);
             }
         });
       });
@@ -109,7 +130,7 @@ function saveExecutive(){
                         executiveName:$("#ExecutiveName").val(),
                         executiveUserName:$("#ExecutiveUserName").val(),
                         executivePasswd:$("#ExecutivePasswd").val(),
-                        district:$("#District").val(),
+                        district:$("#districtDrop").val(),
                         executiveMob:$("#ExecutiveMob").val(),
 
 
