@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+    <title>NIC</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/routine.css">
+    <link rel="stylesheet" href="/css/alert.css">
+    <script src="/script/alert.js"></script>
+    <script src="/script/dynamic_fields.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div th:replace="~{fragment/nav :: nav}"> </div>
+<main>
+    <div class="grid">
+        <div class="wrapper">
+            <select name="" id="Routtaluk">
+                <option value="Select Taluk">Select Taluk</option>
+                <option value="">Sirguppa</option>
+                <option value="">Sandur</option>
+                <option value="">Kudligi</option>
+            </select>
+        </div>
+        <div class="wrapper">
+            <input type="text" id="Routdepartment" required>
+            <label >Department</label>
+        </div>
+    </div>
+    <div id="inputContainer">
+
+    </div>
+    <button id="saveRoutineinsp()" class="add-btn">Add Input Field</button>
+</main>
+<script>
+
+    $(document).ready(function() {
+
+
+<!--        Taluk dropdown list start-->
+
+
+       $.ajax({
+           contentType: "application/json;charset=UTF-8",
+           type: "GET",
+           url: "/api/taluk/getAllTaluk",
+           dataType: "json",
+           async:false,
+           success: function (talukData) {
+               var s = '<option value="-1">Select Taluk</option>';
+               for (var i = 0; i < talukData.length; i++) {
+                   s += '<option value="' + talukData[i].talukName + '">' + talukData[i].talukName + '</option>';
+               }
+               $("#talukDrop").html(s); // Updated ID here
+           }
+        });
+
+
+<!--        Taluk dropdown list end-->
+
+            $("#tablelist").show();
+            $("#saveInspbody").show();
+
+        var routList="";
+        $.ajax({
+            contentType: "application/json;charset=UTF-8",
+            url: "/api/inspection/getAllInsp",
+            dataType: "json",
+            type: "GET",
+            type: "GET",
+            async:false,
+            success:function(data){
+               for(i=0;i<data.length;i++){
+               routList=routList+'<tr>';
+               routList=routList+' <td>'+data[i].inspId +'</td>';
+               routList=routList+' <td>'+data[i].description +'</td>';
+               routList=routList+' <td>'+data[i].department +'</td>'
+
+
+
+               routList=routList+' <td>';
+               routList=routList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
+               routList=routList+'<i>&#9997;&#xFE0E;</i> </a>';
+               routList=routList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
+               routList=routList+'<i>&#x1F441;</i> </a>';
+               routList=routList+'</td></tr>';
+
+               }
+                $("#routList").html(routList);
+            }
+        });
+      });
+
+        function saveRoutineinsp(){
+
+                        var userData={
+
+
+                        routtaluk:$("#Routtaluk").val(),
+                        routdepartment:$("#Routdepartment").val(),
+                       
+
+
+
+                    }
+
+                        $.ajax({
+                        contentType: "application/json;charset=UTF-8",
+                        url: "/api/inspection/save",
+                        dataType: "json",
+                        type: "POST",
+                        cache: !1,
+                        processData: !1,
+                        data: JSON.stringify(userData),
+                        complete:function(xhr) {
+                        console.log(data)
+
+                        }
+                 });
+                 showAlert()
+      }
+
+      function addInspection(){
+
+            $("#tablelist").hide();
+            $("#saveOffbody").show();
+
+
+      }
+
+function showAlert() {
+      var alertContainer = document.getElementById('alertContainer');
+      alertContainer.style.display = 'block';
+
+    }
+
+
+    function hideAlert() {
+      location.reload();
+      var alertContainer = document.getElementById('alertContainer');
+      alertContainer.style.display = 'none';
+    }
+
+
+	</script>
+
+</body>
+</html>
