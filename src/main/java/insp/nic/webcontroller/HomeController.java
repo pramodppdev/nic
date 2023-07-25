@@ -75,4 +75,9 @@ public class HomeController {
         return "addexecutive";
     }
 
+    @GetMapping("/routineinsp")
+    public String routInsp(){
+        return "routineinsp";
+    }
+
 }
