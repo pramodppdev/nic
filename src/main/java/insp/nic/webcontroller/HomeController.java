@@ -76,9 +76,11 @@ public class HomeController {
     }
 
     @GetMapping("/routineinsp")
-    public String routineinsp(){
+    public String routInsp(){
         return "routineinsp";
     }
+
+
 
 
 }
