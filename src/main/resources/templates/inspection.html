@@ -18,8 +18,7 @@
               <select  id="talukDrop" ></select>
           </div>
           <div class="wrapper">
-              <input type="text" id="Department" required>
-              <label>Department</label>
+              <select  id="deptDrop" ></select>
           </div>
 
       </div>
@@ -33,9 +32,9 @@
       <div class="alert-container" id="alertContainer">
           <div class="alert-message">
               Added Data Successfully!
+              <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+              <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
           </div>
-          <button class="alert-button-ok" onclick="hideAlert()">OK</button>
-          <button class="alert-button-cancel" onclick="hideAlert()" >Cancel</button>
       </div>
   <div class="table-name">
     <h2>Inspection list</h2>
@@ -45,10 +44,9 @@
             <table>
               <thead>
                 <tr>
-                  <th>Inspection ID</th>
                     <th>Description</th>
-                  <th>Department</th>
-                  <th>Actions</th>
+                    <th>Department</th>
+                    <th>Actions</th>
                 </tr>
               </thead>
               <tbody id="inspList">
@@ -84,6 +82,27 @@
 
 <!--        Taluk dropdown list end-->
 
+<!--        Department dropdown list start-->
+
+
+        $.ajax({
+           contentType: "application/json;charset=UTF-8",
+           type: "GET",
+           url: "/api/department/getAllDept",
+           dataType: "json",
+           async:false,
+           success: function (deptdata) {
+               var s = '<option value="-1">Select Department</option>';
+               for (var i = 0; i < deptdata.length; i++) {
+                   s += '<option value="' + deptdata[i].deptName + '">' + deptdata[i].deptName + '</option>';
+               }
+               $("#deptDrop").html(s);
+           }
+       });
+
+
+<!--        Department dropdown list end-->
+
             $("#tablelist").show();
             $("#saveInspbody").show();
 
@@ -98,7 +117,7 @@
             success:function(data){
                for(i=0;i<data.length;i++){
                inspList=inspList+'<tr>';
-               inspList=inspList+' <td>'+data[i].inspId +'</td>';
+
                inspList=inspList+' <td>'+data[i].description +'</td>';
                inspList=inspList+' <td>'+data[i].department +'</td>'
 
@@ -123,7 +142,7 @@
 
 
                         taluk:$("#talukDrop").val(),
-                        department:$("#Department").val(),
+                        department:$("#deptDrop").val(),
                         description:$("#Description").val(),
 
 
@@ -153,19 +172,6 @@
 
 
       }
-
-function showAlert() {
-      var alertContainer = document.getElementById('alertContainer');
-      alertContainer.style.display = 'block';
-
-    }
-
-
-    function hideAlert() {
-      location.reload();
-      var alertContainer = document.getElementById('alertContainer');
-      alertContainer.style.display = 'none';
-    }
 
 
 	</script>

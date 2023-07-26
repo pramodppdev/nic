@@ -41,9 +41,9 @@
       <div class="alert-container" id="alertContainer">
           <div class="alert-message">
               Added Data Successfully!
+              <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+              <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
           </div>
-          <button class="alert-button-ok" onclick="hideAlert()">OK</button>
-          <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
       </div>
 
   <div id="tablelist">
@@ -54,7 +54,6 @@
             <table>
               <thead>
                 <tr>
-                    <th>Officer ID</th>
                     <th>Office Name</th>
                     <th>Officer Department</th>
                     <th>Officer Mobile</th>
@@ -133,7 +132,7 @@
             success:function(data){
                for(i=0;i<data.length;i++){
                officerList=officerList+'<tr>';
-               officerList=officerList+' <td>'+data[i].officerId +'</td>';
+
                officerList=officerList+' <td>'+data[i].officerName +'</td>';
                officerList=officerList+' <td>'+data[i].officerDept +'</td>';
                officerList=officerList+' <td>'+data[i].officerMob +'</td>';
@@ -188,19 +187,6 @@
 
       }
 
-
-
-function showAlert() {
-      var alertContainer = document.getElementById('alertContainer');
-      alertContainer.style.display = 'block';
-
-    }
-
-    function hideAlert() {
-      location.reload();
-      var alertContainer = document.getElementById('alertContainer');
-      alertContainer.style.display = 'none';
-    }
 	</script>
 </body>
 </html>

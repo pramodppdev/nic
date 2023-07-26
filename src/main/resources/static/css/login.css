@@ -16,7 +16,7 @@ body{
 }
 .content{
     width: 330px;
-    background: #ecf0f3;
+    background: #f1f1f1;
     border-radius: 10px;
     padding: 40px 30px;
     box-shadow: -3px -3px 7px #ffffff,
@@ -46,30 +46,41 @@ body{
     display: flex;
     position: relative;
 }
-.field input{
-    height: 100%;
-    width: 100%;
-    padding-left: 30px;
-    font-size: 18px;
+.wrapper{
+    position: relative;
+    padding: 0;
+}
+.wrapper input{
+    padding: 13px;
     outline: none;
+    font-size: 16px;
+    color: rgb(71, 78, 15);
+    border-radius: 10px;
     border: none;
-    color: black;
-    background: #ecf0f3;
-    border-radius: 25px;
+    background-color: #f1f1f1;
+    margin-inline-start: 15px;
+    margin-top: 20px;
+    width: 90%;
     box-shadow: inset -3px -3px 7px #ffffff,
     inset 3px 3px 5px #ceced1 ;
 }
-
-.field label{
+.wrapper label {
     position: absolute;
-    top: 50%;
-    left: 30px;
-    pointer-events: none;
-    color: rgb(118, 113, 113);
+    top: 63%;
+    left: 10%;
     transform: translateY(-50%);
+    color: rgb(0, 0, 0);
+    font-size: 15px;
+    padding: 0 5px;
+    pointer-events: none;
+    transition: 0.5s;
 }
-.field input:focus ~ label{
-    opacity: 0 ;
+.wrapper input:focus ~ label,
+.wrapper input:valid ~ label{
+    top: 30%;
+    color: #333;
+    background:#f1f1f1;
+    font-size: 13px;
 }
 .pass{
     text-align: left;

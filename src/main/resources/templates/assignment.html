@@ -76,10 +76,10 @@
         </div>
         <div class="alert-container" id="alertContainer">
             <div class="alert-message">
-                Officer Assigned Successfully!
+                Added Data Successfully!
+                <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+                <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
             </div>
-            <button class="alert-button-ok" onclick="hideAlert()">OK</button>
-            <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
         </div>
     </div>
 </main>
@@ -229,17 +229,6 @@ function getInsp(id){
 
 
       }
-function showAlert() {
-      var alertContainer = document.getElementById('alertContainer');
-      alertContainer.style.display = 'block';
-
-    }
-
-    function hideAlert() {
-      location.reload();
-      var alertContainer = document.getElementById('alertContainer');
-      alertContainer.style.display = 'none';
-    }
 
 
 </script>

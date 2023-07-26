@@ -29,16 +29,15 @@
 
       <div class="alert-container" id="alertContainer">
           <div class="alert-message">
-              Submitted Successfully!
+              Added Data Successfully!
+              <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+              <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
           </div>
-          <button class="alert-button-ok" onclick="hideAlert()">OK</button>
-          <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
       </div>
         <div class="table-container">
             <table>
               <thead>
                 <tr>
-                  <th>Taluk ID</th>
                   <th>Taluk name</th>
                     <th>Actions</th>
                 </tr>
@@ -88,7 +87,7 @@ $(document).ready(function() {
             success:function(data){
                for(i=0;i<data.length;i++){
                talukList=talukList+'<tr>';
-               talukList=talukList+' <td>'+data[i].talukId +'</td>';
+
                talukList=talukList+' <td>'+data[i].talukName +'</td>';
 
                talukList=talukList+' <td>';
@@ -130,17 +129,7 @@ function saveTaluk(){
                  });
                  showAlert()
       }
-    function showAlert() {
-          var alertContainer = document.getElementById('alertContainer');
-          alertContainer.style.display = 'block';
 
-        }
-
-        function hideAlert() {
-          location.reload();
-          var alertContainer = document.getElementById('alertContainer');
-          alertContainer.style.display = 'none';
-        }
 
 
 </script>
