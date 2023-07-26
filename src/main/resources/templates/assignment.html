@@ -19,8 +19,6 @@
         <h2>Assign Officers</h2>
     </div>
     <div class="table-container">
-
-
         <table>
             <thead>
             <tr>
@@ -40,23 +38,28 @@
     </div>
 
     <div id="assignment">
-        <div class="assign">
-            <div >
-                <label class="assign-label">Inspection-id:</label>
-                <span class="assign-span" id="InspId">INSP 0001</span>
-            </div>
-            <div>
-                <label class="assign-label">Inspection Description:</label>
-                <span class="assign-span" id="Description" >An inspection is, most generally, an organized examination or formal evaluation exercise.<br>In engineering activities inspection involves the measurements, tests, and gauges applied to certain characteristics in regard to an object or activity.</span>
-            </div>
-            <div >
-                <label class="assign-label">District:</label>
-                <span class="assign-span" id="District">Ballari</span>
-            </div>
-            <div >
-                <label class="assign-label">Department:</label>
-                <span class="assign-span" id="Department">Food Department</span>
-            </div>
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th class="assign-head">Inspection ID</th>
+                    <td>-----</td>
+                </tr>
+                <tr>
+                    <th class="assign-head">Description</th>
+                    <td> Lorem ipsum dolor sit amet consectetur adipisicing elit. At earum sunt numquam animi! Neque voluptates, at magni assumenda laudantium tenetur mollitia fugit temporibus vel debitis libero molestiae labore animi eveniet!
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste atque ipsam culpa vel. Optio voluptatem libero quibusdam omnis dignissimos aliquid repudiandae quis officiis? Voluptates qui fugit numquam quasi, quaerat enim.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eum aliquam ex hic tempora quidem corrupti nobis itaque voluptate. Voluptatem asperiores suscipit et voluptate nihil deserunt, alias sit provident perspiciatis nobis.
+                    </td>
+                </tr>
+                <tr>
+                    <th class="assign-head">District</th>
+                    <td>---</td>
+                </tr>
+                <tr>
+                    <th class="assign-head">Department</th>
+                    <td>---</td>
+                </tr>
+            </table>
         </div>
         <div class="grid">
             <div class="wrapper">
@@ -73,10 +76,10 @@
         </div>
         <div class="alert-container" id="alertContainer">
             <div class="alert-message">
-                Officer Assigned Successfully!
+                Added Data Successfully!
+                <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+                <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
             </div>
-            <button class="alert-button-ok" onclick="hideAlert()">OK</button>
-            <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
         </div>
     </div>
 </main>
@@ -219,10 +222,6 @@ function getInsp(id){
 
     }
 
-
-
-
-
       function addInspection(){
 
             $("#tablelist").hide();
@@ -230,17 +229,6 @@ function getInsp(id){
 
 
       }
-function showAlert() {
-      var alertContainer = document.getElementById('alertContainer');
-      alertContainer.style.display = 'block';
-
-    }
-
-    function hideAlert() {
-      location.reload();
-      var alertContainer = document.getElementById('alertContainer');
-      alertContainer.style.display = 'none';
-    }
 
 
 </script>

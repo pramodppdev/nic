@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="/css/form.css">
   <link rel="stylesheet" href="/css/table.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="script/script.js"></script>
+  <script src="/script/script.js"></script>
 
 
 </head>
@@ -22,7 +22,6 @@
         <table>
           <thead>
             <tr>
-              <th>Inspection ID</th>
               <th>Description</th>
               <th>Officer Assigned</th>
               <th>Status</th>
@@ -115,9 +114,8 @@
 
                  if(data[i].assignedOfficer!==null && data[i].lastDate!==null){
                      reportList=reportList+'<tr>';
-                     reportList=reportList+' <td>'+data[i].inspId +'</td>';
-                     reportList=reportList+' <td>'+data[i].description +'</td>';
 
+                     reportList=reportList+' <td>'+data[i].description +'</td>';
                      reportList=reportList+' <td>'+data[i].assignedOfficer +'</td>';
                      reportList=reportList+' <td>'+data[i].status +'</td>';
 

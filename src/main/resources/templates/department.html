@@ -28,10 +28,10 @@
       <div class="alert-container" id="alertContainer">
           <div class="alert-message">
               Added Data Successfully!
+              <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+              <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
           </div>
-          <button class="alert-button-ok" onclick="hideAlert()">OK</button>
-          <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
-          </div>
+      </div>
    <div id="tablelist">
     <div class="table-name">
 
@@ -41,7 +41,6 @@
               <table>
                 <thead>
                   <tr>
-                    <th>ID</th>
                     <th>Department Name</th>
                       <th>Actions</th>
                   </tr>
@@ -72,7 +71,7 @@
             success:function(data){
                for(i=0;i<data.length;i++){
                deptList=deptList+'<tr>';
-               deptList=deptList+' <td>'+data[i].deptId +'</td>';
+
                deptList=deptList+' <td>'+data[i].deptName +'</td>';
 
                deptList=deptList+' <td>';
@@ -122,20 +121,6 @@
 
 
       }
-
-
-    function showAlert() {
-      var alertContainer = document.getElementById('alertContainer');
-      alertContainer.style.display = 'block';
-
-    }
-
-    function hideAlert() {
-      location.reload();
-      var alertContainer = document.getElementById('alertContainer');
-      alertContainer.style.display = 'none';
-    }
-
 
 
 	</script>

@@ -99,9 +99,6 @@
     font-weight: 600;
     margin-top: 20px;
 }
-
-
-
 .submit-btn:hover{
     background-color:green ;
     color:  white;
@@ -128,18 +125,6 @@
 }
 
 
-.assign{
-       margin-top: 20px;
-       padding: 10px 25px;
-    }
-.assign-label{
-        font-weight: bold;
-
-    }
-.assign-span{
-        font-weight: lighter;
-}
-
 @media(max-width:1000px){
     .grid{
         grid-template-columns: repeat(1,1fr);
@@ -155,10 +140,14 @@
     .wrapper select{
         width: 100%;
     }
-    p{
-        font-size: 18px;
-        font-weight: bold;
-    }
-
-
+}
+p{
+    font-size: 18px;
+    font-weight: bold;
+}
+.assign{
+   padding: 10px 25px;
+}
+#label{
+    font-weight: lighter;
 }
