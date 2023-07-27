@@ -3,6 +3,8 @@ package insp.nic.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Document(collection = "routinsp")
 public class RoutInsp {
 
@@ -13,7 +15,7 @@ public class RoutInsp {
 
     private String routdepartment;
 
-    private String routdescription;
+    private List<RoutInspDetails> routdescription;
 
     private String routlastDate;
 
@@ -30,7 +32,7 @@ public class RoutInsp {
     public RoutInsp() {
     }
 
-    public RoutInsp(String routinspId, String routtaluk, String routdepartment, String routdescription, String routlastDate, String routstatus, String routassignedOfficer, String routcreatedAt, String routcreatedBy, String routdistrict) {
+    public RoutInsp(String routinspId, String routtaluk, String routdepartment, List<RoutInspDetails> routdescription, String routlastDate, String routstatus, String routassignedOfficer, String routcreatedAt, String routcreatedBy, String routdistrict) {
         this.routinspId = routinspId;
         this.routtaluk = routtaluk;
         this.routdepartment = routdepartment;
@@ -67,11 +69,11 @@ public class RoutInsp {
         this.routdepartment = routdepartment;
     }
 
-    public String getRoutdescription() {
+    public List<RoutInspDetails> getRoutdescription() {
         return routdescription;
     }
 
-    public void setRoutdescription(String routdescription) {
+    public void setRoutdescription(List<RoutInspDetails> routdescription) {
         this.routdescription = routdescription;
     }
 
