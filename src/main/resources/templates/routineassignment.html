@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>NIC</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/table.css">
+    <link rel="stylesheet" href="/css/alert.css">
+    <script src="/script/alert.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div th:replace="~{fragment/nav :: nav}"> </div>
+
+<main>
+    <div id="tablelist">
+        <div class="table-name">
+            <h2>Routine Assignment</h2>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                <tr>
+                    <th>Department</th>
+                    <th>Officer Assigned</th>
+                    <th>Designation</th>
+                    <th>LastDate</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="assignList">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="assignment">
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th class="assign-head">Inspection ID</th>
+                    <td id="InspIdSing"></td>
+                </tr>
+                <tr>
+                    <th class="assign-head">Description</th>
+                    <td id="DescriptionSing"></td>
+                </tr>
+                <tr>
+                    <th class="assign-head">District</th>
+                    <td id="DistrictSing">---</td>
+                </tr>
+                <tr>
+                    <th class="assign-head">Department</th>
+                    <td id="DepartmentSing">---</td>
+                </tr>
+            </table>
+        </div>
+        <div class="grid">
+            <div class="wrapper">
+                <select  id="officerDrop" ></select>
+            </div>
+            <div class="wrapper" >
+                <input type="date" id="RoutlastDate" >
+                <label>Due date</label>
+            </div>
+        </div>
+        <div class="btn">
+            <button class="submit-btn" onclick="saveAssignment()">Assign</button>
+            <button class="cancel-btn">Cancel</button>
+        </div>
+        <div class="alert-container" id="alertContainer">
+            <div class="alert-message">
+                Added Data Successfully!
+                <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+                <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+
+    $(document).ready(function() {
+
+    <!--        Officer dropdown list start-->
+
+       $.ajax({
+           contentType: "application/json;charset=UTF-8",
+           type: "GET",
+           url: "/api/officer/getAllOfficer",
+           dataType: "json",
+           async:false,
+           success: function (officerData) {
+               var s = '<option value="-1">Select Officer</option>';
+               for (var i = 0; i < officerData.length; i++) {
+                   s += '<option value="' + officerData[i].officerName + '">' + officerData[i].officerName + '</option>';
+               }
+               $("#officerDrop").html(s); // Updated ID here
+           }
+        });
+
+
+    <!--        Officer dropdown list end-->
+
+
+
+        $("#tablelist").show();
+        $("#assignment").hide();
+
+        var assignList="";
+        $.ajax({
+            contentType: "application/json;charset=UTF-8",
+            url: "/api/routinsp/getAllRoutInsp",
+            dataType: "json",
+            type: "GET",
+            type: "GET",
+            async:false,
+            success:function(data){
+               for(i=0;i<data.length;i++){
+               assignList=assignList+'<tr>';
+               assignList=assignList+' <td>'+data[i].routdepartment +'</td>';
+               if(data[i].routassignedOfficer==null)
+               {
+               assignList=assignList+' <td>';
+               assignList=assignList+'<a href="javascript:getInsp(\''+data[i].routinspId+'\')" title="Assign">';
+               assignList=assignList+'<button class="btn" id="tablelist">Assign</button></a>';
+               }
+               else{
+                assignList=assignList+' <td>'+data[i].routassignedOfficer +'</td>';
+
+               }
+               assignList=assignList+' <td>'+data[i].designation +'</td>';
+
+               if(data[i].lastDate==null)
+               {
+               assignList=assignList+' <td>';
+               assignList=assignList+'<a href="javascript:getProfile(\''+data[i].inspId+'\')" title="Assign">';
+               assignList=assignList+'<p style="font-size:15px;">Not assigned</p>';
+               }
+               else{
+               assignList=assignList+' <td>'+data[i].routlastDate +'</td>'
+
+               }
+
+
+
+               assignList=assignList+' <td>';
+               assignList=assignList+'<a href="javascript:getProfile(\''+data[i].inspId+'\')" title="Edit">';
+               assignList=assignList+'<i>&#9997;&#xFE0E;</i> </a>';
+               assignList=assignList+'<a href="javascript:deleteProfile(\''+data[i].inspId+'\')" title="Delete">';
+               assignList=assignList+'<i>&#x1F441;</i> </a>';
+               assignList=assignList+'</td></tr>';
+
+               }
+                $("#assignList").html(assignList);
+            }
+        });
+      });
+
+        function saveAssignment(){
+
+                        var userData={
+
+
+                        routinspId:$("#InspIdSing").val(),
+                        routroutassignedOfficer:$("#officerDrop").val(),
+                        routlastDate:$("#RoutlastDate").val(),
+                        routtaluk:$("#TalukSing").val(),
+                        routdepartment:$("#DepartmentSing").val(),
+                        routdescription:$("#DescriptionSing").val(),
+
+
+                    }
+
+                        $.ajax({
+                        contentType: "application/json;charset=UTF-8",
+                        url: "/api/routinsp/save",
+                        dataType: "json",
+                        type: "POST",
+                        cache: !1,
+                        processData: !1,
+                        data: JSON.stringify(userData),
+                        complete:function(xhr) {
+                        console.log(data)
+
+                        }
+                 });
+                 showAlert()
+      }
+
+        function getInspId(id){
+                 $.ajax({
+                       contentType: "application/json;charset=UTF-8",
+                       url: "${pageContext.request.contextPath}api/routinsp/getById/"+id,
+                       dataType: "json",
+                       type: "GET",
+                       success:function(data){
+                          getProfile(data)
+
+                       }
+                  });
+            }
+
+
+
+        function getInsp(id) {
+            $("#tablelist").hide();
+            $("#assignment").show();
+
+            $.ajax({
+                contentType: "application/json;charset=UTF-8",
+                url: "/api/routinsp/getById/" + id,
+                dataType: "json",
+                type: "GET",
+                cache: !1,
+                processData: !1,
+                success: function(data) {
+
+                    $("#InspIdSing").text(data.routinspId);
+                    $("#DepartmentSing").text(data.routdepartment);
+                    $("#DescriptionSing").text(data.routdescription);
+                    $("#LastDateSing").text(data.routlastDate);
+                    $("#routassignedOfficerSing").text(data.routroutassignedOfficer);
+                    $("#DistrictSing").text(data.routdistrict);
+                    $("#TalukSing").text(data.routtaluk);
+
+
+                }
+            });
+        }
+
+
+      function addInspection(){
+
+            $("#tablelist").hide();
+            $("#saveOffbody").show();
+
+
+      }
+
+
+</script>
+</body>
+</html>
