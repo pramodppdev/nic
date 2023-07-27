@@ -20,12 +20,7 @@
             <label>Taluk</label>
         </div>
         <div class="wrapper">
-            <select name="" id="District">
-                <option value="Select Taluk">Select District</option>
-                <option value="">Ballari</option>
-                <option value="">Vijayanagara</option>
-                <option value="">Bengaluru</option>
-            </select>
+            <select  id="districtDrop" ></select>
         </div>
     </div>
       <div>
@@ -34,21 +29,20 @@
 
       <div class="alert-container" id="alertContainer">
           <div class="alert-message">
-              Submitted Successfully!
+              Added Data Successfully!
+              <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+              <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
           </div>
-          <button class="alert-button-ok" onclick="hideAlert()">OK</button>
-          <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
       </div>
         <div class="table-container">
             <table>
               <thead>
                 <tr>
-                  <th>Taluk ID</th>
                   <th>Taluk name</th>
                     <th>Actions</th>
                 </tr>
               </thead>
-              <tbody id="infraList">
+              <tbody id="talukList">
 
               </tbody>
             </table>
@@ -56,12 +50,34 @@
   </main>
 <script>
 
-    $(document).ready(function() {
+$(document).ready(function() {
+
+    <!--        District dropdown list start-->
+
+       $.ajax({
+           contentType: "application/json;charset=UTF-8",
+           type: "GET",
+           url: "/api/district/getAllDistrict",
+           dataType: "json",
+           async:false,
+           success: function (districtData) {
+               var s = '<option value="-1">Select District</option>';
+               for (var i = 0; i < districtData.length; i++) {
+                   s += '<option value="' + districtData[i].districtName + '">' + districtData[i].districtName + '</option>';
+               }
+               $("#districtDrop").html(s); // Updated ID here
+           }
+        });
+
+
+    <!--        District dropdown list end-->
+
+
 
             $("#tablelist").show();
             $("#saveTalukbody").show();
 
-        var infraList="";
+        var talukList="";
         $.ajax({
             contentType: "application/json;charset=UTF-8",
             url: "/api/taluk/getAllTaluk",
@@ -70,19 +86,19 @@
             async:false,
             success:function(data){
                for(i=0;i<data.length;i++){
-               infraList=infraList+'<tr>';
-               infraList=infraList+' <td>'+data[i].talukId +'</td>';
-               infraList=infraList+' <td>'+data[i].talukName +'</td>';
+               talukList=talukList+'<tr>';
 
-               infraList=infraList+' <td>';
-               infraList=infraList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
-               infraList=infraList+'<i>&#9997;&#xFE0E;</i> </a>';
-               infraList=infraList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
-               infraList=infraList+'<i>&#x1F441;</i> </a>';
-               infraList=infraList+'</td></tr>';
+               talukList=talukList+' <td>'+data[i].talukName +'</td>';
+
+               talukList=talukList+' <td>';
+               talukList=talukList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
+               talukList=talukList+'<i>&#9997;&#xFE0E;</i> </a>';
+               talukList=talukList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
+               talukList=talukList+'<i>&#x1F441;</i> </a>';
+               talukList=talukList+'</td></tr>';
 
                }
-                $("#infraList").html(infraList);
+                $("#talukList").html(talukList);
             }
         });
       });
@@ -93,7 +109,7 @@ function saveTaluk(){
 
 
                         talukName:$("#TalukName").val(),
-                        district:$("#District").val(),
+                        district:$("#districtDrop").val(),
 
 
                     }
@@ -113,17 +129,7 @@ function saveTaluk(){
                  });
                  showAlert()
       }
-    function showAlert() {
-          var alertContainer = document.getElementById('alertContainer');
-          alertContainer.style.display = 'block';
 
-        }
-
-        function hideAlert() {
-          location.reload();
-          var alertContainer = document.getElementById('alertContainer');
-          alertContainer.style.display = 'none';
-        }
 
 
 </script>

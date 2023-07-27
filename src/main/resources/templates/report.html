@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="/css/form.css">
   <link rel="stylesheet" href="/css/table.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="script/script.js"></script>
+  <script src="/script/script.js"></script>
 
 
 </head>
@@ -22,14 +22,13 @@
         <table>
           <thead>
             <tr>
-              <th>Inspection ID</th>
               <th>Description</th>
               <th>Officer Assigned</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody id="infraList">
+          <tbody id="reportList">
 <!--            <tr>-->
 <!--              <td>0001</td>-->
 <!--              <td></td>-->
@@ -102,7 +101,7 @@
             $("#tablelist").show();
             $("#saveInspbody").show();
 
-        var infraList="";
+        var reportList="";
         $.ajax({
             contentType: "application/json;charset=UTF-8",
             url: "/api/inspection/getAllInsp",
@@ -114,28 +113,27 @@
                for(i=0;i<data.length;i++){
 
                  if(data[i].assignedOfficer!==null && data[i].lastDate!==null){
-                     infraList=infraList+'<tr>';
-                     infraList=infraList+' <td>'+data[i].inspId +'</td>';
-                     infraList=infraList+' <td>'+data[i].description +'</td>';
+                     reportList=reportList+'<tr>';
 
-                     infraList=infraList+' <td>'+data[i].assignedOfficer +'</td>';
-                     infraList=infraList+' <td>'+data[i].status +'</td>';
-
+                     reportList=reportList+' <td>'+data[i].description +'</td>';
+                     reportList=reportList+' <td>'+data[i].assignedOfficer +'</td>';
+                     reportList=reportList+' <td>'+data[i].status +'</td>';
 
 
 
 
-                     infraList=infraList+' <td>';
-                     infraList=infraList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
-                     infraList=infraList+'<i>&#9997;&#xFE0E;</i> </a>';
-                     infraList=infraList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
-                     infraList=infraList+'<i>&#x1F441;</i> </a>';
-                     infraList=infraList+'</td></tr>';
+
+                     reportList=reportList+' <td>';
+                     reportList=reportList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
+                     reportList=reportList+'<i>&#9997;&#xFE0E;</i> </a>';
+                     reportList=reportList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
+                     reportList=reportList+'<i>&#x1F441;</i> </a>';
+                     reportList=reportList+'</td></tr>';
                  }
 
                }
 
-                $("#infraList").html(infraList);
+                $("#reportList").html(reportList);
             }
         });
       });

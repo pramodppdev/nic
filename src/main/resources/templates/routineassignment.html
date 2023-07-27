@@ -15,25 +15,25 @@
 
 <main>
     <div id="tablelist">
-    <div class="table-name">
-        <h2>Assign Officers</h2>
-    </div>
-    <div class="table-container">
-        <table>
-            <thead>
-            <tr>
-                <th>Department</th>
-                <th>Officer Assigned</th>
-                <th>Designation</th>
-                <th>LastDate</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody id="assignList">
+        <div class="table-name">
+            <h2>Routine Assignment</h2>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                <tr>
+                    <th>Department</th>
+                    <th>Officer Assigned</th>
+                    <th>Designation</th>
+                    <th>LastDate</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="assignList">
 
-            </tbody>
-        </table>
-    </div>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div id="assignment">
@@ -62,7 +62,7 @@
                 <select  id="officerDrop" ></select>
             </div>
             <div class="wrapper" >
-                <input type="date" id="LastDate" >
+                <input type="date" id="RoutlastDate" >
                 <label>Due date</label>
             </div>
         </div>
@@ -112,7 +112,7 @@
         var assignList="";
         $.ajax({
             contentType: "application/json;charset=UTF-8",
-            url: "/api/inspection/getAllInsp",
+            url: "/api/routinsp/getAllRoutInsp",
             dataType: "json",
             type: "GET",
             type: "GET",
@@ -120,15 +120,15 @@
             success:function(data){
                for(i=0;i<data.length;i++){
                assignList=assignList+'<tr>';
-               assignList=assignList+' <td>'+data[i].department +'</td>';
-               if(data[i].assignedOfficer==null)
+               assignList=assignList+' <td>'+data[i].routdepartment +'</td>';
+               if(data[i].routassignedOfficer==null)
                {
                assignList=assignList+' <td>';
-               assignList=assignList+'<a href="javascript:getInsp(\''+data[i].inspId+'\')" title="Assign">';
+               assignList=assignList+'<a href="javascript:getInsp(\''+data[i].routinspId+'\')" title="Assign">';
                assignList=assignList+'<button class="btn" id="tablelist">Assign</button></a>';
                }
                else{
-                assignList=assignList+' <td>'+data[i].assignedOfficer +'</td>';
+                assignList=assignList+' <td>'+data[i].routassignedOfficer +'</td>';
 
                }
                assignList=assignList+' <td>'+data[i].designation +'</td>';
@@ -140,7 +140,7 @@
                assignList=assignList+'<p style="font-size:15px;">Not assigned</p>';
                }
                else{
-               assignList=assignList+' <td>'+data[i].lastDate +'</td>'
+               assignList=assignList+' <td>'+data[i].routlastDate +'</td>'
 
                }
 
@@ -164,19 +164,19 @@
                         var userData={
 
 
-                        inspId:$("#InspIdSing").val(),
-                        assignedOfficer:$("#officerDrop").val(),
-                        lastDate:$("#LastDate").val(),
-                        taluk:$("#TalukSing").val(),
-                        department:$("#DepartmentSing").val(),
-                        description:$("#DescriptionSing").val(),
+                        routinspId:$("#InspIdSing").val(),
+                        routroutassignedOfficer:$("#officerDrop").val(),
+                        routlastDate:$("#RoutlastDate").val(),
+                        routtaluk:$("#TalukSing").val(),
+                        routdepartment:$("#DepartmentSing").val(),
+                        routdescription:$("#DescriptionSing").val(),
 
 
                     }
 
                         $.ajax({
                         contentType: "application/json;charset=UTF-8",
-                        url: "/api/inspection/save",
+                        url: "/api/routinsp/save",
                         dataType: "json",
                         type: "POST",
                         cache: !1,
@@ -193,7 +193,7 @@
         function getInspId(id){
                  $.ajax({
                        contentType: "application/json;charset=UTF-8",
-                       url: "${pageContext.request.contextPath}api/inspection/getById/"+id,
+                       url: "${pageContext.request.contextPath}api/routinsp/getById/"+id,
                        dataType: "json",
                        type: "GET",
                        success:function(data){
@@ -211,20 +211,20 @@
 
             $.ajax({
                 contentType: "application/json;charset=UTF-8",
-                url: "/api/inspection/getById/" + id,
+                url: "/api/routinsp/getById/" + id,
                 dataType: "json",
                 type: "GET",
                 cache: !1,
                 processData: !1,
                 success: function(data) {
 
-                    $("#InspIdSing").text(data.inspId);
-                    $("#DepartmentSing").text(data.department);
-                    $("#DescriptionSing").text(data.description);
-                    $("#LastDateSing").text(data.lastDate);
-                    $("#AssignedOfficerSing").text(data.assignedOfficer);
-                    $("#DistrictSing").text(data.district);
-                    $("#TalukSing").text(data.taluk);
+                    $("#InspIdSing").text(data.routinspId);
+                    $("#DepartmentSing").text(data.routdepartment);
+                    $("#DescriptionSing").text(data.routdescription);
+                    $("#LastDateSing").text(data.routlastDate);
+                    $("#routassignedOfficerSing").text(data.routroutassignedOfficer);
+                    $("#DistrictSing").text(data.routdistrict);
+                    $("#TalukSing").text(data.routtaluk);
 
 
                 }

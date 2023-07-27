@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+    <title>NIC</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/routine.css">
+    <link rel="stylesheet" href="/css/alert.css">
+    <script src="/script/alert.js"></script>
+    <script src="/script/dynamic_fields.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div th:replace="~{fragment/nav :: nav}"> </div>
+<main>
+    <div class="grid">
+        <div class="wrapper">
+            <select  id="talukDrop" ></select>
+        </div>
+        <div class="wrapper" >
+            <select  id="deptDrop" ></select>
+        </div>
+    </div>
+    <div id="inputContainer">
+
+    </div>
+    <button id="addButton" class="add-btn">Add Input Field</button>
+
+    <div class="btn">
+        <button onclick="saveRoutineinsp()" class="submit-btn">Add</button>
+        <button class="cancel-btn">Cancel</button>
+    </div>
+    <div class="alert-container" id="alertContainer">
+        <div class="alert-message">
+            Added Data Successfully!
+            <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+            <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
+        </div>
+    </div>
+</main>
+<script>
+
+    $(document).ready(function() {
+
+
+<!--        Taluk dropdown list start-->
+
+
+       $.ajax({
+           contentType: "application/json;charset=UTF-8",
+           type: "GET",
+           url: "/api/taluk/getAllTaluk",
+           dataType: "json",
+           async:false,
+           success: function (talukData) {
+               var s = '<option value="-1">Select Taluk</option>';
+               for (var i = 0; i < talukData.length; i++) {
+                   s += '<option value="' + talukData[i].talukName + '">' + talukData[i].talukName + '</option>';
+               }
+               $("#talukDrop").html(s); // Updated ID here
+           }
+        });
+
+
+<!--        Taluk dropdown list end-->
+
+<!--        Department dropdown list start-->
+
+
+        $.ajax({
+           contentType: "application/json;charset=UTF-8",
+           type: "GET",
+           url: "/api/department/getAllDept",
+           dataType: "json",
+           async:false,
+           success: function (deptdata) {
+               var s = '<option value="-1">Select Department</option>';
+               for (var i = 0; i < deptdata.length; i++) {
+                   s += '<option value="' + deptdata[i].deptName + '">' + deptdata[i].deptName + '</option>';
+               }
+               $("#deptDrop").html(s);
+           }
+       });
+
+
+<!--        Department dropdown list end-->
+
+
+            $("#tablelist").show();
+            $("#saveInspbody").show();
+
+        var routList="";
+        $.ajax({
+            contentType: "application/json;charset=UTF-8",
+            url: "/api/inspection/getAllInsp",
+            dataType: "json",
+            type: "GET",
+            type: "GET",
+            async:false,
+            success:function(data){
+               for(i=0;i<data.length;i++){
+               routList=routList+'<tr>';
+               routList=routList+' <td>'+data[i].inspId +'</td>';
+               routList=routList+' <td>'+data[i].description +'</td>';
+               routList=routList+' <td>'+data[i].department +'</td>'
+
+
+
+               routList=routList+' <td>';
+               routList=routList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
+               routList=routList+'<i>&#9997;&#xFE0E;</i> </a>';
+               routList=routList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
+               routList=routList+'<i>&#x1F441;</i> </a>';
+               routList=routList+'</td></tr>';
+
+               }
+                $("#routList").html(routList);
+            }
+        });
+      });
+
+        function saveRoutineinsp() {
+            const userData = {
+                routtaluk: $("#talukDrop").val(),
+                routdepartment: $("#deptDrop").val(),
+                routdescription: []
+
+
+            };
+        
+            // Get all dynamically generated input fields with their routInspAns values
+            $("#inputContainer").find("input[type='text']").each(function() {
+                const routInspContent = $(this).val();
+
+                // Create an object for each routInspContent and routInspAns
+                const inspObject = {
+                    routInspContent: routInspContent
+                };
+                
+                // Push the object to the routdescription array
+                userData.routdescription.push(inspObject);
+            });
+        
+            $.ajax({
+                contentType: "application/json;charset=UTF-8",
+                url: "/api/routinsp/save",
+                dataType: "json",
+                type: "POST",
+                cache: !1,
+                processData: !1,
+                data: JSON.stringify(userData),
+                success: function(response) {
+                    console.log(response); // If needed, handle the response from the server
+                },
+                error: function(error) {
+                    console.error("error"); // If needed, handle the error from the server
+                }
+            });
+        
+            showAlert();
+        }
+
+
+      function addInspection(){
+
+            $("#tablelist").hide();
+            $("#saveOffbody").show();
+
+
+      }
+
+
+
+	</script>
+
+
+
+</body>
+</html>

@@ -28,10 +28,10 @@
       <div class="alert-container" id="alertContainer">
           <div class="alert-message">
               Added Data Successfully!
+              <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+              <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
           </div>
-          <button class="alert-button-ok" onclick="hideAlert()">OK</button>
-          <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
-          </div>
+      </div>
    <div id="tablelist">
     <div class="table-name">
 
@@ -41,12 +41,11 @@
               <table>
                 <thead>
                   <tr>
-                    <th>ID</th>
                     <th>Department Name</th>
                       <th>Actions</th>
                   </tr>
                 </thead>
-                  <tbody id="infraList">
+                  <tbody id="deptList">
                   </tbody>
 
               </table>
@@ -62,7 +61,7 @@
             $("#tablelist").show();
             $("#saveDeptbody").show();
 
-        var infraList="";
+        var deptList="";
         $.ajax({
             contentType: "application/json;charset=UTF-8",
             url: "/api/department/getAllDept",
@@ -71,19 +70,19 @@
             async:false,
             success:function(data){
                for(i=0;i<data.length;i++){
-               infraList=infraList+'<tr>';
-               infraList=infraList+' <td>'+data[i].deptId +'</td>';
-               infraList=infraList+' <td>'+data[i].deptName +'</td>';
+               deptList=deptList+'<tr>';
 
-               infraList=infraList+' <td>';
-               infraList=infraList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
-               infraList=infraList+'<i>&#9997;&#xFE0E;</i> </a>';
-               infraList=infraList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
-               infraList=infraList+'<i>&#x1F441;</i> </a>';
-               infraList=infraList+'</td></tr>';
+               deptList=deptList+' <td>'+data[i].deptName +'</td>';
+
+               deptList=deptList+' <td>';
+               deptList=deptList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
+               deptList=deptList+'<i>&#9997;&#xFE0E;</i> </a>';
+               deptList=deptList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
+               deptList=deptList+'<i>&#x1F441;</i> </a>';
+               deptList=deptList+'</td></tr>';
 
                }
-                $("#infraList").html(infraList);
+                $("#deptList").html(deptList);
             }
         });
       });
@@ -122,20 +121,6 @@
 
 
       }
-
-
-    function showAlert() {
-      var alertContainer = document.getElementById('alertContainer');
-      alertContainer.style.display = 'block';
-
-    }
-
-    function hideAlert() {
-      location.reload();
-      var alertContainer = document.getElementById('alertContainer');
-      alertContainer.style.display = 'none';
-    }
-
 
 
 	</script>
