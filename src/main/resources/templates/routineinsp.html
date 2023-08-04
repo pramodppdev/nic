@@ -22,10 +22,12 @@
             <select  id="deptDrop" ></select>
         </div>
     </div>
-    <div id="inputContainer">
 
+    <div id="inputContainer">
+        <div class="input-container" id="ImgReq">
+        </div>
     </div>
-    <button id="addButton" class="add-btn">Add Input Field</button>
+    <button id="addButton">Add Question</button>
 
     <div class="btn">
         <button onclick="saveRoutineinsp()" class="submit-btn">Add</button>
@@ -87,6 +89,7 @@
 <!--        Department dropdown list end-->
 
 
+
             $("#tablelist").show();
             $("#saveInspbody").show();
 
@@ -124,20 +127,26 @@
             const userData = {
                 routtaluk: $("#talukDrop").val(),
                 routdepartment: $("#deptDrop").val(),
-                routdescription: []
+                routdescription: [],
+
 
 
             };
         
             // Get all dynamically generated input fields with their routInspAns values
-            $("#inputContainer").find("input[type='text']").each(function() {
-                const routInspContent = $(this).val();
+               $("#inputContainer").find(".input-container").each(function() {
+                const routInspContent = $(this).find("input[type='text']").val();
+                const imgReqCheckbox = $(this).find("input[type='checkbox']");
 
-                // Create an object for each routInspContent and routInspAns
+                // Determine the value for imgReq based on checkbox status
+                const imgReqValue = imgReqCheckbox.is(":checked") ? "Yes" : "No";
+
+                // Create an object for each routInspContent and imgReq
                 const inspObject = {
-                    routInspContent: routInspContent
+                    routInspContent: routInspContent,
+                    imgReq: imgReqValue
                 };
-                
+
                 // Push the object to the routdescription array
                 userData.routdescription.push(inspObject);
             });
@@ -170,11 +179,7 @@
 
       }
 
-
-
 	</script>
-
-
 
 </body>
 </html>

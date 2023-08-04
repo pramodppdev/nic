@@ -4,18 +4,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const maxFields = 15;
 
   function createInputField() {
-    if (inputCounter < maxFields) {
+    if (inputCounter < maxFields){
+      const inputWrapper = document.createElement("div");
+      inputWrapper.classList.add("input-container");
+
       const inputField = document.createElement("input");
       inputField.type = "text";
       inputField.name = "inputField" + inputCounter;
       inputField.placeholder = `Question ${inputCounter + 1}`;
 
+      const checkboxLabel = document.createElement("label");
+      const checkbox = document.createElement("input");
+      checkboxLabel.appendChild(document.createTextNode("Image Required" ));
+      checkbox.type = "checkbox";
+      checkboxLabel.appendChild(checkbox);
+
+
       const deleteButton = document.createElement("button");
       deleteButton.textContent = "Delete";
-      deleteButton.addEventListener("click", () => deleteInputField(inputField, deleteButton));
+      deleteButton.addEventListener("click", () => deleteInputField(inputWrapper));
 
-      const inputWrapper = document.createElement("div");
       inputWrapper.appendChild(inputField);
+      inputWrapper.appendChild(checkboxLabel);
       inputWrapper.appendChild(deleteButton);
       inputContainer.appendChild(inputWrapper);
       inputCounter++;
@@ -24,14 +34,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function deleteInputField(inputField, deleteButton) {
-    const inputWrapper = inputField.parentElement;
+  function deleteInputField(inputWrapper) {
     inputContainer.removeChild(inputWrapper);
     inputCounter--;
   }
 
-  const addButton = document.getElementById("addButton");
-  if (addButton) {
-    addButton.addEventListener("click", createInputField);
-  }
+  document.getElementById("addButton").addEventListener("click", createInputField);
 });

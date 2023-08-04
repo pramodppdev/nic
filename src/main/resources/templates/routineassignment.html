@@ -41,19 +41,15 @@
             <table>
                 <tr>
                     <th class="assign-head">Inspection ID</th>
-                    <td id="InspIdSing"></td>
-                </tr>
-                <tr>
-                    <th class="assign-head">Description</th>
-                    <td id="DescriptionSing"></td>
+                    <td id="RoutInspIdSing"></td>
                 </tr>
                 <tr>
                     <th class="assign-head">District</th>
-                    <td id="DistrictSing">---</td>
+                    <td id="RoutDistrictSing"></td>
                 </tr>
                 <tr>
                     <th class="assign-head">Department</th>
-                    <td id="DepartmentSing">---</td>
+                    <td id="RoutDepartmentSing"></td>
                 </tr>
             </table>
         </div>
@@ -133,10 +129,10 @@
                }
                assignList=assignList+' <td>'+data[i].designation +'</td>';
 
-               if(data[i].lastDate==null)
+               if(data[i].routlastDate==null)
                {
                assignList=assignList+' <td>';
-               assignList=assignList+'<a href="javascript:getProfile(\''+data[i].inspId+'\')" title="Assign">';
+               assignList=assignList+'<a href="javascript:getProfile(\''+data[i].routinspId+'\')" title="Assign">';
                assignList=assignList+'<p style="font-size:15px;">Not assigned</p>';
                }
                else{
@@ -164,11 +160,11 @@
                         var userData={
 
 
-                        routinspId:$("#InspIdSing").val(),
-                        routroutassignedOfficer:$("#officerDrop").val(),
+                        routinspId:$("#RoutInspIdSing").val(),
+                        routassignedOfficer:$("#officerDrop").val(),
                         routlastDate:$("#RoutlastDate").val(),
                         routtaluk:$("#TalukSing").val(),
-                        routdepartment:$("#DepartmentSing").val(),
+                        routdepartment:$("#RoutDepartmentSing").val(),
                         routdescription:$("#DescriptionSing").val(),
 
 
@@ -212,19 +208,20 @@
             $.ajax({
                 contentType: "application/json;charset=UTF-8",
                 url: "/api/routinsp/getById/" + id,
+                url: "/api/taluk/getAllTaluk",
                 dataType: "json",
                 type: "GET",
                 cache: !1,
                 processData: !1,
                 success: function(data) {
 
-                    $("#InspIdSing").text(data.routinspId);
-                    $("#DepartmentSing").text(data.routdepartment);
-                    $("#DescriptionSing").text(data.routdescription);
-                    $("#LastDateSing").text(data.routlastDate);
-                    $("#routassignedOfficerSing").text(data.routroutassignedOfficer);
-                    $("#DistrictSing").text(data.routdistrict);
-                    $("#TalukSing").text(data.routtaluk);
+                    $("#RoutInspIdSing").text(data.routinspId);
+                    $("#RoutDepartmentSing").text(data.routdepartment);
+                    $("#RoutDescriptionSing").text(data.routdescription);
+                    $("#RoutLastDateSing").text(data.routlastDate);
+                    $("#RoutroutassignedOfficerSing").text(data.routassignedOfficer);
+                    $("#RoutDistrictSing").text(data.district);
+                    $("#RoutTalukSing").text(data.routtaluk);
 
 
                 }
