@@ -38,6 +38,7 @@
         <table>
             <thead>
             <tr>
+                <th>Department</th>
                 <th>Designation name</th>
                 <th>Actions</th>
             </tr>
@@ -89,6 +90,7 @@ $(document).ready(function() {
                for(i=0;i<data.length;i++){
                designationList=designationList+'<tr>';
 
+               designationList=designationList+' <td>'+data[i].department +'</td>';
                designationList=designationList+' <td>'+data[i].designationName +'</td>';
 
                designationList=designationList+' <td>';
