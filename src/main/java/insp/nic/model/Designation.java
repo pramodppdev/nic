@@ -11,7 +11,7 @@ public class Designation {
 
     private String department;
 
-    private String designation;
+    private String designationName;
 
     public Designation() {
     }
@@ -19,7 +19,7 @@ public class Designation {
     public Designation(String desgId, String department, String designation) {
         this.desgId = desgId;
         this.department = department;
-        this.designation = designation;
+        this.designationName = designation;
     }
 
     public String getDesgId() {
@@ -38,11 +38,11 @@ public class Designation {
         this.department = department;
     }
 
-    public String getDesignation() {
-        return designation;
+    public String getDesignationName() {
+        return designationName;
     }
 
-    public void setDesignation(String designation) {
-        this.designation = designation;
+    public void setDesignationName(String designationName) {
+        this.designationName = designationName;
     }
 }

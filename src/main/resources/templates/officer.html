@@ -29,9 +29,8 @@
           <div class="wrapper" >
               <select  id="deptDrop" ></select>
           </div>
-          <div class="wrapper">
-              <input type="text" id="Designation" required>
-              <label>Designation</label>
+          <div class="wrapper" >
+              <select  id="desigDrop" ></select>
           </div>
       </div>
       <div>
@@ -96,6 +95,27 @@
 
 <!--        Department dropdown list end-->
 
+<!--        Designation dropdown list start-->
+
+
+        $.ajax({
+           contentType: "application/json;charset=UTF-8",
+           type: "GET",
+           url: "/api/designation/getAllDesignation",
+           dataType: "json",
+           async:false,
+           success: function (desigdata) {
+               var s = '<option value="-1">Select Designation</option>';
+               for (var i = 0; i < desigdata.length; i++) {
+                   s += '<option value="' + desigdata[i].designationName + '">' + desigdata[i].designationName + '</option>';
+               }
+               $("#desigDrop").html(s);
+           }
+       });
+
+
+<!--        Designation dropdown list end-->
+
 
 <!--        Taluk dropdown list start-->
 
@@ -155,7 +175,7 @@
             var officerName = $("#OfficerName").val();
             var officerMob = $("#OfficerMob").val();
             var officerDept = $("#deptDrop").val();
-            var designation = $("#Designation").val();
+            var designation = $("#desigDrop").val();
             var taluk = $("#talukDrop").val();
 
             if (officerName && officerMob && officerDept && designation && taluk) {

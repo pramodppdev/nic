@@ -89,4 +89,10 @@ public class HomeController {
     public String routinereport(){
         return "routinereport";
     }
+
+    @GetMapping("/adddesignation")
+    public String adddesignation(){
+        return "adddesignation";
+    }
+
 }
