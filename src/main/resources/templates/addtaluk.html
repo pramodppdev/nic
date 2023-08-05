@@ -16,11 +16,11 @@
   <main>
     <div class="grid">
         <div class="wrapper">
-            <input type="text" id="TalukName" required>
-            <label>Taluk</label>
+            <select  id="districtDrop" ></select>
         </div>
         <div class="wrapper">
-            <select  id="districtDrop" ></select>
+            <input type="text" id="TalukName" required>
+            <label>Taluk</label>
         </div>
     </div>
       <div>
@@ -29,16 +29,15 @@
 
       <div class="alert-container" id="alertContainer">
           <div class="alert-message">
-              Submitted Successfully!
+              Added Data Successfully!
+              <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+              <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
           </div>
-          <button class="alert-button-ok" onclick="hideAlert()">OK</button>
-          <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
       </div>
         <div class="table-container">
             <table>
               <thead>
                 <tr>
-                  <th>Taluk ID</th>
                   <th>Taluk name</th>
                     <th>Actions</th>
                 </tr>
@@ -88,7 +87,7 @@ $(document).ready(function() {
             success:function(data){
                for(i=0;i<data.length;i++){
                talukList=talukList+'<tr>';
-               talukList=talukList+' <td>'+data[i].talukId +'</td>';
+
                talukList=talukList+' <td>'+data[i].talukName +'</td>';
 
                talukList=talukList+' <td>';
@@ -104,43 +103,38 @@ $(document).ready(function() {
         });
       });
 
-function saveTaluk(){
 
-                        var userData={
+      function saveTaluk() {
 
-
-                        talukName:$("#TalukName").val(),
-                        district:$("#districtDrop").val(),
+            var talukName = $("#TalukName").val();
+            var district = $("#districtDrop").val();
 
 
-                    }
+            if (talukName && district) {
+                var userData = {
+                    talukName: talukName,
+                    district: district,
+                }
 
-                        $.ajax({
-                        contentType: "application/json;charset=UTF-8",
-                        url: "/api/taluk/save",
-                        dataType: "json",
-                        type: "POST",
-                        cache: !1,
-                        processData: !1,
-                        data: JSON.stringify(userData),
-                        complete:function(xhr) {
+                $.ajax({
+                    contentType: "application/json;charset=UTF-8",
+                    url: "/api/taluk/save",
+                    dataType: "json",
+                    type: "POST",
+                    cache: !1,
+                    processData: !1,
+                    data: JSON.stringify(userData),
+                    complete: function(xhr) {
                         console.log(data)
-
-                        }
-                 });
-                 showAlert()
-      }
-    function showAlert() {
-          var alertContainer = document.getElementById('alertContainer');
-          alertContainer.style.display = 'block';
-
+                    }
+                });
+                showAlert();
+            } else {
+                alert("Please fill all the required fields");
+            }
         }
 
-        function hideAlert() {
-          location.reload();
-          var alertContainer = document.getElementById('alertContainer');
-          alertContainer.style.display = 'none';
-        }
+
 
 
 </script>

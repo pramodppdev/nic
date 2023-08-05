@@ -1,0 +1,75 @@
+.input-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-left: 20px; /* Add some space between input containers */
+}
+
+.input-container input[type="text"] {
+  flex: 1; /* Let the input field take the remaining space */
+  margin: 10px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  width: 900px; /* Calculate the width to fit 2 input fields in a row */
+  max-width: 100%; /* Set a maximum width for the input fields */
+  box-sizing: border-box; /* Include padding and border in the total width */
+  background-color: #f1f1f1;
+  box-shadow: inset -3px -3px 7px #ffffff,
+   inset 3px 3px 5px #ceced1 ;
+  border: none;
+  margin-inline-start: 5px;
+}
+label {
+  display: inline-block;
+
+  margin-top: 5px;
+}
+
+.input-container input[type="checkbox"]{
+  margin-left: 10px;
+  margin: 10px;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+ background-color: #f1f1f1;
+  margin-inline-start: 5px;/* Add space between checkbox and input field, and input field and delete button */
+}
+  #addButton{
+    margin-top: 10px;
+    padding: 8px;
+   width: fit-content;
+    margin-left: 80%;
+    color: green;
+    font-weight:500;
+    font-size: medium;
+  }
+#addButton:hover{
+  color: #ffffff;
+}
+  button:hover{
+    background-color: #8e8e8e;
+    color: #ffffff;
+  }
+
+button{
+    padding: 10px;
+    background-color: #f1f1f1;
+    box-shadow: -3px -3px 7px #ffffff,
+    3px 3px 5px #ceced1 ;
+    border: none;
+    border-radius: 10px;
+    color: red;
+}
+.wrapper label {
+    position: absolute;
+    top: 55%;
+    left: 10%;
+    transform: translateY(-50%);
+    color: rgb(0, 0, 0);
+    font-size: 15px;
+    padding: 0 5px;
+    pointer-events: none;
+    transition: 0.5s;
+}

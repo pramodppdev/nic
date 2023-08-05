@@ -26,16 +26,15 @@
       </div>
       <div class="alert-container" id="alertContainer">
           <div class="alert-message">
-              Submitted Successfully!
+              Added Data Successfully!
+              <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+              <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
           </div>
-          <button class="alert-button-ok" onclick="hideAlert()">OK</button>
-          <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
       </div>
         <div class="table-container">
             <table>
               <thead>
                 <tr>
-                  <th>District ID</th>
                   <th>District name</th>
                     <th>Actions</th>
                 </tr>
@@ -63,7 +62,7 @@
             success:function(data){
                for(i=0;i<data.length;i++){
                districtList=districtList+'<tr>';
-               districtList=districtList+' <td>'+data[i].districtId +'</td>';
+
                districtList=districtList+' <td>'+data[i].districtName +'</td>';
 
                districtList=districtList+' <td>';
@@ -105,16 +104,31 @@ function saveDistrict(){
                  });
                  showAlert()
       }
-    function showAlert() {
-          var alertContainer = document.getElementById('alertContainer');
-          alertContainer.style.display = 'block';
+      function saveDistrict() {
+            var districtName = $("#DistrictName").val().trim(); // Trim any leading/trailing whitespace
 
-        }
+            if (districtName !== "") {
+                var userData = {
+                    districtName: districtName,
+                };
 
-        function hideAlert() {
-          location.reload();
-          var alertContainer = document.getElementById('alertContainer');
-          alertContainer.style.display = 'none';
+                $.ajax({
+                    contentType: "application/json;charset=UTF-8",
+                    url: "/api/district/save",
+                    dataType: "json",
+                    type: "POST",
+                    cache: !1,
+                    processData: !1,
+                    data: JSON.stringify(userData),
+                    complete: function(xhr) {
+                        console.log(xhr.responseText);
+                    }
+                });
+
+                showAlert();
+            } else {
+                alert("Please fill all the required fields");
+            }
         }
 
 

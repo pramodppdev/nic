@@ -75,4 +75,24 @@ public class HomeController {
         return "addexecutive";
     }
 
+    @GetMapping("/routineinsp")
+    public String routineinsp(){
+        return "routineinsp";
+    }
+
+    @GetMapping("/routineassignment")
+    public String routineassignment(){
+        return "routineassignment";
+    }
+
+    @GetMapping("/routinereport")
+    public String routinereport(){
+        return "routinereport";
+    }
+
+    @GetMapping("/adddesignation")
+    public String adddesignation(){
+        return "adddesignation";
+    }
+
 }

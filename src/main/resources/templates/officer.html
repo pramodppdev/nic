@@ -29,9 +29,8 @@
           <div class="wrapper" >
               <select  id="deptDrop" ></select>
           </div>
-          <div class="wrapper">
-              <input type="text" id="Designation" required>
-              <label>Designation</label>
+          <div class="wrapper" >
+              <select  id="desigDrop" ></select>
           </div>
       </div>
       <div>
@@ -41,9 +40,9 @@
       <div class="alert-container" id="alertContainer">
           <div class="alert-message">
               Added Data Successfully!
+              <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+              <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
           </div>
-          <button class="alert-button-ok" onclick="hideAlert()">OK</button>
-          <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
       </div>
 
   <div id="tablelist">
@@ -54,7 +53,6 @@
             <table>
               <thead>
                 <tr>
-                    <th>Officer ID</th>
                     <th>Office Name</th>
                     <th>Officer Department</th>
                     <th>Officer Mobile</th>
@@ -97,6 +95,27 @@
 
 <!--        Department dropdown list end-->
 
+<!--        Designation dropdown list start-->
+
+
+        $.ajax({
+           contentType: "application/json;charset=UTF-8",
+           type: "GET",
+           url: "/api/designation/getAllDesignation",
+           dataType: "json",
+           async:false,
+           success: function (desigdata) {
+               var s = '<option value="-1">Select Designation</option>';
+               for (var i = 0; i < desigdata.length; i++) {
+                   s += '<option value="' + desigdata[i].designationName + '">' + desigdata[i].designationName + '</option>';
+               }
+               $("#desigDrop").html(s);
+           }
+       });
+
+
+<!--        Designation dropdown list end-->
+
 
 <!--        Taluk dropdown list start-->
 
@@ -133,7 +152,7 @@
             success:function(data){
                for(i=0;i<data.length;i++){
                officerList=officerList+'<tr>';
-               officerList=officerList+' <td>'+data[i].officerId +'</td>';
+
                officerList=officerList+' <td>'+data[i].officerName +'</td>';
                officerList=officerList+' <td>'+data[i].officerDept +'</td>';
                officerList=officerList+' <td>'+data[i].officerMob +'</td>';
@@ -151,37 +170,41 @@
         });
       });
 
-        function saveOfficer(){
+        function saveOfficer() {
 
-                        var userData={
+            var officerName = $("#OfficerName").val();
+            var officerMob = $("#OfficerMob").val();
+            var officerDept = $("#deptDrop").val();
+            var designation = $("#desigDrop").val();
+            var taluk = $("#talukDrop").val();
 
+            if (officerName && officerMob && officerDept && designation && taluk) {
+                var userData = {
+                    officerName: officerName,
+                    officerMob: officerMob,
+                    officerDept: officerDept,
+                    designation: designation,
+                    taluk: taluk,
+                }
 
-                        officerName:$("#OfficerName").val(),
-                        officerMob:$("#OfficerMob").val(),
-                        officerDept:$("#deptDrop").val(),
-                        designation:$("#Designation").val(),
-                        taluk:$("#talukDrop").val(),
-
-
-
-
-                    }
-
-                        $.ajax({
-                        contentType: "application/json;charset=UTF-8",
-                        url: "/api/officer/save",
-                        dataType: "json",
-                        type: "POST",
-                        cache: !1,
-                        processData: !1,
-                        data: JSON.stringify(userData),
-                        complete:function(xhr) {
+                $.ajax({
+                    contentType: "application/json;charset=UTF-8",
+                    url: "/api/officer/save",
+                    dataType: "json",
+                    type: "POST",
+                    cache: !1,
+                    processData: !1,
+                    data: JSON.stringify(userData),
+                    complete: function(xhr) {
                         console.log(data)
+                    }
+                });
+                showAlert();
+            } else {
+                alert("Please fill all the required fields");
+            }
+        }
 
-                        }
-                 });
-                 showAlert()
-      }
 
       function addOfficer(){
 
@@ -191,19 +214,6 @@
 
       }
 
-
-
-function showAlert() {
-      var alertContainer = document.getElementById('alertContainer');
-      alertContainer.style.display = 'block';
-
-    }
-
-    function hideAlert() {
-      location.reload();
-      var alertContainer = document.getElementById('alertContainer');
-      alertContainer.style.display = 'none';
-    }
 	</script>
 </body>
 </html>

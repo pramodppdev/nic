@@ -28,10 +28,10 @@
       <div class="alert-container" id="alertContainer">
           <div class="alert-message">
               Added Data Successfully!
+              <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+              <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
           </div>
-          <button class="alert-button-ok" onclick="hideAlert()">OK</button>
-          <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
-          </div>
+      </div>
    <div id="tablelist">
     <div class="table-name">
 
@@ -41,7 +41,6 @@
               <table>
                 <thead>
                   <tr>
-                    <th>ID</th>
                     <th>Department Name</th>
                       <th>Actions</th>
                   </tr>
@@ -72,7 +71,7 @@
             success:function(data){
                for(i=0;i<data.length;i++){
                deptList=deptList+'<tr>';
-               deptList=deptList+' <td>'+data[i].deptId +'</td>';
+
                deptList=deptList+' <td>'+data[i].deptName +'</td>';
 
                deptList=deptList+' <td>';
@@ -88,32 +87,32 @@
         });
       });
 
-        function saveDept(){
+        function saveDept() {
+            var deptName = $("#DeptName").val().trim(); // Trim any leading/trailing whitespace
 
-                        var userData={
+            if (deptName !== "") {
+                var userData = {
+                    deptName: deptName,
+                };
 
-
-                        deptName:$("#DeptName").val(),
-
+                $.ajax({
+                    contentType: "application/json;charset=UTF-8",
+                    url: "/api/department/save",
+                    dataType: "json",
+                    type: "POST",
+                    cache: !1,
+                    processData: !1,
+                    data: JSON.stringify(userData),
+                    complete: function(xhr) {
+                        console.log(xhr.responseText);
                     }
+                });
 
-                        $.ajax({
-                        contentType: "application/json;charset=UTF-8",
-                        url: "/api/department/save",
-                        dataType: "json",
-                        type: "POST",
-                        cache: !1,
-                        processData: !1,
-                        data: JSON.stringify(userData),
-                        complete:function(xhr) {
-                        console.log(data)
-
-                        }
-
-                 });
-                 showAlert()
-
-      }
+                showAlert();
+            } else {
+                alert("Please fill all the required fields");
+            }
+        }
 
       function addDepartment(){
 
@@ -122,20 +121,6 @@
 
 
       }
-
-
-    function showAlert() {
-      var alertContainer = document.getElementById('alertContainer');
-      alertContainer.style.display = 'block';
-
-    }
-
-    function hideAlert() {
-      location.reload();
-      var alertContainer = document.getElementById('alertContainer');
-      alertContainer.style.display = 'none';
-    }
-
 
 
 	</script>
