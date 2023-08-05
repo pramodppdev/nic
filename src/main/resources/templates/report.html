@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>NIC</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/form.css">
+  <link rel="stylesheet" href="/css/table.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="/script/script.js"></script>
+
+
+</head>
+<body>
+<div th:replace="~{fragment/nav :: nav}"> </div>
+  <main>
+
+    <div class="table-name">
+      <h2>Reports</h2>
+    </div>
+    <div class="table-container">
+
+        <table>
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Officer Assigned</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="reportList">
+<!--            <tr>-->
+<!--              <td>0001</td>-->
+<!--              <td></td>-->
+<!--              <td></td>-->
+<!--              <td><span class="status-flag in-created">Created</span></td>-->
+<!--              <td><a href="#">&#9997;&#xFE0E;</a>-->
+<!--                <a href="#">&#x1F441;</a></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>0002</td>-->
+<!--              <td></td>-->
+<!--              <td></td>-->
+<!--                <td><span class="status-flag in-progress" >In progress</span></td>-->
+<!--                <td><a href="#">&#9997;&#xFE0E;</a>-->
+<!--                  <a href="#">&#x1F441;</a></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>0003</td>-->
+<!--              <td></td>-->
+<!--              <td></td>-->
+<!--                <td><span class="status-flag completed">Completed</span></td>-->
+<!--                <td><a href="#">&#9997;&#xFE0E;</a>-->
+<!--                  <a href="#">&#x1F441;</a></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--              <td>0004</td>-->
+<!--              <td></td>-->
+<!--              <td></td>-->
+<!--              <td><span  class="status-flag pending">Pending</span></td>-->
+<!--              <td><a href="#">&#9997;&#xFE0E;</a>-->
+<!--                <a href="#">&#x1F441;</a></td>-->
+<!--              </tr>-->
+<!--              <tr>-->
+<!--                <td>0001</td>-->
+<!--                <td></td>-->
+<!--                <td></td>-->
+<!--              <td><span class="status-flag in-created">Created</span></td>-->
+<!--              <td><a href="#">&#9997;&#xFE0E;</a>-->
+<!--                <a href="#">&#x1F441;</a></td>-->
+<!--              </tr>-->
+<!--              <tr>-->
+<!--               -->
+<!--              </tr>-->
+<!--              <tr>-->
+<!--                <td>0002</td>-->
+<!--                <td></td>-->
+<!--                <td></td>-->
+<!--                <td><span class="status-flag in-progress" >In progress</span></td>-->
+<!--                <td><a href="#">&#9997;&#xFE0E;</a>-->
+<!--                  <a href="#">&#x1F441;</a></td>-->
+<!--              </tr>-->
+<!--              <tr>-->
+<!--                <td>0003</td>-->
+<!--                <td></td>-->
+<!--                <td></td>-->
+<!--                <td><span class="status-flag completed">Completed</span></td>-->
+<!--                <td><a href="#">&#9997;&#xFE0E;</a>-->
+<!--                  <a href="#">&#x1F441;</a></td>-->
+<!--              </tr>-->
+            <!-- Add more rows as needed -->
+          </tbody>
+        </table>
+      </div>
+
+</main>
+<script>
+
+   $(document).ready(function() {
+
+            $("#tablelist").show();
+            $("#saveInspbody").show();
+
+        var reportList="";
+        $.ajax({
+            contentType: "application/json;charset=UTF-8",
+            url: "/api/inspection/getAllInsp",
+            dataType: "json",
+            type: "GET",
+            type: "GET",
+            async:false,
+            success:function(data){
+               for(i=0;i<data.length;i++){
+
+                 if(data[i].assignedOfficer!==null && data[i].lastDate!==null){
+                     reportList=reportList+'<tr>';
+
+                     reportList=reportList+' <td>'+data[i].description +'</td>';
+                     reportList=reportList+' <td>'+data[i].assignedOfficer +'</td>';
+                     reportList=reportList+' <td>'+data[i].status +'</td>';
+
+
+
+
+
+                     reportList=reportList+' <td>';
+                     reportList=reportList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
+                     reportList=reportList+'<i>&#9997;&#xFE0E;</i> </a>';
+                     reportList=reportList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
+                     reportList=reportList+'<i>&#x1F441;</i> </a>';
+                     reportList=reportList+'</td></tr>';
+                 }
+
+               }
+
+                $("#reportList").html(reportList);
+            }
+        });
+      });
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+  .table-container {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+    overflow-y: scroll;
+    max-height: 500px;
+    width: min(100% - 50px);
+    box-shadow: -3px -3px 7px #ffffff,
+    3px 3px 5px #ceced1 ;
+    position: relative;
+    margin-left: 25px;
+    margin-top: 11%;
+    border-radius: 10px;
+  }
+  th{
+    padding: 10px;
+    background-color: #f1f1f1;
+    column-width: 400px;
+
+  }
+  td {
+    padding: 10px;
+    text-align: center;
+    background-color: #e6e1e1;
+    border-bottom: 1px solid #c7ccd4;
+  }
+  .input-container{
+  padding: 10px;
+  }

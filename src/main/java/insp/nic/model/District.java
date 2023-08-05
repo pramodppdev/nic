@@ -1,44 +1,45 @@
 package insp.nic.model;
 
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "dept")
-public class Department {
+@Document(collection = "district")
+public class District {
 
     @Id
-    private String deptId;
+    private String districtId;
 
-    private String deptName;
+    private String districtName;
 
     private String createdAt;
 
     private String createdBy;
 
-    public Department() {
+    public District() {
     }
 
-    public Department(String deptId, String deptName, String createdAt, String createdBy) {
-        this.deptId = deptId;
-        this.deptName = deptName;
+    public District(String districtId, String districtName, String createdAt, String createdBy) {
+        this.districtId = districtId;
+        this.districtName = districtName;
         this.createdAt = createdAt;
         this.createdBy = createdBy;
     }
 
-    public String getDeptId() {
-        return deptId;
+    public String getDistrictId() {
+        return districtId;
     }
 
-    public void setDeptId(String deptId) {
-        this.deptId = deptId;
+    public void setDistrictId(String districtId) {
+        this.districtId = districtId;
     }
 
-    public String getDeptName() {
-        return deptName;
+    public String getDistrictName() {
+        return districtName;
     }
 
-    public void setDeptName(String deptName) {
-        this.deptName = deptName;
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
     }
 
     public String getCreatedAt() {

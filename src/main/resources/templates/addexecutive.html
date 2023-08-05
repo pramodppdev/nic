@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>NIC</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/form.css">
+  <link rel="stylesheet" href="/css/table.css">
+  <link rel="stylesheet" href="/css/alert.css">
+  <script src="/script/script.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+
+</head>
+
+<body>
+<div th:replace="~{fragment/nav :: nav}"> </div>
+<main>
+  <div class="grid">
+
+    <div class="wrapper">
+      <input type="text" id="ExecutiveName" required>
+      <label>Executive Name</label>
+    </div>
+
+    <div class="wrapper">
+      <input type="text" id="ExecutiveUserName" required>
+      <label>Username</label>
+    </div>
+
+    <div class="wrapper">
+      <input type="password" id="ExecutivePasswd" required>
+      <label>Password</label>
+    </div>
+
+    <div class="wrapper">
+      <select  id="districtDrop" ></select>
+    </div>
+
+    <div class="wrapper">
+      <input type="tel" id="ExecutiveMob" required>
+      <label>Mobile Number</label>
+    </div>
+
+  </div>
+  <div>
+    <button class="submit-btn" onclick="saveExecutive()">Add</button>
+  </div>
+  <div class="alert-container" id="alertContainer">
+    <div class="alert-message">
+      Added Data Successfully!
+      <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+      <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
+    </div>
+  </div>
+  <div class="table-container">
+    <table>
+      <thead>
+      <tr>
+        <th>Executive Name</th>
+        <th>District</th>
+        <th>Mobile No</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody id="extList">
+
+      </tbody>
+    </table>
+  </div>
+</main>
+<script>
+
+$(document).ready(function() {
+
+    <!--        District dropdown list start-->
+
+       $.ajax({
+           contentType: "application/json;charset=UTF-8",
+           type: "GET",
+           url: "/api/district/getAllDistrict",
+           dataType: "json",
+           async:false,
+           success: function (districtData) {
+               var s = '<option value="-1">Select District</option>';
+               for (var i = 0; i < districtData.length; i++) {
+                   s += '<option value="' + districtData[i].districtName + '">' + districtData[i].districtName + '</option>';
+               }
+               $("#districtDrop").html(s); // Updated ID here
+           }
+        });
+
+
+    <!--        District dropdown list end-->
+
+            $("#tablelist").show();
+            $("#saveExebody").show();
+
+        var extList="";
+        $.ajax({
+            contentType: "application/json;charset=UTF-8",
+            url: "/api/executive/getAllExe",
+            dataType: "json",
+            type: "GET",
+            async:false,
+            success:function(data){
+               for(i=0;i<data.length;i++){
+               extList=extList+'<tr>';
+
+               extList=extList+' <td>'+data[i].executiveName +'</td>';
+               extList=extList+' <td>'+data[i].district +'</td>';
+               extList=extList+' <td>'+data[i].executiveMob +'</td>';
+
+               extList=extList+' <td>';
+               extList=extList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
+               extList=extList+'<i>&#9997;&#xFE0E;</i> </a>';
+               extList=extList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
+               extList=extList+'<i>&#x1F441;</i> </a>';
+               extList=extList+'</td></tr>';
+
+               }
+                $("#extList").html(extList);
+            }
+        });
+      });
+
+
+      function saveExecutive() {
+
+            var executiveName = $("#ExecutiveName").val();
+            var executiveUserName = $("#ExecutiveUserName").val();
+            var executivePasswd = $("#ExecutivePasswd").val();
+            var district = $("#districtDrop").val();
+            var executiveMob = $("#ExecutiveMob").val();
+
+            if (executiveName && officerMob && officerDept && designation && taluk) {
+                var userData = {
+                    executiveName: executiveName,
+                    executiveUserName: executiveUserName,
+                    executivePasswd: executivePasswd,
+                    district: district,
+                    executiveMob: executiveMob,
+                }
+
+                $.ajax({
+                    contentType: "application/json;charset=UTF-8",
+                    url: "/api/executive/save",
+                    dataType: "json",
+                    type: "POST",
+                    cache: !1,
+                    processData: !1,
+                    data: JSON.stringify(userData),
+                    complete: function(xhr) {
+                        console.log(data)
+                    }
+                });
+                showAlert();
+            } else {
+                alert("Please fill all the required fields");
+            }
+        }
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+body.no-scroll{
+  overflow: hidden;
+}
+.alert-container {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #0000004c;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 100%;
+  z-index: 9999;
+  font-size: 15px;
+  font-weight:10px ;
+}
+
+/* CSS style for the alert message */
+.alert-message {
+  padding: 20px;
+  background-color: #f1f1f1;
+  display: flex;
+  border-radius: 10px;
+  flex-wrap: wrap;
+  width: 180px;
+}
+
+
+/* CSS style for the OK button */
+.alert-button-ok {
+ padding: 5px 10px ;
+  background-color: #4CAF50;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  margin-right: 5px;
+ margin-top: 10px;
+  border-radius: 10px;
+}
+
+/* CSS style for the OK button hover effect */
+.alert-button-ok:hover {
+  background-color: #45a049;
+}
+
+/* CSS style for the Cancel button */
+.alert-button-cancel {
+  padding: 5px 10px;
+  background-color: #f44336;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+/* CSS style for the Cancel button hover effect */
+.alert-button-cancel:hover {
+  background-color:#d32f2f;
+ }

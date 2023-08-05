@@ -29,9 +29,70 @@ public class HomeController {
     public String officer(){
         return "officer";
     }
+
     @GetMapping("/inspection")
     public String inspection(){
         return "inspection";
+    }
+
+    @GetMapping("/assignment")
+    public String assignment(){
+        return "assignment";
+    }
+
+    @GetMapping("/report")
+    public String report(){
+        return "report";
+    }
+
+    @GetMapping("/administration")
+    public String administration(){
+        return "administration";
+    }
+
+    @GetMapping("/addconfiguration")
+    public String addconfiguration(){
+        return "addconfiguration";
+    }
+
+    @GetMapping("/setconfiguration")
+    public String setconfiguration(){
+        return "setconfiguration";
+    }
+
+    @GetMapping("/addtaluk")
+    public String addtaluk(){
+        return "addtaluk";
+    }
+
+    @GetMapping("/adddistrict")
+    public String adddistrict(){
+        return "adddistrict";
+    }
+
+    @GetMapping("/addexecutive")
+    public String addexecutive(){
+        return "addexecutive";
+    }
+
+    @GetMapping("/routineinsp")
+    public String routineinsp(){
+        return "routineinsp";
+    }
+
+    @GetMapping("/routineassignment")
+    public String routineassignment(){
+        return "routineassignment";
+    }
+
+    @GetMapping("/routinereport")
+    public String routinereport(){
+        return "routinereport";
+    }
+
+    @GetMapping("/adddesignation")
+    public String adddesignation(){
+        return "adddesignation";
     }
 
 }
