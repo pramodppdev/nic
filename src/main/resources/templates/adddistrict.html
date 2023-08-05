@@ -104,6 +104,32 @@ function saveDistrict(){
                  });
                  showAlert()
       }
+      function saveDistrict() {
+            var districtName = $("#DistrictName").val().trim(); // Trim any leading/trailing whitespace
+
+            if (districtName !== "") {
+                var userData = {
+                    districtName: districtName,
+                };
+
+                $.ajax({
+                    contentType: "application/json;charset=UTF-8",
+                    url: "/api/district/save",
+                    dataType: "json",
+                    type: "POST",
+                    cache: !1,
+                    processData: !1,
+                    data: JSON.stringify(userData),
+                    complete: function(xhr) {
+                        console.log(xhr.responseText);
+                    }
+                });
+
+                showAlert();
+            } else {
+                alert("Please fill all the required fields");
+            }
+        }
 
 
 </script>

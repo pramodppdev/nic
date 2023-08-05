@@ -122,34 +122,41 @@ $(document).ready(function() {
         });
       });
 
-function saveExecutive(){
 
-                        var userData={
+      function saveExecutive() {
 
-                        executiveName:$("#ExecutiveName").val(),
-                        executiveUserName:$("#ExecutiveUserName").val(),
-                        executivePasswd:$("#ExecutivePasswd").val(),
-                        district:$("#districtDrop").val(),
-                        executiveMob:$("#ExecutiveMob").val(),
+            var executiveName = $("#ExecutiveName").val();
+            var executiveUserName = $("#ExecutiveUserName").val();
+            var executivePasswd = $("#ExecutivePasswd").val();
+            var district = $("#districtDrop").val();
+            var executiveMob = $("#ExecutiveMob").val();
 
+            if (executiveName && officerMob && officerDept && designation && taluk) {
+                var userData = {
+                    executiveName: executiveName,
+                    executiveUserName: executiveUserName,
+                    executivePasswd: executivePasswd,
+                    district: district,
+                    executiveMob: executiveMob,
+                }
 
-                    }
-
-                        $.ajax({
-                        contentType: "application/json;charset=UTF-8",
-                        url: "/api/executive/save",
-                        dataType: "json",
-                        type: "POST",
-                        cache: !1,
-                        processData: !1,
-                        data: JSON.stringify(userData),
-                        complete:function(xhr) {
+                $.ajax({
+                    contentType: "application/json;charset=UTF-8",
+                    url: "/api/executive/save",
+                    dataType: "json",
+                    type: "POST",
+                    cache: !1,
+                    processData: !1,
+                    data: JSON.stringify(userData),
+                    complete: function(xhr) {
                         console.log(data)
-
-                        }
-                 });
-                 showAlert()
-      }
+                    }
+                });
+                showAlert();
+            } else {
+                alert("Please fill all the required fields");
+            }
+        }
 
 
 </script>

@@ -159,36 +159,68 @@
         });
       });
 
-        function saveAssignment(){
+<!--         function saveAssignment(){-->
 
-                        var userData={
-
-
-                        inspId:$("#InspIdSing").val(),
-                        assignedOfficer:$("#officerDrop").val(),
-                        lastDate:$("#LastDate").val(),
-                        taluk:$("#TalukSing").val(),
-                        department:$("#DepartmentSing").val(),
-                        description:$("#DescriptionSing").val(),
+<!--                        var userData={-->
 
 
-                    }
+<!--                        inspId:$("#InspIdSing").val(),-->
+<!--                        assignedOfficer:$("#officerDrop").val(),-->
+<!--                        lastDate:$("#LastDate").val(),-->
+<!--                        taluk:$("#TalukSing").val(),-->
+<!--                        department:$("#DepartmentSing").val(),-->
+<!--                        description:$("#DescriptionSing").val(),-->
 
-                        $.ajax({
-                        contentType: "application/json;charset=UTF-8",
-                        url: "/api/inspection/save",
-                        dataType: "json",
-                        type: "POST",
-                        cache: !1,
-                        processData: !1,
-                        data: JSON.stringify(userData),
-                        complete:function(xhr) {
+
+<!--                    }-->
+
+<!--                        $.ajax({-->
+<!--                        contentType: "application/json;charset=UTF-8",-->
+<!--                        url: "/api/inspection/save",-->
+<!--                        dataType: "json",-->
+<!--                        type: "POST",-->
+<!--                        cache: !1,-->
+<!--                        processData: !1,-->
+<!--                        data: JSON.stringify(userData),-->
+<!--                        complete:function(xhr) {-->
+<!--                        console.log(data)-->
+
+<!--                        }-->
+<!--                 });-->
+<!--                 showAlert()-->
+<!--      }-->
+
+
+      function saveAssignment() {
+
+            var assignedOfficer = $("#officerDrop").val();
+            var lastDate = $("#LastDate").val();
+
+
+            if (assignedOfficer && lastDate) {
+                var userData = {
+                    assignedOfficer: assignedOfficer,
+                    lastDate: lastDate,
+
+                }
+
+                $.ajax({
+                    contentType: "application/json;charset=UTF-8",
+                    url: "/api/inspection/save",
+                    dataType: "json",
+                    type: "POST",
+                    cache: !1,
+                    processData: !1,
+                    data: JSON.stringify(userData),
+                    complete: function(xhr) {
                         console.log(data)
-
-                        }
-                 });
-                 showAlert()
-      }
+                    }
+                });
+                showAlert();
+            } else {
+                alert("Please fill all the required fields");
+            }
+        }
 
         function getInspId(id){
                  $.ajax({
