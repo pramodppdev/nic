@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>NIC</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/table.css">
+    <link rel="stylesheet" href="/css/alert.css">
+    <script src="/script/alert.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+
+</head>
+
+<body>
+<div th:replace="~{fragment/nav :: nav}"> </div>
+<main>
+    <div class="grid">
+        <div class="wrapper">
+            <select  id="deptDrop" ></select>
+        </div>
+        <div class="wrapper">
+            <input type="text" id="DesignationName" required>
+            <label>Designation</label>
+        </div>
+    </div>
+    <div>
+        <button class="submit-btn" onclick="saveDesignation()">Add </button>
+    </div>
+
+    <div class="alert-container" id="alertContainer">
+        <div class="alert-message">
+            Added Data Successfully!
+            <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+            <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
+        </div>
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Department</th>
+                <th>Designation name</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="designationList">
+
+            </tbody>
+        </table>
+    </div>
+</main>
+<script>
+
+$(document).ready(function() {
+
+<!--        Department dropdown list start-->
+
+
+        $.ajax({
+           contentType: "application/json;charset=UTF-8",
+           type: "GET",
+           url: "/api/department/getAllDept",
+           dataType: "json",
+           async:false,
+           success: function (deptdata) {
+               var s = '<option value="-1">Select Department</option>';
+               for (var i = 0; i < deptdata.length; i++) {
+                   s += '<option value="' + deptdata[i].deptName + '">' + deptdata[i].deptName + '</option>';
+               }
+               $("#deptDrop").html(s);
+           }
+       });
+
+
+<!--        Department dropdown list end-->
+
+
+
+            $("#tablelist").show();
+            $("#saveTalukbody").show();
+
+        var designationList="";
+        $.ajax({
+            contentType: "application/json;charset=UTF-8",
+            url: "/api/designation/getAllDesignation",
+            dataType: "json",
+            type: "GET",
+            async:false,
+            success:function(data){
+               for(i=0;i<data.length;i++){
+               designationList=designationList+'<tr>';
+
+               designationList=designationList+' <td>'+data[i].department +'</td>';
+               designationList=designationList+' <td>'+data[i].designationName +'</td>';
+
+               designationList=designationList+' <td>';
+               designationList=designationList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
+               designationList=designationList+'<i>&#9997;&#xFE0E;</i> </a>';
+               designationList=designationList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
+               designationList=designationList+'<i>&#x1F441;</i> </a>';
+               designationList=designationList+'</td></tr>';
+
+               }
+                $("#designationList").html(designationList);
+            }
+        });
+      });
+
+
+      function saveDesignation() {
+
+            var designationName = $("#DesignationName").val();
+            var department = $("#deptDrop").val();
+
+
+            if (designationName && department) {
+                var userData = {
+                    designationName: designationName,
+                    department: department,
+                }
+
+                $.ajax({
+                    contentType: "application/json;charset=UTF-8",
+                    url: "/api/designation/save",
+                    dataType: "json",
+                    type: "POST",
+                    cache: !1,
+                    processData: !1,
+                    data: JSON.stringify(userData),
+                    complete: function(xhr) {
+                        console.log(data)
+                    }
+                });
+                showAlert();
+            } else {
+                alert("Please fill all the required fields");
+            }
+        }
+
+
+
+
+</script>
+</body>
+</html>

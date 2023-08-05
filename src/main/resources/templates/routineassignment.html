@@ -15,25 +15,25 @@
 
 <main>
     <div id="tablelist">
-    <div class="table-name">
-        <h2>Assign Officers</h2>
-    </div>
-    <div class="table-container">
-        <table>
-            <thead>
-            <tr>
-                <th>Department</th>
-                <th>Officer Assigned</th>
-                <th>Designation</th>
-                <th>LastDate</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody id="assignList">
+        <div class="table-name">
+            <h2>Routine Assignment</h2>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                <tr>
+                    <th>Department</th>
+                    <th>Officer Assigned</th>
+                    <th>Designation</th>
+                    <th>LastDate</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="assignList">
 
-            </tbody>
-        </table>
-    </div>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div id="assignment">
@@ -41,19 +41,15 @@
             <table>
                 <tr>
                     <th class="assign-head">Inspection ID</th>
-                    <td id="InspIdSing"></td>
-                </tr>
-                <tr>
-                    <th class="assign-head">Description</th>
-                    <td id="DescriptionSing"></td>
+                    <td id="RoutInspIdSing"></td>
                 </tr>
                 <tr>
                     <th class="assign-head">District</th>
-                    <td id="DistrictSing">---</td>
+                    <td id="RoutDistrictSing"></td>
                 </tr>
                 <tr>
                     <th class="assign-head">Department</th>
-                    <td id="DepartmentSing">---</td>
+                    <td id="RoutDepartmentSing"></td>
                 </tr>
             </table>
         </div>
@@ -62,12 +58,12 @@
                 <select  id="officerDrop" ></select>
             </div>
             <div class="wrapper" >
-                <input type="date" id="LastDate" >
+                <input type="date" id="RoutlastDate" >
                 <label>Due date</label>
             </div>
         </div>
         <div class="btn">
-            <button class="submit-btn" onclick="saveAssignment()">Assign</button>
+            <button class="submit-btn" onclick="saveRoutAssignment()">Assign</button>
             <button class="cancel-btn">Cancel</button>
         </div>
         <div class="alert-container" id="alertContainer">
@@ -112,7 +108,7 @@
         var assignList="";
         $.ajax({
             contentType: "application/json;charset=UTF-8",
-            url: "/api/inspection/getAllInsp",
+            url: "/api/routinsp/getAllRoutInsp",
             dataType: "json",
             type: "GET",
             type: "GET",
@@ -120,36 +116,36 @@
             success:function(data){
                for(i=0;i<data.length;i++){
                assignList=assignList+'<tr>';
-               assignList=assignList+' <td>'+data[i].department +'</td>';
-               if(data[i].assignedOfficer==null)
+               assignList=assignList+' <td>'+data[i].routdepartment +'</td>';
+               if(data[i].routassignedOfficer==null)
                {
                assignList=assignList+' <td>';
-               assignList=assignList+'<a href="javascript:getInsp(\''+data[i].inspId+'\')" title="Assign">';
+               assignList=assignList+'<a href="javascript:getInsp(\''+data[i].routinspId+'\')" title="Assign">';
                assignList=assignList+'<button class="btn" id="tablelist">Assign</button></a>';
                }
                else{
-                assignList=assignList+' <td>'+data[i].assignedOfficer +'</td>';
+                assignList=assignList+' <td>'+data[i].routassignedOfficer +'</td>';
 
                }
                assignList=assignList+' <td>'+data[i].designation +'</td>';
 
-               if(data[i].lastDate==null)
+               if(data[i].routlastDate==null)
                {
                assignList=assignList+' <td>';
-               assignList=assignList+'<a href="javascript:getProfile(\''+data[i].inspId+'\')" title="Assign">';
+               assignList=assignList+'<a href="javascript:getProfile(\''+data[i].routinspId+'\')" title="Assign">';
                assignList=assignList+'<p style="font-size:15px;">Not assigned</p>';
                }
                else{
-               assignList=assignList+' <td>'+data[i].lastDate +'</td>'
+               assignList=assignList+' <td>'+data[i].routlastDate +'</td>'
 
                }
 
 
 
                assignList=assignList+' <td>';
-               assignList=assignList+'<a href="javascript:getProfile(\''+data[i].inspId+'\')" title="Edit">';
+               assignList=assignList+'<a href="javascript:getProfile(\''+data[i].routinspId+'\')" title="Edit">';
                assignList=assignList+'<i>&#9997;&#xFE0E;</i> </a>';
-               assignList=assignList+'<a href="javascript:deleteProfile(\''+data[i].inspId+'\')" title="Delete">';
+               assignList=assignList+'<a href="javascript:deleteProfile(\''+data[i].routinspId+'\')" title="Delete">';
                assignList=assignList+'<i>&#x1F441;</i> </a>';
                assignList=assignList+'</td></tr>';
 
@@ -159,24 +155,24 @@
         });
       });
 
-<!--         function saveAssignment(){-->
+<!--        function saveRoutAssignment(){-->
 
 <!--                        var userData={-->
 
 
-<!--                        inspId:$("#InspIdSing").val(),-->
-<!--                        assignedOfficer:$("#officerDrop").val(),-->
-<!--                        lastDate:$("#LastDate").val(),-->
-<!--                        taluk:$("#TalukSing").val(),-->
-<!--                        department:$("#DepartmentSing").val(),-->
-<!--                        description:$("#DescriptionSing").val(),-->
+<!--                        routinspId:$("#RoutInspIdSing").val(),-->
+<!--                        routassignedOfficer:$("#officerDrop").val(),-->
+<!--                        routlastDate:$("#RoutlastDate").val(),-->
+<!--                        routtaluk:$("#TalukSing").val(),-->
+<!--                        routdepartment:$("#RoutDepartmentSing").val(),-->
+<!--                        routdescription:$("#DescriptionSing").val(),-->
 
 
 <!--                    }-->
 
 <!--                        $.ajax({-->
 <!--                        contentType: "application/json;charset=UTF-8",-->
-<!--                        url: "/api/inspection/save",-->
+<!--                        url: "/api/routinsp/save",-->
 <!--                        dataType: "json",-->
 <!--                        type: "POST",-->
 <!--                        cache: !1,-->
@@ -190,23 +186,22 @@
 <!--                 showAlert()-->
 <!--      }-->
 
+      function saveRoutAssignment() {
 
-      function saveAssignment() {
-
-            var assignedOfficer = $("#officerDrop").val();
-            var lastDate = $("#LastDate").val();
+            var routassignedOfficer = $("#officerDrop").val();
+            var routlastDate = $("#RoutlastDate").val();
 
 
-            if (assignedOfficer && lastDate) {
+            if (routassignedOfficer && routlastDate) {
                 var userData = {
-                    assignedOfficer: assignedOfficer,
-                    lastDate: lastDate,
+                    routassignedOfficer: routassignedOfficer,
+                    routlastDate: routlastDate,
 
                 }
 
                 $.ajax({
                     contentType: "application/json;charset=UTF-8",
-                    url: "/api/inspection/save",
+                    url: "/api/routinsp/save",
                     dataType: "json",
                     type: "POST",
                     cache: !1,
@@ -222,10 +217,11 @@
             }
         }
 
-        function getInspId(id){
+
+        function getroutInspId(id){
                  $.ajax({
                        contentType: "application/json;charset=UTF-8",
-                       url: "${pageContext.request.contextPath}api/inspection/getById/"+id,
+                       url: "${pageContext.request.contextPath}api/routinsp/getById/"+id,
                        dataType: "json",
                        type: "GET",
                        success:function(data){
@@ -243,20 +239,21 @@
 
             $.ajax({
                 contentType: "application/json;charset=UTF-8",
-                url: "/api/inspection/getById/" + id,
+                url: "/api/routinsp/getById/" + id,
+                url: "/api/taluk/getAllTaluk",
                 dataType: "json",
                 type: "GET",
                 cache: !1,
                 processData: !1,
                 success: function(data) {
 
-                    $("#InspIdSing").text(data.inspId);
-                    $("#DepartmentSing").text(data.department);
-                    $("#DescriptionSing").text(data.description);
-                    $("#LastDateSing").text(data.lastDate);
-                    $("#AssignedOfficerSing").text(data.assignedOfficer);
-                    $("#DistrictSing").text(data.district);
-                    $("#TalukSing").text(data.taluk);
+                    $("#RoutInspIdSing").text(data.routinspId);
+                    $("#RoutDepartmentSing").text(data.routdepartment);
+                    $("#RoutDescriptionSing").text(data.routdescription);
+                    $("#RoutLastDateSing").text(data.routlastDate);
+                    $("#RoutroutassignedOfficerSing").text(data.routassignedOfficer);
+                    $("#RoutDistrictSing").text(data.district);
+                    $("#RoutTalukSing").text(data.routtaluk);
 
 
                 }

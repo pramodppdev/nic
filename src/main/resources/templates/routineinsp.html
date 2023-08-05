@@ -16,22 +16,30 @@
 <main>
     <div class="grid">
         <div class="wrapper">
-            <select name="" id="Routtaluk">
-                <option value="Select Taluk">Select Taluk</option>
-                <option value="">Sirguppa</option>
-                <option value="">Sandur</option>
-                <option value="">Kudligi</option>
-            </select>
+            <select  id="talukDrop" ></select>
         </div>
-        <div class="wrapper">
-            <input type="text" id="Routdepartment" required>
-            <label >Department</label>
+        <div class="wrapper" >
+            <select  id="deptDrop" ></select>
         </div>
     </div>
-    <div id="inputContainer">
 
+    <div id="inputContainer">
+        <div class="input-container">
+        </div>
     </div>
-    <button id="saveRoutineinsp()" class="add-btn">Add Input Field</button>
+    <button id="addButton">Add Question</button>
+
+    <div class="btn">
+        <button onclick="saveRoutineinsp()" class="submit-btn">Add</button>
+        <button class="cancel-btn">Cancel</button>
+    </div>
+    <div class="alert-container" id="alertContainer">
+        <div class="alert-message">
+            Added Data Successfully!
+            <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+            <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
+        </div>
+    </div>
 </main>
 <script>
 
@@ -58,6 +66,29 @@
 
 
 <!--        Taluk dropdown list end-->
+
+<!--        Department dropdown list start-->
+
+
+        $.ajax({
+           contentType: "application/json;charset=UTF-8",
+           type: "GET",
+           url: "/api/department/getAllDept",
+           dataType: "json",
+           async:false,
+           success: function (deptdata) {
+               var s = '<option value="-1">Select Department</option>';
+               for (var i = 0; i < deptdata.length; i++) {
+                   s += '<option value="' + deptdata[i].deptName + '">' + deptdata[i].deptName + '</option>';
+               }
+               $("#deptDrop").html(s);
+           }
+       });
+
+
+<!--        Department dropdown list end-->
+
+
 
             $("#tablelist").show();
             $("#saveInspbody").show();
@@ -92,34 +123,55 @@
         });
       });
 
-        function saveRoutineinsp(){
-
-                        var userData={
-
-
-                        routtaluk:$("#Routtaluk").val(),
-                        routdepartment:$("#Routdepartment").val(),
-                       
+        function saveRoutineinsp() {
+            const userData = {
+                routtaluk: $("#talukDrop").val(),
+                routdepartment: $("#deptDrop").val(),
+                routdescription: [],
 
 
 
-                    }
+            };
 
-                        $.ajax({
-                        contentType: "application/json;charset=UTF-8",
-                        url: "/api/inspection/save",
-                        dataType: "json",
-                        type: "POST",
-                        cache: !1,
-                        processData: !1,
-                        data: JSON.stringify(userData),
-                        complete:function(xhr) {
-                        console.log(data)
+            // Get all dynamically generated input fields with their routInspAns values
+               $("#inputContainer").find(".input-container").each(function() {
+                const routInspContent = $(this).find("input[type='text']").val();
+                const imgReqCheckbox = $(this).find("input[type='checkbox']");
 
-                        }
-                 });
-                 showAlert()
-      }
+                // Determine the value for imgReq based on checkbox status
+                const imgReqValue = imgReqCheckbox.is(":checked") ? "Yes" : "No";
+
+                // Create an object for each routInspContent and imgReq
+                const inspObject = {
+                    routInspContent: routInspContent,
+                    imgReq: imgReqValue
+                };
+
+                // Push the object to the routdescription array
+                userData.routdescription.push(inspObject);
+            });
+
+
+
+            $.ajax({
+                contentType: "application/json;charset=UTF-8",
+                url: "/api/routinsp/save",
+                dataType: "json",
+                type: "POST",
+                cache: !1,
+                processData: !1,
+                data: JSON.stringify(userData),
+                success: function(response) {
+                    console.log(response); // If needed, handle the response from the server
+                },
+                error: function(error) {
+                    console.error("error"); // If needed, handle the error from the server
+                }
+            });
+
+            showAlert();
+        }
+
 
       function addInspection(){
 
@@ -128,20 +180,6 @@
 
 
       }
-
-function showAlert() {
-      var alertContainer = document.getElementById('alertContainer');
-      alertContainer.style.display = 'block';
-
-    }
-
-
-    function hideAlert() {
-      location.reload();
-      var alertContainer = document.getElementById('alertContainer');
-      alertContainer.style.display = 'none';
-    }
-
 
 	</script>
 
