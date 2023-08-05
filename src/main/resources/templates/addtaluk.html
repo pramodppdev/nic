@@ -103,32 +103,37 @@ $(document).ready(function() {
         });
       });
 
-function saveTaluk(){
 
-                        var userData={
+      function saveTaluk() {
 
-
-                        talukName:$("#TalukName").val(),
-                        district:$("#districtDrop").val(),
+            var talukName = $("#TalukName").val();
+            var district = $("#districtDrop").val();
 
 
-                    }
+            if (talukName && district) {
+                var userData = {
+                    talukName: talukName,
+                    district: district,
+                }
 
-                        $.ajax({
-                        contentType: "application/json;charset=UTF-8",
-                        url: "/api/taluk/save",
-                        dataType: "json",
-                        type: "POST",
-                        cache: !1,
-                        processData: !1,
-                        data: JSON.stringify(userData),
-                        complete:function(xhr) {
+                $.ajax({
+                    contentType: "application/json;charset=UTF-8",
+                    url: "/api/taluk/save",
+                    dataType: "json",
+                    type: "POST",
+                    cache: !1,
+                    processData: !1,
+                    data: JSON.stringify(userData),
+                    complete: function(xhr) {
                         console.log(data)
+                    }
+                });
+                showAlert();
+            } else {
+                alert("Please fill all the required fields");
+            }
+        }
 
-                        }
-                 });
-                 showAlert()
-      }
 
 
 

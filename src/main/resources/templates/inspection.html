@@ -135,40 +135,45 @@
         });
       });
 
-        function saveInspection(){
 
-                        var userData={
+      function saveInspection() {
 
+            var taluk = $("#talukDrop").val();
+            var department = $("#deptDrop").val();
+            var description = $("#Description").val();
 
-                        taluk:$("#talukDrop").val(),
-                        department:$("#deptDrop").val(),
-                        description:$("#Description").val(),
+            if (taluk && department && description) {
+                var userData = {
+                    taluk: taluk,
+                    department: department,
+                    description: description,
 
+                }
 
-
-                    }
-
-                        $.ajax({
-                        contentType: "application/json;charset=UTF-8",
-                        url: "/api/inspection/save",
-                        dataType: "json",
-                        type: "POST",
-                        cache: !1,
-                        processData: !1,
-                        data: JSON.stringify(userData),
-                        complete:function(xhr) {
+                $.ajax({
+                    contentType: "application/json;charset=UTF-8",
+                    url: "/api/inspection/save",
+                    dataType: "json",
+                    type: "POST",
+                    cache: !1,
+                    processData: !1,
+                    data: JSON.stringify(userData),
+                    complete: function(xhr) {
                         console.log(data)
+                    }
+                });
+                showAlert();
+            } else {
+                alert("Please fill all the required fields");
+            }
 
-                        }
-                 });
-                 showAlert()
-      }
+        }
+
 
       function addInspection(){
 
             $("#tablelist").hide();
             $("#saveOffbody").show();
-
 
       }
 

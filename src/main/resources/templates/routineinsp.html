@@ -24,7 +24,7 @@
     </div>
 
     <div id="inputContainer">
-        <div class="input-container" id="ImgReq">
+        <div class="input-container">
         </div>
     </div>
     <button id="addButton">Add Question</button>
@@ -132,7 +132,7 @@
 
 
             };
-        
+
             // Get all dynamically generated input fields with their routInspAns values
                $("#inputContainer").find(".input-container").each(function() {
                 const routInspContent = $(this).find("input[type='text']").val();
@@ -150,7 +150,9 @@
                 // Push the object to the routdescription array
                 userData.routdescription.push(inspObject);
             });
-        
+
+
+
             $.ajax({
                 contentType: "application/json;charset=UTF-8",
                 url: "/api/routinsp/save",
@@ -166,7 +168,7 @@
                     console.error("error"); // If needed, handle the error from the server
                 }
             });
-        
+
             showAlert();
         }
 

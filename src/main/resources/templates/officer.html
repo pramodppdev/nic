@@ -150,34 +150,41 @@
         });
       });
 
-        function saveOfficer(){
+        function saveOfficer() {
 
-                        var userData={
+            var officerName = $("#OfficerName").val();
+            var officerMob = $("#OfficerMob").val();
+            var officerDept = $("#deptDrop").val();
+            var designation = $("#Designation").val();
+            var taluk = $("#talukDrop").val();
 
+            if (officerName && officerMob && officerDept && designation && taluk) {
+                var userData = {
+                    officerName: officerName,
+                    officerMob: officerMob,
+                    officerDept: officerDept,
+                    designation: designation,
+                    taluk: taluk,
+                }
 
-                        officerName:$("#OfficerName").val(),
-                        officerMob:$("#OfficerMob").val(),
-                        officerDept:$("#deptDrop").val(),
-                        designation:$("#Designation").val(),
-                        taluk:$("#talukDrop").val(),
-
-                    }
-
-                        $.ajax({
-                        contentType: "application/json;charset=UTF-8",
-                        url: "/api/officer/save",
-                        dataType: "json",
-                        type: "POST",
-                        cache: !1,
-                        processData: !1,
-                        data: JSON.stringify(userData),
-                        complete:function(xhr) {
+                $.ajax({
+                    contentType: "application/json;charset=UTF-8",
+                    url: "/api/officer/save",
+                    dataType: "json",
+                    type: "POST",
+                    cache: !1,
+                    processData: !1,
+                    data: JSON.stringify(userData),
+                    complete: function(xhr) {
                         console.log(data)
+                    }
+                });
+                showAlert();
+            } else {
+                alert("Please fill all the required fields");
+            }
+        }
 
-                        }
-                 });
-                 showAlert()
-      }
 
       function addOfficer(){
 

@@ -63,7 +63,7 @@
             </div>
         </div>
         <div class="btn">
-            <button class="submit-btn" onclick="saveAssignment()">Assign</button>
+            <button class="submit-btn" onclick="saveRoutAssignment()">Assign</button>
             <button class="cancel-btn">Cancel</button>
         </div>
         <div class="alert-container" id="alertContainer">
@@ -143,9 +143,9 @@
 
 
                assignList=assignList+' <td>';
-               assignList=assignList+'<a href="javascript:getProfile(\''+data[i].inspId+'\')" title="Edit">';
+               assignList=assignList+'<a href="javascript:getProfile(\''+data[i].routinspId+'\')" title="Edit">';
                assignList=assignList+'<i>&#9997;&#xFE0E;</i> </a>';
-               assignList=assignList+'<a href="javascript:deleteProfile(\''+data[i].inspId+'\')" title="Delete">';
+               assignList=assignList+'<a href="javascript:deleteProfile(\''+data[i].routinspId+'\')" title="Delete">';
                assignList=assignList+'<i>&#x1F441;</i> </a>';
                assignList=assignList+'</td></tr>';
 
@@ -155,38 +155,70 @@
         });
       });
 
-        function saveAssignment(){
+<!--        function saveRoutAssignment(){-->
 
-                        var userData={
-
-
-                        routinspId:$("#RoutInspIdSing").val(),
-                        routassignedOfficer:$("#officerDrop").val(),
-                        routlastDate:$("#RoutlastDate").val(),
-                        routtaluk:$("#TalukSing").val(),
-                        routdepartment:$("#RoutDepartmentSing").val(),
-                        routdescription:$("#DescriptionSing").val(),
+<!--                        var userData={-->
 
 
-                    }
+<!--                        routinspId:$("#RoutInspIdSing").val(),-->
+<!--                        routassignedOfficer:$("#officerDrop").val(),-->
+<!--                        routlastDate:$("#RoutlastDate").val(),-->
+<!--                        routtaluk:$("#TalukSing").val(),-->
+<!--                        routdepartment:$("#RoutDepartmentSing").val(),-->
+<!--                        routdescription:$("#DescriptionSing").val(),-->
 
-                        $.ajax({
-                        contentType: "application/json;charset=UTF-8",
-                        url: "/api/routinsp/save",
-                        dataType: "json",
-                        type: "POST",
-                        cache: !1,
-                        processData: !1,
-                        data: JSON.stringify(userData),
-                        complete:function(xhr) {
+
+<!--                    }-->
+
+<!--                        $.ajax({-->
+<!--                        contentType: "application/json;charset=UTF-8",-->
+<!--                        url: "/api/routinsp/save",-->
+<!--                        dataType: "json",-->
+<!--                        type: "POST",-->
+<!--                        cache: !1,-->
+<!--                        processData: !1,-->
+<!--                        data: JSON.stringify(userData),-->
+<!--                        complete:function(xhr) {-->
+<!--                        console.log(data)-->
+
+<!--                        }-->
+<!--                 });-->
+<!--                 showAlert()-->
+<!--      }-->
+
+      function saveRoutAssignment() {
+
+            var routassignedOfficer = $("#officerDrop").val();
+            var routlastDate = $("#RoutlastDate").val();
+
+
+            if (routassignedOfficer && routlastDate) {
+                var userData = {
+                    routassignedOfficer: routassignedOfficer,
+                    routlastDate: routlastDate,
+
+                }
+
+                $.ajax({
+                    contentType: "application/json;charset=UTF-8",
+                    url: "/api/routinsp/save",
+                    dataType: "json",
+                    type: "POST",
+                    cache: !1,
+                    processData: !1,
+                    data: JSON.stringify(userData),
+                    complete: function(xhr) {
                         console.log(data)
+                    }
+                });
+                showAlert();
+            } else {
+                alert("Please fill all the required fields");
+            }
+        }
 
-                        }
-                 });
-                 showAlert()
-      }
 
-        function getInspId(id){
+        function getroutInspId(id){
                  $.ajax({
                        contentType: "application/json;charset=UTF-8",
                        url: "${pageContext.request.contextPath}api/routinsp/getById/"+id,
