@@ -29,6 +29,25 @@ public class RoutInspServiceImpl implements RoutInspService {
     }
 
     @Override
+    public RoutInsp updateRoutInsp(RoutInsp routInsp, String id) {
+        RoutInsp existingRoutInsp = routInspRepoRepo.findById(id).orElseThrow(
+                ()-> new ResourceNotFoundException("Inspection not Found","Id",id));
+
+
+        existingRoutInsp.setRouttaluk(routInsp.getRouttaluk());
+        existingRoutInsp.setRoutdepartment(routInsp.getRoutdepartment());
+        existingRoutInsp.setRoutlastDate(routInsp.getRoutlastDate());
+        existingRoutInsp.setRoutstatus(routInsp.getRoutstatus());
+       
+        existingRoutInsp.setRoutassignedOfficer(routInsp.getRoutassignedOfficer());
+        existingRoutInsp.setRoutdistrict(routInsp.getRoutdistrict());
+
+        routInspRepoRepo.save(existingRoutInsp);
+
+        return existingRoutInsp;
+    }
+
+    @Override
     public RoutInsp getById(String id) {
         return routInspRepoRepo.findById(id).orElseThrow(()->  new ResourceNotFoundException("RoutInsp","Id",id));
     }

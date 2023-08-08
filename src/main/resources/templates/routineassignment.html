@@ -23,9 +23,10 @@
                 <thead>
                 <tr>
                     <th>Department</th>
-                    <th>Officer Assigned</th>
                     <th>Designation</th>
                     <th>LastDate</th>
+                    <th>Officer Assigned</th>
+
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -63,7 +64,7 @@
             </div>
         </div>
         <div class="btn">
-            <button class="submit-btn" onclick="saveRoutAssignment()">Assign</button>
+            <button class="submit-btn" onclick="updateRoutAssignment()">Assign</button>
             <button class="cancel-btn">Cancel</button>
         </div>
         <div class="alert-container" id="alertContainer">
@@ -116,16 +117,7 @@
                for(i=0;i<data.length;i++){
                assignList=assignList+'<tr>';
                assignList=assignList+' <td>'+data[i].routdepartment +'</td>';
-               if(data[i].routassignedOfficer==null)
-               {
-               assignList=assignList+' <td>';
-               assignList=assignList+'<a href="javascript:getroutInsp(\''+data[i].routinspId+'\')" title="Assign">';
-               assignList=assignList+'<button class="btn" id="tablelist">Assign</button></a>';
-               }
-               else{
-                assignList=assignList+' <td>'+data[i].routassignedOfficer +'</td>';
 
-               }
                assignList=assignList+' <td>'+data[i].designation +'</td>';
 
                if(data[i].routlastDate==null)
@@ -139,6 +131,16 @@
 
                }
 
+               if(data[i].routassignedOfficer==null)
+               {
+               assignList=assignList+' <td>';
+               assignList=assignList+'<a href="javascript:getroutInsp(\''+data[i].routinspId+'\')" title="Assign">';
+               assignList=assignList+'<button class="btn" id="tablelist">Assign</button></a>';
+               }
+               else{
+                assignList=assignList+' <td>'+data[i].routassignedOfficer +'</td>';
+
+               }
                assignList=assignList+' <td>';
                assignList=assignList+'<a href="javascript:getProfile(\''+data[i].routinspId+'\')" title="Edit">';
                assignList=assignList+'<i>&#9997;&#xFE0E;</i> </a>';
@@ -185,36 +187,38 @@
 <!--                 showAlert()-->
 <!--      }-->
 
-      function saveRoutAssignment() {
+     function updateRoutAssignment() {
+    var routinspId = $("#RoutInspIdSing").text(); // Get the RoutInspId from the displayed table
+    var routassignedOfficer = $("#officerDrop").val();
+    var routlastDate = $("#RoutlastDate").val();
 
-            var routassignedOfficer = $("#officerDrop").val();
-            var routlastDate = $("#RoutlastDate").val();
+    if (routassignedOfficer && routlastDate) {
+        var userData = {
+            routassignedOfficer: routassignedOfficer,
+            routlastDate: routlastDate,
+        };
 
+        $.ajax({
+            contentType: "application/json;charset=UTF-8",
+            url: "/api/routinsp/update/" + routinspId, // Use the update endpoint with the RoutInspId
+            dataType: "json",
+            type: "PUT", // Use PUT method for update
+            data: JSON.stringify(userData),
+            success: function (data) {
+                // Update the displayed table with the updated data
+                $("#routassignedOfficerCell").text(data.routassignedOfficer);
+                $("#routlastDateCell").text(data.routlastDate);
 
-            if (routassignedOfficer && routlastDate) {
-                var userData = {
-                    routassignedOfficer: routassignedOfficer,
-                    routlastDate: routlastDate,
-
-                }
-
-                $.ajax({
-                    contentType: "application/json;charset=UTF-8",
-                    url: "/api/routinsp/save",
-                    dataType: "json",
-                    type: "POST",
-                    cache: !1,
-                    processData: !1,
-                    data: JSON.stringify(userData),
-                    complete: function(xhr) {
-                        console.log(data)
-                    }
-                });
                 showAlert();
-            } else {
-                alert("Please fill all the required fields");
-            }
-        }
+            },
+            error: function (xhr, status, error) {
+                alert("Failed to update: " + error);
+            },
+        });
+    } else {
+        alert("Please fill all the required fields");
+    }
+}
 
 
         function getroutInspId(id){

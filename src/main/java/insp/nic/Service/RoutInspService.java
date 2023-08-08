@@ -13,7 +13,10 @@ public interface RoutInspService {
 
     List<RoutInsp> getAllRoutInsp();
 
+    RoutInsp updateRoutInsp(RoutInsp routInsp,String id);
+
     RoutInsp getById(String id);
+
 
     void deleteRoutInsp(String id);
 }
