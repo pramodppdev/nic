@@ -48,12 +48,12 @@
                     <td id="DescriptionSing"></td>
                 </tr>
                 <tr>
-                    <th class="assign-head">District</th>
-                    <td id="DistrictSing">---</td>
+                    <th class="assign-head">Taluk</th>
+                    <td id="TalukSing"></td>
                 </tr>
                 <tr>
                     <th class="assign-head">Department</th>
-                    <td id="DepartmentSing">---</td>
+                    <td id="DepartmentSing"></td>
                 </tr>
             </table>
         </div>
@@ -82,7 +82,7 @@
 
 <script>
 
-    $(document).ready(function() {
+  $(document).ready(function() {
 
     <!--        Officer dropdown list start-->
 
@@ -114,7 +114,6 @@
             contentType: "application/json;charset=UTF-8",
             url: "/api/inspection/getAllInsp",
             dataType: "json",
-            type: "GET",
             type: "GET",
             async:false,
             success:function(data){
