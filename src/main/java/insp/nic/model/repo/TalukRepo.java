@@ -1,4 +1,4 @@
-package insp.nic.repo;
+package insp.nic.model.repo;
 
 import insp.nic.model.Officer;
 import insp.nic.model.Taluk;

@@ -1,6 +1,7 @@
 package insp.nic.Service;
 
 import insp.nic.model.Inspection;
+import insp.nic.model.RoutInsp;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,8 @@ public interface InspectionService {
     List<Inspection> getAllInsp();
 
     Inspection getById(String id);
+
+    Inspection updateInsp(Inspection inspection, String id);
 
     void deleteInsp(String id);
 

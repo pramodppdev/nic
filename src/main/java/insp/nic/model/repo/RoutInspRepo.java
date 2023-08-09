@@ -1,4 +1,4 @@
-package insp.nic.repo;
+package insp.nic.model.repo;
 
 import insp.nic.model.Inspection;
 import insp.nic.model.RoutInsp;

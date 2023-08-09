@@ -34,11 +34,10 @@ public class RoutInspController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateRout(@PathVariable("id")String id, @RequestBody RoutInsp routInsp){
-
         routInspService.updateRoutInsp(routInsp,id);
-        return new ResponseEntity<String>("Updated Sucessfully",HttpStatus.OK);
-
+        return new ResponseEntity<String>("Routine Inspection Updated Sucessfully",HttpStatus.OK);
     }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteRoutInsp(@PathVariable("id") String id){
         routInspService.deleteRoutInsp(id);

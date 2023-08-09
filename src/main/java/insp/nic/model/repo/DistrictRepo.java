@@ -1,10 +1,10 @@
-package insp.nic.repo;
+package insp.nic.model.repo;
 
 
-import insp.nic.model.Executive;
+import insp.nic.model.District;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ExecutiveRepo extends MongoRepository<Executive, String> {
+public interface DistrictRepo extends MongoRepository<District,String> {
 }

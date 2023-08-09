@@ -4,7 +4,7 @@ package insp.nic.Service.serviceImpl;
 import insp.nic.Service.OfficerService;
 import insp.nic.exception.ResourceNotFoundException;
 import insp.nic.model.Officer;
-import insp.nic.repo.OfficerRepo;
+import insp.nic.model.repo.OfficerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

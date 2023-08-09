@@ -23,9 +23,9 @@
             <thead>
             <tr>
                 <th>Department</th>
-                <th>Officer Assigned</th>
                 <th>Designation</th>
                 <th>LastDate</th>
+                <th>Officer Assigned</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -44,16 +44,16 @@
                     <td id="InspIdSing"></td>
                 </tr>
                 <tr>
-                    <th class="assign-head">Description</th>
-                    <td id="DescriptionSing"></td>
-                </tr>
-                <tr>
                     <th class="assign-head">Taluk</th>
                     <td id="TalukSing"></td>
                 </tr>
                 <tr>
                     <th class="assign-head">Department</th>
                     <td id="DepartmentSing"></td>
+                </tr>
+                <tr>
+                    <th class="assign-head">Description</th>
+                    <td id="DescriptionSing"></td>
                 </tr>
             </table>
         </div>
@@ -67,7 +67,7 @@
             </div>
         </div>
         <div class="btn">
-            <button class="submit-btn" onclick="saveAssignment()">Assign</button>
+            <button class="submit-btn" onclick="updateAssignment()">Assign</button>
             <button class="cancel-btn">Cancel</button>
         </div>
         <div class="alert-container" id="alertContainer">
@@ -118,18 +118,9 @@
             async:false,
             success:function(data){
                for(i=0;i<data.length;i++){
-               assignList=assignList+'<tr>';
+               assignList += '<tr id="' + data[i].inspId + '">'; // Add ID attribute
                assignList=assignList+' <td>'+data[i].department +'</td>';
-               if(data[i].assignedOfficer==null)
-               {
-               assignList=assignList+' <td>';
-               assignList=assignList+'<a href="javascript:getInsp(\''+data[i].inspId+'\')" title="Assign">';
-               assignList=assignList+'<button class="btn" id="tablelist">Assign</button></a>';
-               }
-               else{
-                assignList=assignList+' <td>'+data[i].assignedOfficer +'</td>';
 
-               }
                assignList=assignList+' <td>'+data[i].designation +'</td>';
 
                if(data[i].lastDate==null)
@@ -142,13 +133,23 @@
                assignList=assignList+' <td>'+data[i].lastDate +'</td>'
 
                }
+               if(data[i].assignedOfficer==null)
+               {
+               assignList=assignList+' <td>';
+               assignList=assignList+'<a href="javascript:getInsp(\''+data[i].inspId+'\')" title="Assign">';
+               assignList=assignList+'<button class="btn" id="tablelist">Assign</button></a>';
+               }
+               else{
+                assignList=assignList+' <td>'+data[i].assignedOfficer +'</td>';
+
+               }
 
 
 
                assignList=assignList+' <td>';
                assignList=assignList+'<a href="javascript:getProfile(\''+data[i].inspId+'\')" title="Edit">';
                assignList=assignList+'<i>&#9997;&#xFE0E;</i> </a>';
-               assignList=assignList+'<a href="javascript:deleteProfile(\''+data[i].inspId+'\')" title="Delete">';
+               assignList=assignList+'<a href="javascript:deleteInsp(\''+data[i].inspId+'\')" title="Delete">';
                assignList=assignList+'<i>&#x1F441;</i> </a>';
                assignList=assignList+'</td></tr>';
 
@@ -190,36 +191,44 @@
 <!--      }-->
 
 
-      function saveAssignment() {
+      function updateAssignment() {
+        var inspId = $("#InspIdSing").text(); // Get the InspId from the displayed table
+        var department = $("#DepartmentSing").text(); // Get the Department from the displayed table
+        var assignedOfficer = $("#officerDrop").val();
+        var lastDate = $("#LastDate").val();
+        var taluk = $("#TalukSing").val();
 
-            var assignedOfficer = $("#officerDrop").val();
-            var lastDate = $("#LastDate").val();
+        if (assignedOfficer && lastDate) {
+            var userData = {
+                assignedOfficer: assignedOfficer,
+                lastDate: lastDate,
+                department: department, // Include the department in the userData
+                taluk: taluk, // Include the taluk in the userData
+            };
 
+            $.ajax({
+                contentType: "application/json;charset=UTF-8",
+                url: "/api/inspection/update/" + inspId, // Use the update endpoint with the InspId
+                dataType: "json",
+                type: "PUT", // Use PUT method for update
+                data: JSON.stringify(userData),
+                success: function (data) {
+                    // Update the displayed table with the updated data
+                    $("#assignedOfficerCell").text(data.assignedOfficer);
+                    $("#lastDateCell").text(data.lastDate);
+                    $("#departmentCell").text(data.department); // Update the displayed department
+                    $("#talukCell").text(data.taluk); // Update the displayed taluk
 
-            if (assignedOfficer && lastDate) {
-                var userData = {
-                    assignedOfficer: assignedOfficer,
-                    lastDate: lastDate,
-
-                }
-
-                $.ajax({
-                    contentType: "application/json;charset=UTF-8",
-                    url: "/api/inspection/save",
-                    dataType: "json",
-                    type: "POST",
-                    cache: !1,
-                    processData: !1,
-                    data: JSON.stringify(userData),
-                    complete: function(xhr) {
-                        console.log(data)
-                    }
-                });
-                showAlert();
-            } else {
-                alert("Please fill all the required fields");
-            }
+                    showAlert();
+                },
+                error: function (xhr, status, error) {
+                    alert("Failed to update: " + error);
+                },
+            });
+        } else {
+            alert("Please fill all the required fields");
         }
+    }
 
         function getInspId(id){
                  $.ajax({
@@ -261,6 +270,25 @@
                 }
             });
         }
+
+        function deleteInsp(id) {
+            if (confirm("Are you sure you want to delete this inspection?")) {
+                $.ajax({
+                    contentType: "application/json;charset=UTF-8",
+                    url: "/api/inspection/delete/" + id, // Use the delete endpoint with the InspId
+                    type: "DELETE",
+                    success: function () {
+                        // Remove the deleted row from the displayed table
+                        $("#" + id).remove();
+                        showAlert("Inspection deleted successfully.");
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Failed to delete inspection: " + error);
+                    },
+                });
+            }
+        }
+
 
 
       function addInspection(){

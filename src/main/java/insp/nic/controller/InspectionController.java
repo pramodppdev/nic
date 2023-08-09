@@ -3,6 +3,7 @@ package insp.nic.controller;
 
 import insp.nic.Service.InspectionService;
 import insp.nic.model.Inspection;
+import insp.nic.model.RoutInsp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,12 @@ public class InspectionController {
     @GetMapping("/getById/{id}")
     public ResponseEntity<Inspection> getById(@PathVariable("id") String id){
         return new ResponseEntity<Inspection>(inspectionService.getById(id), HttpStatus.OK);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> updateInsp(@PathVariable("id")String id, @RequestBody Inspection inspection){
+        inspectionService.updateInsp(inspection,id);
+        return new ResponseEntity<String>("Inspection Updated Sucessfully",HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")

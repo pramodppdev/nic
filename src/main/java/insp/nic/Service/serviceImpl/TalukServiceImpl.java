@@ -4,7 +4,7 @@ package insp.nic.Service.serviceImpl;
 import insp.nic.Service.TalukService;
 import insp.nic.exception.ResourceNotFoundException;
 import insp.nic.model.Taluk;
-import insp.nic.repo.TalukRepo;
+import insp.nic.model.repo.TalukRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
