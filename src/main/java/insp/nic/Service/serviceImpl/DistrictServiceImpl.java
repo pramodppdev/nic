@@ -4,7 +4,7 @@ package insp.nic.Service.serviceImpl;
 import insp.nic.Service.DistrictService;
 import insp.nic.exception.ResourceNotFoundException;
 import insp.nic.model.District;
-import insp.nic.model.repo.DistrictRepo;
+import insp.nic.repo.DistrictRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

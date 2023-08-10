@@ -1,4 +1,4 @@
-package insp.nic.model.repo;
+package insp.nic.repo;
 
 import insp.nic.model.Department;
 import insp.nic.model.Designation;

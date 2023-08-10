@@ -20,9 +20,9 @@ public class HomeController {
         return "index";
     }
 
-    @GetMapping("/department")
-    public String department(){
-        return "department";
+    @GetMapping("/adddepartment")
+    public String adddepartment(){
+        return "adddepartment";
     }
 
     @GetMapping("/officer")
@@ -50,15 +50,15 @@ public class HomeController {
         return "administration";
     }
 
-    @GetMapping("/addconfiguration")
-    public String addconfiguration(){
-        return "addconfiguration";
-    }
-
-    @GetMapping("/setconfiguration")
-    public String setconfiguration(){
-        return "setconfiguration";
-    }
+//    @GetMapping("/addconfiguration")
+//    public String addconfiguration(){
+//        return "addconfiguration";
+//    }
+//
+//    @GetMapping("/setconfiguration")
+//    public String setconfiguration(){
+//        return "setconfiguration";
+//    }
 
     @GetMapping("/addtaluk")
     public String addtaluk(){

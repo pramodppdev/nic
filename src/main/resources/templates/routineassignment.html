@@ -51,6 +51,10 @@
                     <th class="assign-head">Department</th>
                     <td id="RoutDepartmentSing"></td>
                 </tr>
+                <tr>
+                    <th class="assign-head">Description</th>
+                    <td id="RoutDescriptionSing"></td>
+                </tr>
             </table>
         </div>
         <div class="grid">
@@ -99,7 +103,6 @@
 
 
     <!--        Officer dropdown list end-->
-
 
 
         $("#tablelist").show();
@@ -152,7 +155,6 @@
             }
         });
       });
-
 
 
 <!--        function saveRoutAssignment(){-->
@@ -240,7 +242,6 @@
             }
 
 
-
         function getroutInsp(id) {
             $("#tablelist").hide();
             $("#assignment").show();
@@ -262,6 +263,11 @@
                     $("#RoutDistrictSing").text(data.district);
                     $("#RoutTalukSing").text(data.routtaluk);
 
+                    var descriptionHtml = '';
+                    for (var i = 0; i < data.routdescription.length; i++) {
+                        descriptionHtml += data.routdescription[i].routInspContent + '<br>';
+                    }
+                    $("#RoutDescriptionSing").html(descriptionHtml);
 
                 }
             });
@@ -276,7 +282,7 @@
                     success: function () {
                         // Remove the deleted row from the displayed table
                         $("#" + id).remove();
-                        showAlert("Inspection deleted successfully.");
+                        alert("Inspection deleted successfully.");
                     },
                     error: function (xhr, status, error) {
                         alert("Failed to delete inspection: " + error);
@@ -295,16 +301,6 @@
 <!--                $("#RoutDistrictSing").text(data.district);-->
 <!--            }-->
 <!--        });-->
-
-
-      function addInspection(){
-
-            $("#tablelist").hide();
-            $("#saveOffbody").show();
-
-
-      }
-
 
 </script>
 </body>

@@ -93,43 +93,11 @@
             $("#tablelist").show();
             $("#saveInspbody").show();
 
-        var routList="";
-        $.ajax({
-            contentType: "application/json;charset=UTF-8",
-            url: "/api/inspection/getAllInsp",
-            dataType: "json",
-            type: "GET",
-            type: "GET",
-            async:false,
-            success:function(data){
-               for(i=0;i<data.length;i++){
-               routList=routList+'<tr>';
-               routList=routList+' <td>'+data[i].inspId +'</td>';
-               routList=routList+' <td>'+data[i].description +'</td>';
-               routList=routList+' <td>'+data[i].department +'</td>'
-
-
-
-               routList=routList+' <td>';
-               routList=routList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
-               routList=routList+'<i>&#9997;&#xFE0E;</i> </a>';
-               routList=routList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
-               routList=routList+'<i>&#x1F441;</i> </a>';
-               routList=routList+'</td></tr>';
-
-               }
-                $("#routList").html(routList);
-            }
-        });
-      });
-
         function saveRoutineinsp() {
             const userData = {
                 routtaluk: $("#talukDrop").val(),
                 routdepartment: $("#deptDrop").val(),
                 routdescription: [],
-
-
 
             };
 

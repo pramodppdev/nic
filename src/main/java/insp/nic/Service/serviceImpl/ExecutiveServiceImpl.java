@@ -4,7 +4,7 @@ package insp.nic.Service.serviceImpl;
 import insp.nic.Service.ExecutiveService;
 import insp.nic.exception.ResourceNotFoundException;
 import insp.nic.model.Executive;
-import insp.nic.model.repo.ExecutiveRepo;
+import insp.nic.repo.ExecutiveRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -3,7 +3,7 @@ package insp.nic.Service.serviceImpl;
 import insp.nic.Service.DesignationService;
 import insp.nic.exception.ResourceNotFoundException;
 import insp.nic.model.Designation;
-import insp.nic.model.repo.DesignationRepo;
+import insp.nic.repo.DesignationRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

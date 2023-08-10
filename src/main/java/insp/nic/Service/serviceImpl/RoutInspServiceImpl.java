@@ -3,7 +3,7 @@ package insp.nic.Service.serviceImpl;
 import insp.nic.Service.RoutInspService;
 import insp.nic.exception.ResourceNotFoundException;
 import insp.nic.model.RoutInsp;
-import insp.nic.model.repo.RoutInspRepo;
+import insp.nic.repo.RoutInspRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
