@@ -144,7 +144,7 @@
 
                }
                assignList=assignList+' <td>';
-               assignList=assignList+'<a href="javascript:getProfile(\''+data[i].routinspId+'\')" title="Edit">';
+               assignList=assignList+'<a href="javascript:getroutInsp(\''+data[i].routinspId+'\')" title="Edit">';
                assignList=assignList+'<i>&#9997;&#xFE0E;</i> </a>';
                assignList=assignList+'<a href="javascript:deleteRoutInsp(\''+data[i].routinspId+'\')" title="Delete">';
                assignList=assignList+'<b style="color:#FF0000">&#x1F5D1;</b> </a>';
@@ -154,39 +154,9 @@
                 $("#assignList").html(assignList);
             }
         });
-      });
+    });
 
 
-<!--        function saveRoutAssignment(){-->
-
-<!--                        var userData={-->
-
-
-<!--                        routinspId:$("#RoutInspIdSing").val(),-->
-<!--                        routassignedOfficer:$("#officerDrop").val(),-->
-<!--                        routlastDate:$("#RoutlastDate").val(),-->
-<!--                        routtaluk:$("#RoutTalukSing").val(),-->
-<!--                        routdepartment:$("#RoutDepartmentSing").val(),-->
-<!--                        routdescription:$("#DescriptionSing").val(),-->
-
-
-<!--                    }-->
-
-<!--                        $.ajax({-->
-<!--                        contentType: "application/json;charset=UTF-8",-->
-<!--                        url: "/api/routinsp/save",-->
-<!--                        dataType: "json",-->
-<!--                        type: "POST",-->
-<!--                        cache: !1,-->
-<!--                        processData: !1,-->
-<!--                        data: JSON.stringify(userData),-->
-<!--                        complete:function(xhr) {-->
-<!--                        console.log(data)-->
-
-<!--                        }-->
-<!--                 });-->
-<!--                 showAlert()-->
-<!--      }-->
 
      function updateRoutAssignment() {
         var routinspId = $("#RoutInspIdSing").text(); // Get the RoutInspId from the displayed table
