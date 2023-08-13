@@ -70,14 +70,13 @@
             async:false,
             success:function(data){
                for(i=0;i<data.length;i++){
-               deptList=deptList+'<tr>';
+               deptList += '<tr id="' + data[i].deptId + '">'; // Add ID attribute
 
                deptList=deptList+' <td>'+data[i].deptName +'</td>';
-
                deptList=deptList+' <td>';
-               deptList=deptList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
+               deptList=deptList+'<a href="javascript:getProfile(\''+data[i].deptId+'\')" title="Edit">';
                deptList=deptList+'<i>&#9997;&#xFE0E;</i> </a>';
-               deptList=deptList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
+               deptList=deptList+'<a href="javascript:deleteDept(\''+data[i].deptId+'\')" title="Delete">';
                deptList=deptList+'<i>&#x1F441;</i> </a>';
                deptList=deptList+'</td></tr>';
 
@@ -114,13 +113,24 @@
             }
         }
 
-      function addDepartment(){
 
-            $("#tablelist").hide();
-            $("#saveDeptbody").show();
-
-
-      }
+      function deleteDept(id) {
+            if (confirm("Are you sure you want to delete this Department?")) {
+                $.ajax({
+                    contentType: "application/json;charset=UTF-8",
+                    url: "/api/department/delete/" + id, // Use the delete endpoint with the deptId
+                    type: "DELETE",
+                    success: function () {
+                        // Remove the deleted row from the displayed table
+                        $("#" + id).remove();
+                        alert("Department deleted successfully.");
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Failed to delete Department: " + error);
+                    },
+                });
+            }
+        }
 
 
 	</script>

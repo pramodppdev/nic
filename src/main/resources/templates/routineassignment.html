@@ -23,9 +23,9 @@
                 <thead>
                 <tr>
                     <th>Department</th>
-                    <th>Officer Assigned</th>
                     <th>Designation</th>
                     <th>LastDate</th>
+                    <th>Officer Assigned</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -44,12 +44,16 @@
                     <td id="RoutInspIdSing"></td>
                 </tr>
                 <tr>
-                    <th class="assign-head">District</th>
-                    <td id="RoutDistrictSing"></td>
+                    <th class="assign-head">Taluk</th>
+                    <td id="RoutTalukSing"></td>
                 </tr>
                 <tr>
                     <th class="assign-head">Department</th>
                     <td id="RoutDepartmentSing"></td>
+                </tr>
+                <tr>
+                    <th class="assign-head">Description</th>
+                    <td id="RoutDescriptionSing"></td>
                 </tr>
             </table>
         </div>
@@ -63,7 +67,7 @@
             </div>
         </div>
         <div class="btn">
-            <button class="submit-btn" onclick="saveRoutAssignment()">Assign</button>
+            <button class="submit-btn" onclick="updateRoutAssignment()">Assign</button>
             <button class="cancel-btn">Cancel</button>
         </div>
         <div class="alert-container" id="alertContainer">
@@ -101,7 +105,6 @@
     <!--        Officer dropdown list end-->
 
 
-
         $("#tablelist").show();
         $("#assignment").hide();
 
@@ -111,22 +114,12 @@
             url: "/api/routinsp/getAllRoutInsp",
             dataType: "json",
             type: "GET",
-            type: "GET",
             async:false,
             success:function(data){
                for(i=0;i<data.length;i++){
-               assignList=assignList+'<tr>';
+               assignList += '<tr id="' + data[i].routinspId + '">'; // Add ID attribute
                assignList=assignList+' <td>'+data[i].routdepartment +'</td>';
-               if(data[i].routassignedOfficer==null)
-               {
-               assignList=assignList+' <td>';
-               assignList=assignList+'<a href="javascript:getInsp(\''+data[i].routinspId+'\')" title="Assign">';
-               assignList=assignList+'<button class="btn" id="tablelist">Assign</button></a>';
-               }
-               else{
-                assignList=assignList+' <td>'+data[i].routassignedOfficer +'</td>';
 
-               }
                assignList=assignList+' <td>'+data[i].designation +'</td>';
 
                if(data[i].routlastDate==null)
@@ -140,12 +133,20 @@
 
                }
 
+               if(data[i].routassignedOfficer==null)
+               {
+               assignList=assignList+' <td>';
+               assignList=assignList+'<a href="javascript:getroutInsp(\''+data[i].routinspId+'\')" title="Assign">';
+               assignList=assignList+'<button class="btn" id="tablelist">Assign</button></a>';
+               }
+               else{
+                assignList=assignList+' <td>'+data[i].routassignedOfficer +'</td>';
 
-
+               }
                assignList=assignList+' <td>';
                assignList=assignList+'<a href="javascript:getProfile(\''+data[i].routinspId+'\')" title="Edit">';
                assignList=assignList+'<i>&#9997;&#xFE0E;</i> </a>';
-               assignList=assignList+'<a href="javascript:deleteProfile(\''+data[i].routinspId+'\')" title="Delete">';
+               assignList=assignList+'<a href="javascript:deleteRoutInsp(\''+data[i].routinspId+'\')" title="Delete">';
                assignList=assignList+'<i>&#x1F441;</i> </a>';
                assignList=assignList+'</td></tr>';
 
@@ -155,6 +156,7 @@
         });
       });
 
+
 <!--        function saveRoutAssignment(){-->
 
 <!--                        var userData={-->
@@ -163,7 +165,7 @@
 <!--                        routinspId:$("#RoutInspIdSing").val(),-->
 <!--                        routassignedOfficer:$("#officerDrop").val(),-->
 <!--                        routlastDate:$("#RoutlastDate").val(),-->
-<!--                        routtaluk:$("#TalukSing").val(),-->
+<!--                        routtaluk:$("#RoutTalukSing").val(),-->
 <!--                        routdepartment:$("#RoutDepartmentSing").val(),-->
 <!--                        routdescription:$("#DescriptionSing").val(),-->
 
@@ -186,42 +188,50 @@
 <!--                 showAlert()-->
 <!--      }-->
 
-      function saveRoutAssignment() {
+     function updateRoutAssignment() {
+        var routinspId = $("#RoutInspIdSing").text(); // Get the RoutInspId from the displayed table
+        var routassignedOfficer = $("#officerDrop").val();
+        var routlastDate = $("#RoutlastDate").val();
+        var routdepartment = $("#RoutDepartmentSing").text();
+        var routtaluk = $("#RoutTalukSing").text();
 
-            var routassignedOfficer = $("#officerDrop").val();
-            var routlastDate = $("#RoutlastDate").val();
+        if (routassignedOfficer && routlastDate) {
+            var userData = {
+                routassignedOfficer: routassignedOfficer,
+                routlastDate: routlastDate,
+                routdepartment: routdepartment,
+                routtaluk: routtaluk,
+            };
 
+            $.ajax({
+                contentType: "application/json;charset=UTF-8",
+                url: "/api/routinsp/update/" + routinspId, // Use the update endpoint with the RoutInspId
+                dataType: "json",
+                type: "PUT", // Use PUT method for update
+                data: JSON.stringify(userData),
+                success: function (data) {
+                    // Update the displayed table with the updated data
+                    $("#routassignedOfficerCell").text(data.routassignedOfficer);
+                    $("#routlastDateCell").text(data.routlastDate);
+                    $("#routdepartmentCell").text(data.routdepartment);
+                    $("#routtalukCell").text(data.routtaluk);
 
-            if (routassignedOfficer && routlastDate) {
-                var userData = {
-                    routassignedOfficer: routassignedOfficer,
-                    routlastDate: routlastDate,
-
-                }
-
-                $.ajax({
-                    contentType: "application/json;charset=UTF-8",
-                    url: "/api/routinsp/save",
-                    dataType: "json",
-                    type: "POST",
-                    cache: !1,
-                    processData: !1,
-                    data: JSON.stringify(userData),
-                    complete: function(xhr) {
-                        console.log(data)
-                    }
-                });
-                showAlert();
-            } else {
-                alert("Please fill all the required fields");
-            }
+                    showAlert();
+                },
+                error: function (xhr, status, error) {
+                    alert("Failed to update: " + error);
+                },
+            });
+        } else {
+            alert("Please fill all the required fields");
         }
+    }
 
 
         function getroutInspId(id){
                  $.ajax({
                        contentType: "application/json;charset=UTF-8",
-                       url: "${pageContext.request.contextPath}api/routinsp/getById/"+id,
+                       url: "${pageContext.request.contextPath}api/routinsp/getById/" + id,
                        dataType: "json",
                        type: "GET",
                        success:function(data){
@@ -232,15 +242,13 @@
             }
 
 
-
-        function getInsp(id) {
+        function getroutInsp(id) {
             $("#tablelist").hide();
             $("#assignment").show();
 
             $.ajax({
                 contentType: "application/json;charset=UTF-8",
                 url: "/api/routinsp/getById/" + id,
-                url: "/api/taluk/getAllTaluk",
                 dataType: "json",
                 type: "GET",
                 cache: !1,
@@ -255,20 +263,44 @@
                     $("#RoutDistrictSing").text(data.district);
                     $("#RoutTalukSing").text(data.routtaluk);
 
+                    var descriptionHtml = '';
+                    for (var i = 0; i < data.routdescription.length; i++) {
+                        descriptionHtml += data.routdescription[i].routInspContent + '<br>';
+                    }
+                    $("#RoutDescriptionSing").html(descriptionHtml);
 
                 }
             });
         }
 
+         function deleteRoutInsp(id) {
+            if (confirm("Are you sure you want to delete this inspection?")) {
+                $.ajax({
+                    contentType: "application/json;charset=UTF-8",
+                    url: "/api/routinsp/delete/" + id, // Use the delete endpoint with the InspId
+                    type: "DELETE",
+                    success: function () {
+                        // Remove the deleted row from the displayed table
+                        $("#" + id).remove();
+                        alert("Inspection deleted successfully.");
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Failed to delete inspection: " + error);
+                    },
+                });
+            }
+        }
 
-      function addInspection(){
+<!--            $.ajax({-->
+<!--            contentType: "application/json;charset=UTF-8",-->
+<!--            url: "/api/taluk/getAllTaluk",-->
+<!--            dataType: "json",-->
+<!--            type: "GET",-->
+<!--            success: function(data) {-->
 
-            $("#tablelist").hide();
-            $("#saveOffbody").show();
-
-
-      }
-
+<!--                $("#RoutDistrictSing").text(data.district);-->
+<!--            }-->
+<!--        });-->
 
 </script>
 </body>

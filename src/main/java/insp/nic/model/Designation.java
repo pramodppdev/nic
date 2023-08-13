@@ -3,7 +3,7 @@ package insp.nic.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
+@Document(collection = "designation")
 public class Designation {
 
     @Id

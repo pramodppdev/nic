@@ -33,6 +33,26 @@ public class InspectionServiceImpl implements InspectionService {
     }
 
     @Override
+    public Inspection updateInsp(Inspection inspection, String id) {
+        Inspection existingInspection = inspectionRepo.findById(id).orElseThrow(
+                ()-> new ResourceNotFoundException("Inspection not Found","Id",id));
+
+
+        existingInspection.setTaluk(inspection.getTaluk());
+        existingInspection.setDepartment(inspection.getDepartment());
+        existingInspection.setLastDate(inspection.getLastDate());
+        existingInspection.setStatus(inspection.getStatus());
+
+        existingInspection.setAssignedOfficer(inspection.getAssignedOfficer());
+        existingInspection.setDistrict(inspection.getDistrict());
+
+        inspectionRepo.save(existingInspection);
+
+        return existingInspection;
+    }
+
+
+    @Override
     public void deleteInsp(String id) {
         inspectionRepo.findById(id).orElseThrow(()->  new ResourceNotFoundException("Inspection","Id",id));
         inspectionRepo.deleteById(id);
