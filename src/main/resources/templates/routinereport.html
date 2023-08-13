@@ -21,14 +21,12 @@
     <div class="table-container">
       <table>
         <thead>
-        <tr>
-          <th>Department</th>
-          
-          <th>Officer Assigned</th>
-          <th>Status</th>
-          
-          <th>Actions</th>
-        </tr>
+          <tr>
+            <th>Department</th>
+            <th>Officer Assigned</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
         </thead>
         <tbody id="reportList">
 
@@ -56,9 +54,38 @@
           <th class="assign-head">Description</th>
           <td id="RoutDescriptionSing"></td>
         </tr>
+        <tr>
+          <th class="assign-head">Officer Assigned</th>
+          <td id="RoutAssignedOfficerSing"></td>
+        </tr>
+        <tr>
+          <th class="assign-head">Last Date</th>
+          <td id="RoutLastDateSing"></td>
+        </tr>
       </table>
     </div>
-    
+    <h2>IMAGES</h2>
+    <div class="grid">
+      <div class="wrapper">
+        <img src="/imgs/photo1.png">
+      </div>
+      <div class="wrapper" >
+        <img src="/imgs/photo1.png">
+      </div>
+      <div class="wrapper" >
+        <img src="/imgs/photo1.png">
+      </div>
+      <div class="wrapper" >
+        <img src="/imgs/photo1.png">
+      </div>
+      <div class="wrapper" >
+        <img src="/imgs/photo1.png">
+      </div>
+      <div class="wrapper" >
+        <img src="/imgs/photo1.png">
+      </div>
+    </div>
+  </div>
 </main>
 
 <script>
@@ -82,9 +109,7 @@
            }
         });
 
-
     <!--        Officer dropdown list end-->
-
 
         $("#tablelist").show();
         $("#Reportind").hide();
@@ -104,9 +129,6 @@
                      reportList=reportList+' <td>'+data[i].routdepartment +'</td>';
                      reportList=reportList+' <td>'+data[i].routassignedOfficer +'</td>';
                      reportList=reportList+' <td>'+data[i].routstatus +'</td>';
-
-
-
 
                      reportList=reportList+' <td>';
                      reportList=reportList+'<a href="javascript:getroutInsp(\''+data[i].routinspId+'\')" title="View">';
@@ -192,7 +214,7 @@
                     $("#RoutDepartmentSing").text(data.routdepartment);
                     $("#RoutDescriptionSing").text(data.routdescription);
                     $("#RoutLastDateSing").text(data.routlastDate);
-                    $("#RoutroutassignedOfficerSing").text(data.routassignedOfficer);
+                    $("#RoutAssignedOfficerSing").text(data.routassignedOfficer);
                     $("#RoutDistrictSing").text(data.district);
                     $("#RoutTalukSing").text(data.routtaluk);
 

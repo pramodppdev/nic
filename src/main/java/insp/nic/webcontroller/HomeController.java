@@ -95,9 +95,4 @@ public class HomeController {
         return "adddesignation";
     }
 
-    @GetMapping("/routview")
-    public String routview(){
-        return "routview";
-    }
-
 }

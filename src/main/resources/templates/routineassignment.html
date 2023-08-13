@@ -141,8 +141,8 @@
                }
                else{
                 assignList=assignList+' <td>'+data[i].routassignedOfficer +'</td>';
-
                }
+
                assignList=assignList+' <td>';
                assignList=assignList+'<a href="javascript:getroutInsp(\''+data[i].routinspId+'\')" title="Edit">';
                assignList=assignList+'<i>&#9997;&#xFE0E;</i> </a>';
@@ -155,8 +155,6 @@
             }
         });
     });
-
-
 
      function updateRoutAssignment() {
         var routinspId = $("#RoutInspIdSing").text(); // Get the RoutInspId from the displayed table
