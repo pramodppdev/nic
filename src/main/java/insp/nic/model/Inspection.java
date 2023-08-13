@@ -16,6 +16,8 @@ public class Inspection {
 
     private String description;
 
+    private String designation;
+
     private String lastDate;
 
     private String status;
@@ -31,11 +33,12 @@ public class Inspection {
     public Inspection() {
     }
 
-    public Inspection(String inspId, String taluk, String department, String description, String lastDate, String status, String assignedOfficer, String createdAt, String createdBy, String district) {
+    public Inspection(String inspId, String taluk, String department, String description, String designation, String lastDate, String status, String assignedOfficer, String createdAt, String createdBy, String district) {
         this.inspId = inspId;
         this.taluk = taluk;
         this.department = department;
         this.description = description;
+        this.designation = designation;
         this.lastDate = lastDate;
         this.status = status;
         this.assignedOfficer = assignedOfficer;
@@ -76,6 +79,14 @@ public class Inspection {
         this.description = description;
     }
 
+    public String getDesignation() {
+        return designation;
+    }
+
+    public void setDesignation(String designation) {
+        this.designation = designation;
+    }
+
     public String getLastDate() {
         return lastDate;
     }
@@ -88,9 +99,8 @@ public class Inspection {
         return status;
     }
 
-    public String setStatus(String status) {
+    public void setStatus(String status) {
         this.status = status;
-        return "created";
     }
 
     public String getAssignedOfficer() {
