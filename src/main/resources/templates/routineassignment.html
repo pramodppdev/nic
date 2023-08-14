@@ -72,7 +72,7 @@
         </div>
         <div class="alert-container" id="alertContainer">
             <div class="alert-message">
-                Added Data Successfully!
+                Assigned Officer Successfully!
                 <button class="alert-button-ok" onclick="hideAlert()">OK</button>
                 <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
             </div>
@@ -141,52 +141,20 @@
                }
                else{
                 assignList=assignList+' <td>'+data[i].routassignedOfficer +'</td>';
-
                }
+
                assignList=assignList+' <td>';
-               assignList=assignList+'<a href="javascript:getProfile(\''+data[i].routinspId+'\')" title="Edit">';
+               assignList=assignList+'<a href="javascript:getroutInsp(\''+data[i].routinspId+'\')" title="Edit">';
                assignList=assignList+'<i>&#9997;&#xFE0E;</i> </a>';
                assignList=assignList+'<a href="javascript:deleteRoutInsp(\''+data[i].routinspId+'\')" title="Delete">';
-               assignList=assignList+'<i>&#x1F441;</i> </a>';
+               assignList=assignList+'<b style="color:#FF0000">&#x1F5D1;</b> </a>';
                assignList=assignList+'</td></tr>';
 
                }
                 $("#assignList").html(assignList);
             }
         });
-      });
-
-
-<!--        function saveRoutAssignment(){-->
-
-<!--                        var userData={-->
-
-
-<!--                        routinspId:$("#RoutInspIdSing").val(),-->
-<!--                        routassignedOfficer:$("#officerDrop").val(),-->
-<!--                        routlastDate:$("#RoutlastDate").val(),-->
-<!--                        routtaluk:$("#RoutTalukSing").val(),-->
-<!--                        routdepartment:$("#RoutDepartmentSing").val(),-->
-<!--                        routdescription:$("#DescriptionSing").val(),-->
-
-
-<!--                    }-->
-
-<!--                        $.ajax({-->
-<!--                        contentType: "application/json;charset=UTF-8",-->
-<!--                        url: "/api/routinsp/save",-->
-<!--                        dataType: "json",-->
-<!--                        type: "POST",-->
-<!--                        cache: !1,-->
-<!--                        processData: !1,-->
-<!--                        data: JSON.stringify(userData),-->
-<!--                        complete:function(xhr) {-->
-<!--                        console.log(data)-->
-
-<!--                        }-->
-<!--                 });-->
-<!--                 showAlert()-->
-<!--      }-->
+    });
 
      function updateRoutAssignment() {
         var routinspId = $("#RoutInspIdSing").text(); // Get the RoutInspId from the displayed table
@@ -215,17 +183,13 @@
                     $("#routlastDateCell").text(data.routlastDate);
                     $("#routdepartmentCell").text(data.routdepartment);
                     $("#routtalukCell").text(data.routtaluk);
-
-                    showAlert();
-                },
-                error: function (xhr, status, error) {
-                    alert("Failed to update: " + error);
                 },
             });
-        } else {
-            alert("Please fill all the required fields");
+            showAlert();
+            } else {
+                alert("Please fill all the required fields");
+            }
         }
-    }
 
 
         function getroutInspId(id){

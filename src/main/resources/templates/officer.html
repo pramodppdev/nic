@@ -158,10 +158,8 @@
                officerList=officerList+' <td>'+data[i].officerMob +'</td>';
 
                officerList=officerList+' <td>';
-               officerList=officerList+'<a href="javascript:getProfile(\''+data[i].officerId+'\')" title="Edit">';
-               officerList=officerList+'<i>&#9997;&#xFE0E;</i> </a>';
                officerList=officerList+'<a href="javascript:deleteOfficer(\''+data[i].officerId+'\')" title="Delete">';
-               officerList=officerList+'<i>&#x1F441;</i> </a>';
+               officerList=officerList+'<b style="color:#FF0000">&#x1F5D1;</b> </a>';
                officerList=officerList+'</td></tr>';
 
                }

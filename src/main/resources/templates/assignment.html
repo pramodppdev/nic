@@ -72,7 +72,7 @@
         </div>
         <div class="alert-container" id="alertContainer">
             <div class="alert-message">
-                Added Data Successfully!
+                Assigned Officer Successfully!
                 <button class="alert-button-ok" onclick="hideAlert()">OK</button>
                 <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
             </div>
@@ -96,15 +96,15 @@
                var s = '<option value="-1">Select Officer</option>';
                for (var i = 0; i < officerData.length; i++) {
                    s += '<option value="' + officerData[i].officerName + '">' + officerData[i].officerName + '</option>';
+                   $("#OfficerDesig").text(officerData[i].designation);
                }
                $("#officerDrop").html(s); // Updated ID here
+
            }
         });
 
 
     <!--        Officer dropdown list end-->
-
-
 
         $("#tablelist").show();
         $("#assignment").hide();
@@ -147,10 +147,10 @@
 
 
                assignList=assignList+' <td>';
-               assignList=assignList+'<a href="javascript:getProfile(\''+data[i].inspId+'\')" title="Edit">';
+               assignList=assignList+'<a href="javascript:getInsp(\''+data[i].inspId+'\')" title="Edit">';
                assignList=assignList+'<i>&#9997;&#xFE0E;</i> </a>';
                assignList=assignList+'<a href="javascript:deleteAssignment(\''+data[i].inspId+'\')" title="Delete">';
-               assignList=assignList+'<i>&#x1F441;</i> </a>';
+               assignList=assignList+'<b style="color:#FF0000">&#x1F5D1;</b> </a>';
                assignList=assignList+'</td></tr>';
 
                }
@@ -159,36 +159,6 @@
         });
       });
 
-<!--         function saveAssignment(){-->
-
-<!--                        var userData={-->
-
-
-<!--                        inspId:$("#InspIdSing").val(),-->
-<!--                        assignedOfficer:$("#officerDrop").val(),-->
-<!--                        lastDate:$("#LastDate").val(),-->
-<!--                        taluk:$("#TalukSing").val(),-->
-<!--                        department:$("#DepartmentSing").val(),-->
-<!--                        description:$("#DescriptionSing").val(),-->
-
-
-<!--                    }-->
-
-<!--                        $.ajax({-->
-<!--                        contentType: "application/json;charset=UTF-8",-->
-<!--                        url: "/api/inspection/save",-->
-<!--                        dataType: "json",-->
-<!--                        type: "POST",-->
-<!--                        cache: !1,-->
-<!--                        processData: !1,-->
-<!--                        data: JSON.stringify(userData),-->
-<!--                        complete:function(xhr) {-->
-<!--                        console.log(data)-->
-
-<!--                        }-->
-<!--                 });-->
-<!--                 showAlert()-->
-<!--      }-->
 
 
       function updateAssignment() {
@@ -196,7 +166,8 @@
         var department = $("#DepartmentSing").text(); // Get the Department from the displayed table
         var assignedOfficer = $("#officerDrop").val();
         var lastDate = $("#LastDate").val();
-        var taluk = $("#TalukSing").val();
+        var taluk = $("#TalukSing").text();
+        var designation = $("#OfficerDesig").val();
 
         if (assignedOfficer && lastDate) {
             var userData = {
@@ -204,6 +175,7 @@
                 lastDate: lastDate,
                 department: department, // Include the department in the userData
                 taluk: taluk, // Include the taluk in the userData
+                designation:designation,
             };
 
             $.ajax({
@@ -218,17 +190,14 @@
                     $("#lastDateCell").text(data.lastDate);
                     $("#departmentCell").text(data.department); // Update the displayed department
                     $("#talukCell").text(data.taluk); // Update the displayed taluk
-
-                    showAlert();
-                },
-                error: function (xhr, status, error) {
-                    alert("Failed to update: " + error);
+                    $("#desigCell").text(data.designation);
                 },
             });
+            showAlert();
         } else {
             alert("Please fill all the required fields");
         }
-    }
+      }
 
         function getInspId(id){
                  $.ajax({
@@ -265,8 +234,6 @@
                     $("#AssignedOfficerSing").text(data.assignedOfficer);
                     $("#DistrictSing").text(data.district);
                     $("#TalukSing").text(data.taluk);
-
-
                 }
             });
         }
@@ -288,17 +255,6 @@
                 });
             }
         }
-
-
-
-      function addInspection(){
-
-            $("#tablelist").hide();
-            $("#saveOffbody").show();
-
-
-      }
-
 
 </script>
 </body>

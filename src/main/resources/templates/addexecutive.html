@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="/css/form.css">
   <link rel="stylesheet" href="/css/table.css">
   <link rel="stylesheet" href="/css/alert.css">
-  <script src="/script/script.js"></script>
+  <script src="/script/alert.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 
 </head>
@@ -104,16 +104,13 @@ $(document).ready(function() {
             success:function(data){
                for(i=0;i<data.length;i++){
                extList += '<tr id="' + data[i].executiveId + '">'; // Add ID attribute
-
                extList=extList+' <td>'+data[i].executiveName +'</td>';
                extList=extList+' <td>'+data[i].district +'</td>';
                extList=extList+' <td>'+data[i].executiveMob +'</td>';
 
                extList=extList+' <td>';
-               extList=extList+'<a href="javascript:getProfile(\''+data[i].executiveId+'\')" title="Edit">';
-               extList=extList+'<i>&#9997;&#xFE0E;</i> </a>';
                extList=extList+'<a href="javascript:deleteExecutive(\''+data[i].executiveId+'\')" title="Delete">';
-               extList=extList+'<i>&#x1F441;</i> </a>';
+               extList=extList+'<b style="color:#FF0000">&#x1F5D1;</b> </a>';
                extList=extList+'</td></tr>';
 
                }
@@ -131,7 +128,7 @@ $(document).ready(function() {
             var district = $("#districtDrop").val();
             var executiveMob = $("#ExecutiveMob").val();
 
-            if (executiveName && officerMob && officerDept && designation && taluk) {
+            if (executiveName && executiveUserName && executivePasswd && district && executiveMob) {
                 var userData = {
                     executiveName: executiveName,
                     executiveUserName: executiveUserName,

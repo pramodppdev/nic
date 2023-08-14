@@ -94,10 +94,8 @@ $(document).ready(function() {
                designationList=designationList+' <td>'+data[i].designationName +'</td>';
 
                designationList=designationList+' <td>';
-               designationList=designationList+'<a href="javascript:getProfile(\''+data[i].desgId+'\')" title="Edit">';
-               designationList=designationList+'<i>&#9997;&#xFE0E;</i> </a>';
                designationList=designationList+'<a href="javascript:deleteDesignation(\''+data[i].desgId+'\')" title="Delete">';
-               designationList=designationList+'<i>&#x1F441;</i> </a>';
+               designationList=designationList+'<b style="color:#FF0000">&#x1F5D1;</b> </a>';
                designationList=designationList+'</td></tr>';
 
                }
