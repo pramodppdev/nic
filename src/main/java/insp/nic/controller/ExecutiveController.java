@@ -19,6 +19,7 @@ public class ExecutiveController {
 
     @PostMapping("/save")
     public ResponseEntity<Executive> saveExe(@RequestBody Executive executive){
+
         return new ResponseEntity<Executive>(executiveService.saveExe(executive), HttpStatus.CREATED);
     }
 

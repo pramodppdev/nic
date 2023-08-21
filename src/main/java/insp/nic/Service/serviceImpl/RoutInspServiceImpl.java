@@ -35,7 +35,7 @@ public class RoutInspServiceImpl implements RoutInspService {
         existingRoutInsp.setRoutdepartment(routInsp.getRoutdepartment());
         existingRoutInsp.setRoutlastDate(routInsp.getRoutlastDate());
         existingRoutInsp.setRoutstatus(routInsp.getRoutstatus());
-       
+
         existingRoutInsp.setRoutassignedOfficer(routInsp.getRoutassignedOfficer());
         existingRoutInsp.setRoutdistrict(routInsp.getRoutdistrict());
 
@@ -55,7 +55,10 @@ public class RoutInspServiceImpl implements RoutInspService {
         routInspRepo.deleteById(id);
     }
 
-
+    @Override
+    public int routCount() {
+        return (int) routInspRepo.count();
+    }
 
 
 }

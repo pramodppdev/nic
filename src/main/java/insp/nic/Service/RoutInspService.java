@@ -19,4 +19,6 @@ public interface RoutInspService {
 
 
     void deleteRoutInsp(String id);
+
+    int routCount();
 }
