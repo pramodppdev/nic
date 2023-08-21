@@ -95,4 +95,14 @@ public class HomeController {
         return "adddesignation";
     }
 
+    @GetMapping("/routine")
+    public String routine(){
+        return "routInspMain";
+    }
+
+    @GetMapping("/grevience")
+    public String grevience(){
+        return "grevience";
+    }
+
 }

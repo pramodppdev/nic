@@ -1,7 +1,6 @@
 package insp.nic.Service;
 
 import insp.nic.model.Inspection;
-import insp.nic.model.RoutInsp;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
