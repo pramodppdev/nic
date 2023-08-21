@@ -18,4 +18,6 @@ public interface InspectionService {
 
     void deleteInsp(String id);
 
+    int inspCout();
+
 }

@@ -55,7 +55,10 @@ public class AdHocServiceImpl implements AdHocService {
         adHocRepo.deleteById(id);
     }
 
-
+    @Override
+    public int adHocCount() {
+        return (int) adHocRepo.count();
+    }
 
 
 }

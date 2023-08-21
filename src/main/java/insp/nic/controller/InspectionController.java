@@ -29,6 +29,12 @@ public class InspectionController {
         return inspectionService.getAllInsp();
     }
 
+    @GetMapping("/count")
+    public int inspcount(){
+        return inspectionService.inspCout();
+    }
+
+
     @GetMapping("/getById/{id}")
     public ResponseEntity<Inspection> getById(@PathVariable("id") String id){
         return new ResponseEntity<Inspection>(inspectionService.getById(id), HttpStatus.OK);

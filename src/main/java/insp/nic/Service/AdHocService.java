@@ -18,4 +18,8 @@ public interface AdHocService {
 
 
     void deleteRoutInsp(String id);
+
+    int adHocCount();
+
+
 }

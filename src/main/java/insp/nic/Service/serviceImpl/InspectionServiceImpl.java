@@ -57,4 +57,9 @@ public class InspectionServiceImpl implements InspectionService {
         inspectionRepo.findById(id).orElseThrow(()->  new ResourceNotFoundException("Inspection","Id",id));
         inspectionRepo.deleteById(id);
     }
+
+    @Override
+    public int inspCout() {
+        return (int) inspectionRepo.count();
+    }
 }

@@ -25,6 +25,12 @@ public class AdHocController {
         return adHocService.getAllRoutInsp();
     }
 
+
+    @GetMapping("/count")
+    public int adhocCount(){
+        return adHocService.adHocCount();
+    }
+
     @GetMapping("/getById/{id}")
     public ResponseEntity<AdHoc> getById(@PathVariable("id") String id){
         return new ResponseEntity<AdHoc>(adHocService.getById(id), HttpStatus.OK);
