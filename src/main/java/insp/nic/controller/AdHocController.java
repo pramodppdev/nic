@@ -16,13 +16,13 @@ public class AdHocController {
     private AdHocService adHocService;
 
     @PostMapping("/save")
-    public ResponseEntity<AdHoc> saveRoutInsp(@RequestBody AdHoc adHoc){
-        return new ResponseEntity<AdHoc>(adHocService.saveRoutInsp(adHoc), HttpStatus.CREATED);
+    public ResponseEntity<AdHoc> saveAdhocInsp(@RequestBody AdHoc adHoc){
+        return new ResponseEntity<AdHoc>(adHocService.saveAdhocInsp(adHoc), HttpStatus.CREATED);
     }
 
     @GetMapping("/getAllAdhoc")
-    public List<AdHoc> getAllRoutInsp(){
-        return adHocService.getAllRoutInsp();
+    public List<AdHoc> getAllAdhocInsp(){
+        return adHocService.getAllAdhocInsp();
     }
 
 
@@ -37,14 +37,14 @@ public class AdHocController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateRout(@PathVariable("id")String id, @RequestBody AdHoc adHoc){
-        adHocService.updateRoutInsp(adHoc,id);
-        return new ResponseEntity<String>("Routine Inspection Updated Sucessfully",HttpStatus.OK);
+    public ResponseEntity<String> updateAdhoc(@PathVariable("id")String id, @RequestBody AdHoc adHoc){
+        adHocService.updateAdhocInsp(adHoc,id);
+        return new ResponseEntity<String>("Adhoc Inspection Updated Sucessfully",HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteRoutInsp(@PathVariable("id") String id){
-        adHocService.deleteRoutInsp(id);
-        return new ResponseEntity<String>("RoutInsp Deleted Successfully", HttpStatus.OK);
+    public ResponseEntity<String> deleteAdhocInsp(@PathVariable("id") String id){
+        adHocService.deleteAdhocInsp(id);
+        return new ResponseEntity<String>("AdhocInsp Deleted Successfully", HttpStatus.OK);
     }
 }

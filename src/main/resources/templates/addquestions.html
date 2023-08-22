@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>NIC</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/form.css">
+  <link rel="stylesheet" href="css/routine.css">
+  <link rel="stylesheet" href="css/alert.css">
+  <script src="script/alert.js"></script>
+  <script src="script/dynamic_fields.js"></script>
+</head>
+<body>
+  <div th:replace="~{fragment/nav :: nav}"> </div>
+    <main>
+      <div class="grid">
+        <div class="wrapper">
+          <select  id="talukDrop" ></select>
+        </div>
+        <div class="wrapper">
+          <select  id="deptDrop" ></select>
+        </div>
+      </div>
+      <div id="inputContainer" class="input-container">
+      </div>
+      <button id="addButton" class="add-btn">Add Input Field</button>
+
+      <div class="btn">
+        <button onclick="saveRoutineinsp()" class="submit-btn">Add</button>
+        <button class="cancel-btn">Cancel</button>
+      </div>
+      <div class="alert-container" id="alertContainer">
+        <div class="alert-message">
+          Added Data Successfully!
+          <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+          <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
+        </div>
+      </div>
+    </main>
+</body>
+<script>
+     $(document).ready(function() {
+
+     <!--        Taluk dropdown list start-->
+
+           $.ajax({
+               contentType: "application/json;charset=UTF-8",
+               type: "GET",
+               url: "/api/taluk/getAllTaluk",
+               dataType: "json",
+               async:false,
+               success: function (talukData) {
+                   var s = '<option value="-1">Select Taluk</option>';
+                   for (var i = 0; i < talukData.length; i++) {
+                       s += '<option value="' + talukData[i].talukName + '">' + talukData[i].talukName + '</option>';
+                   }
+                   $("#talukDrop").html(s); // Updated ID here
+               }
+            });
+
+    <!--        Taluk dropdown list end-->
+
+    <!--        Department dropdown list start-->
+
+            $.ajax({
+               contentType: "application/json;charset=UTF-8",
+               type: "GET",
+               url: "/api/department/getAllDept",
+               dataType: "json",
+               async:false,
+               success: function (deptdata) {
+                   var s = '<option value="-1">Select Department</option>';
+                   for (var i = 0; i < deptdata.length; i++) {
+                       s += '<option value="' + deptdata[i].deptName + '">' + deptdata[i].deptName + '</option>';
+                   }
+                   $("#deptDrop").html(s);
+               }
+           });
+
+    <!--        Department dropdown list end-->
+
+     }
+</script>
+</html>

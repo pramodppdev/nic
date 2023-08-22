@@ -50,16 +50,6 @@ public class HomeController {
         return "administration";
     }
 
-//    @GetMapping("/addconfiguration")
-//    public String addconfiguration(){
-//        return "addconfiguration";
-//    }
-//
-//    @GetMapping("/setconfiguration")
-//    public String setconfiguration(){
-//        return "setconfiguration";
-//    }
-
     @GetMapping("/addtaluk")
     public String addtaluk(){
         return "addtaluk";
@@ -103,6 +93,31 @@ public class HomeController {
     @GetMapping("/grevience")
     public String grevience(){
         return "grevience";
+    }
+
+    @GetMapping("/adhoc")
+    public String adhoc(){
+        return "adhocMain";
+    }
+
+    @GetMapping("/adhocInsp")
+    public String adhocInsp(){
+        return "adhocInsp";
+    }
+
+    @GetMapping("/adhocAssignment")
+    public String adhocAssignment(){
+        return "adhocAssignment";
+    }
+
+    @GetMapping("/adhocReport")
+    public String adhocReport(){
+        return "adhocReport";
+    }
+
+    @GetMapping("/addquestions")
+    public String addquestions(){
+        return "addquestions";
     }
 
 }

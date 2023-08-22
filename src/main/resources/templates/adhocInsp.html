@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>NIC</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/routine.css">
+    <link rel="stylesheet" href="/css/alert.css">
+    <script src="/script/alert.js"></script>
+    <script src="/script/dynamic_fields.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div th:replace="~{fragment/nav :: nav}"> </div>
+<main>
+    <div class="grid">
+        <div class="wrapper">
+            <select  id="adhocTalukDrop" ></select>
+        </div>
+        <div class="wrapper" >
+            <select  id="adhocDeptDrop" ></select>
+        </div>
+    </div>
+
+    <div id="inputContainer">
+        <div class="input-container">
+
+        </div>
+    </div>
+    <button id="addButton">Add Question</button>
+
+    <div class="btn">
+        <button onclick="saveAdhocInsp()" class="submit-btn">Add</button>
+        <button class="cancel-btn">Cancel</button>
+    </div>
+    <div class="alert-container" id="alertContainer">
+        <div class="alert-message">
+            Added Data Successfully!
+            <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+            <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
+        </div>
+    </div>
+</main>
+<script>
+
+    $(document).ready(function() {
+
+<!--        Taluk dropdown list start-->
+
+
+       $.ajax({
+           contentType: "application/json;charset=UTF-8",
+           type: "GET",
+           url: "/api/taluk/getAllTaluk",
+           dataType: "json",
+           async:false,
+           success: function (talukData) {
+               var s = '<option value="-1">Select Taluk</option>';
+               for (var i = 0; i < talukData.length; i++) {
+                   s += '<option value="' + talukData[i].talukName + '">' + talukData[i].talukName + '</option>';
+               }
+               $("#adhocTalukDrop").html(s); // Updated ID here
+           }
+        });
+
+
+<!--        Taluk dropdown list end-->
+
+<!--        Department dropdown list start-->
+
+
+        $.ajax({
+           contentType: "application/json;charset=UTF-8",
+           type: "GET",
+           url: "/api/department/getAllDept",
+           dataType: "json",
+           async:false,
+           success: function (deptdata) {
+               var s = '<option value="-1">Select Department</option>';
+               for (var i = 0; i < deptdata.length; i++) {
+                   s += '<option value="' + deptdata[i].deptName + '">' + deptdata[i].deptName + '</option>';
+               }
+               $("#adhocDeptDrop").html(s);
+           }
+       });
+
+
+<!--        Department dropdown list end-->
+
+
+
+            $("#tablelist").show();
+            $("#saveInspbody").show();
+
+            });
+
+        function saveAdhocInsp() {
+            const userData = {
+                adhoctaluk: $("#adhocTalukDrop").val(),
+                adhocdepartment: $("#adhocDeptDrop").val(),
+                adhocdescription: [],
+
+            };
+
+            // Get all dynamically generated input fields with their routInspAns values
+               $("#inputContainer").find(".input-container").each(function() {
+                const adhocInspContent = $(this).find("input[type='text']").val();
+                const imgReqCheckbox = $(this).find("input[type='checkbox']");
+
+                // Determine the value for imgReq based on checkbox status
+                const imgReqValue = imgReqCheckbox.is(":checked") ? "Yes" : "No";
+
+                // Create an object for each routInspContent and imgReq
+                const adhocObject = {
+                    adhocInspContent: adhocInspContent,
+                    imgReq: imgReqValue
+                };
+
+                // Push the object to the adhocdescription array
+                userData.adhocdescription.push(adhocObject);
+            });
+
+
+
+            $.ajax({
+                contentType: "application/json;charset=UTF-8",
+                url: "/api/adhoc/save",
+                dataType: "json",
+                type: "POST",
+                cache: !1,
+                processData: !1,
+                data: JSON.stringify(userData),
+                success: function(response) {
+                    console.log(response); // If needed, handle the response from the server
+                },
+                error: function(error) {
+                    console.error("error"); // If needed, handle the error from the server
+                }
+            });
+
+            showAlert();
+        }
+
+</script>
+</body>
+</html>
