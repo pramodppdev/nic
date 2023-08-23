@@ -88,16 +88,14 @@ $(document).ready(function() {
             async:false,
             success:function(data){
                for(i=0;i<data.length;i++){
-               designationList=designationList+'<tr>';
+               designationList += '<tr id="' + data[i].desgId + '">'; // Add ID attribute
 
                designationList=designationList+' <td>'+data[i].department +'</td>';
                designationList=designationList+' <td>'+data[i].designationName +'</td>';
 
                designationList=designationList+' <td>';
-               designationList=designationList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
-               designationList=designationList+'<i>&#9997;&#xFE0E;</i> </a>';
-               designationList=designationList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
-               designationList=designationList+'<i>&#x1F441;</i> </a>';
+               designationList=designationList+'<a href="javascript:deleteDesignation(\''+data[i].desgId+'\')" title="Delete">';
+               designationList=designationList+'<b style="color:#FF0000">&#x1F5D1;</b> </a>';
                designationList=designationList+'</td></tr>';
 
                }
@@ -137,7 +135,23 @@ $(document).ready(function() {
             }
         }
 
-
+        function deleteDesignation(id) {
+            if (confirm("Are you sure you want to delete this Designation?")) {
+                $.ajax({
+                    contentType: "application/json;charset=UTF-8",
+                    url: "/api/designation/delete/" + id, // Use the delete endpoint with the desgId
+                    type: "DELETE",
+                    success: function () {
+                        // Remove the deleted row from the displayed table
+                        $("#" + id).remove();
+                        alert("Designation deleted successfully.");
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Failed to delete Designation: " + error);
+                    },
+                });
+            }
+        }
 
 
 </script>

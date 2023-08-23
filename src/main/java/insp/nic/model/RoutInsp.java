@@ -17,6 +17,8 @@ public class RoutInsp {
 
     private List<RoutInspDetails> routdescription;
 
+    private String routDesig;
+
     private String routlastDate;
 
     private String routstatus;
@@ -32,11 +34,12 @@ public class RoutInsp {
     public RoutInsp() {
     }
 
-    public RoutInsp(String routinspId, String routtaluk, String routdepartment, List<RoutInspDetails> routdescription, String routlastDate, String routstatus, String routassignedOfficer, String routcreatedAt, String routcreatedBy, String routdistrict) {
+    public RoutInsp(String routinspId, String routtaluk, String routdepartment, List<RoutInspDetails> routdescription, String routDesig, String routlastDate, String routstatus, String routassignedOfficer, String routcreatedAt, String routcreatedBy, String routdistrict) {
         this.routinspId = routinspId;
         this.routtaluk = routtaluk;
         this.routdepartment = routdepartment;
         this.routdescription = routdescription;
+        this.routDesig = routDesig;
         this.routlastDate = routlastDate;
         this.routstatus = routstatus;
         this.routassignedOfficer = routassignedOfficer;
@@ -75,6 +78,14 @@ public class RoutInsp {
 
     public void setRoutdescription(List<RoutInspDetails> routdescription) {
         this.routdescription = routdescription;
+    }
+
+    public String getRoutDesig() {
+        return routDesig;
+    }
+
+    public void setRoutDesig(String routDesig) {
+        this.routDesig = routDesig;
     }
 
     public String getRoutlastDate() {

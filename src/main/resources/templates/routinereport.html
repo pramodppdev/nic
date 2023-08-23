@@ -1,104 +1,118 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+  <meta charset="UTF-8">
   <title>NIC</title>
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/form.css">
   <link rel="stylesheet" href="/css/table.css">
+  <link rel="stylesheet" href="/css/alert.css">
+  <script src="/script/alert.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="/script/script.js"></script>
-
-
 </head>
 <body>
 <div th:replace="~{fragment/nav :: nav}"> </div>
+
 <main>
+  <div id="tablelist">
+    <div class="table-name">
+      <h2>Routine Reports</h2>
+    </div>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Department</th>
+            <th>Officer Assigned</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="reportList">
 
-  <div class="table-name">
-    <h2>Routine Reports</h2>
-  </div>
-  <div class="table-container">
-
-    <table>
-      <thead>
-      <tr>
-        <th>Officer Assigned</th>
-        <th>Status</th>
-        <th>Actions</th>
-      </tr>
-      </thead>
-      <tbody id="reportList">
-      <!--            <tr>-->
-      <!--              <td>0001</td>-->
-      <!--              <td></td>-->
-      <!--              <td></td>-->
-      <!--              <td><span class="status-flag in-created">Created</span></td>-->
-      <!--              <td><a href="#">&#9997;&#xFE0E;</a>-->
-      <!--                <a href="#">&#x1F441;</a></td>-->
-      <!--            </tr>-->
-      <!--            <tr>-->
-      <!--                <td>0002</td>-->
-      <!--              <td></td>-->
-      <!--              <td></td>-->
-      <!--                <td><span class="status-flag in-progress" >In progress</span></td>-->
-      <!--                <td><a href="#">&#9997;&#xFE0E;</a>-->
-      <!--                  <a href="#">&#x1F441;</a></td>-->
-      <!--            </tr>-->
-      <!--            <tr>-->
-      <!--                <td>0003</td>-->
-      <!--              <td></td>-->
-      <!--              <td></td>-->
-      <!--                <td><span class="status-flag completed">Completed</span></td>-->
-      <!--                <td><a href="#">&#9997;&#xFE0E;</a>-->
-      <!--                  <a href="#">&#x1F441;</a></td>-->
-      <!--            </tr>-->
-      <!--            <tr>-->
-      <!--              <td>0004</td>-->
-      <!--              <td></td>-->
-      <!--              <td></td>-->
-      <!--              <td><span  class="status-flag pending">Pending</span></td>-->
-      <!--              <td><a href="#">&#9997;&#xFE0E;</a>-->
-      <!--                <a href="#">&#x1F441;</a></td>-->
-      <!--              </tr>-->
-      <!--              <tr>-->
-      <!--                <td>0001</td>-->
-      <!--                <td></td>-->
-      <!--                <td></td>-->
-      <!--              <td><span class="status-flag in-created">Created</span></td>-->
-      <!--              <td><a href="#">&#9997;&#xFE0E;</a>-->
-      <!--                <a href="#">&#x1F441;</a></td>-->
-      <!--              </tr>-->
-      <!--              <tr>-->
-      <!--               -->
-      <!--              </tr>-->
-      <!--              <tr>-->
-      <!--                <td>0002</td>-->
-      <!--                <td></td>-->
-      <!--                <td></td>-->
-      <!--                <td><span class="status-flag in-progress" >In progress</span></td>-->
-      <!--                <td><a href="#">&#9997;&#xFE0E;</a>-->
-      <!--                  <a href="#">&#x1F441;</a></td>-->
-      <!--              </tr>-->
-      <!--              <tr>-->
-      <!--                <td>0003</td>-->
-      <!--                <td></td>-->
-      <!--                <td></td>-->
-      <!--                <td><span class="status-flag completed">Completed</span></td>-->
-      <!--                <td><a href="#">&#9997;&#xFE0E;</a>-->
-      <!--                  <a href="#">&#x1F441;</a></td>-->
-      <!--              </tr>-->
-      <!-- Add more rows as needed -->
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 
+  <div id="Reportind">
+    <div class="table-container">
+      <table>
+        <tr>
+          <th class="assign-head">Inspection ID</th>
+          <td id="RoutInspIdSing"></td>
+        </tr>
+        <tr>
+          <th class="assign-head">Taluk</th>
+          <td id="RoutTalukSing"></td>
+        </tr>
+        <tr>
+          <th class="assign-head">Department</th>
+          <td id="RoutDepartmentSing"></td>
+        </tr>
+        <tr>
+          <th class="assign-head">Officer Assigned</th>
+          <td id="RoutAssignedOfficerSing"></td>
+        </tr>
+        <tr>
+          <th class="assign-head">Last Date</th>
+          <td id="RoutLastDateSing"></td>
+        </tr>
+        <tr>
+          <th class="assign-head">Description</th>
+          <td id="RoutDescriptionSing"></td>
+        </tr>
+      </table>
+    </div>
+    <h2>IMAGES</h2>
+    <div class="grid">
+      <div class="wrapper">
+        <img src="/imgs/photo1.png">
+      </div>
+      <div class="wrapper" >
+        <img src="/imgs/photo1.png">
+      </div>
+      <div class="wrapper" >
+        <img src="/imgs/photo1.png">
+      </div>
+      <div class="wrapper" >
+        <img src="/imgs/photo1.png">
+      </div>
+      <div class="wrapper" >
+        <img src="/imgs/photo1.png">
+      </div>
+      <div class="wrapper" >
+        <img src="/imgs/photo1.png">
+      </div>
+    </div>
+  </div>
 </main>
+
 <script>
 
-   $(document).ready(function() {
+    $(document).ready(function() {
 
-            $("#tablelist").show();
-            $("#saveInspbody").show();
+    <!--        Officer dropdown list start-->
+
+       $.ajax({
+           contentType: "application/json;charset=UTF-8",
+           type: "GET",
+           url: "/api/officer/getAllOfficer",
+           dataType: "json",
+           async:false,
+           success: function (officerData) {
+               var s = '<option value="-1">Select Officer</option>';
+               for (var i = 0; i < officerData.length; i++) {
+                   s += '<option value="' + officerData[i].officerName + '">' + officerData[i].officerName + '</option>';
+               }
+               $("#officerDrop").html(s); // Updated ID here
+           }
+        });
+
+    <!--        Officer dropdown list end-->
+
+        $("#tablelist").show();
+        $("#Reportind").hide();
 
         var reportList="";
         $.ajax({
@@ -106,25 +120,21 @@
             url: "/api/routinsp/getAllRoutInsp",
             dataType: "json",
             type: "GET",
-            type: "GET",
             async:false,
             success:function(data){
                for(i=0;i<data.length;i++){
 
                  if(data[i].routassignedOfficer!==null && data[i].lastDate!==null){
-                     reportList=reportList+'<tr>';
-
+                     reportList += '<tr id="' + data[i].routinspId + '">'; // Add ID attribute
+                     reportList=reportList+' <td>'+data[i].routdepartment +'</td>';
                      reportList=reportList+' <td>'+data[i].routassignedOfficer +'</td>';
                      reportList=reportList+' <td>'+data[i].routstatus +'</td>';
 
-
-
-
                      reportList=reportList+' <td>';
-                     reportList=reportList+'<a href="javascript:getProfile(\''+data[i].id+'\')" title="Edit">';
-                     reportList=reportList+'<i>&#9997;&#xFE0E;</i> </a>';
-                     reportList=reportList+'<a href="javascript:deleteProfile(\''+data[i].id+'\')" title="Delete">';
+                     reportList=reportList+'<a href="javascript:getroutInsp(\''+data[i].routinspId+'\')" title="View">';
                      reportList=reportList+'<i>&#x1F441;</i> </a>';
+                     reportList=reportList+'<a href="javascript:deleteRoutReport(\''+data[i].routinspId+'\')" title="Delete">';
+                     reportList=reportList+'<b style="color:#FF0000">&#x1F5D1;</b> </a>';
                      reportList=reportList+'</td></tr>';
                  }
 
@@ -135,6 +145,117 @@
         });
       });
 
+
+
+     function updateRoutAssignment() {
+        var routinspId = $("#RoutInspIdSing").text(); // Get the RoutInspId from the displayed table
+        var routassignedOfficer = $("#officerDrop").val();
+        var routlastDate = $("#RoutlastDate").val();
+        var routdepartment = $("#RoutDepartmentSing").text();
+        var routtaluk = $("#RoutTalukSing").text();
+
+        if (routassignedOfficer && routlastDate) {
+            var userData = {
+                routassignedOfficer: routassignedOfficer,
+                routlastDate: routlastDate,
+                routdepartment: routdepartment,
+                routtaluk: routtaluk,
+            };
+
+            $.ajax({
+                contentType: "application/json;charset=UTF-8",
+                url: "/api/routinsp/update/" + routinspId, // Use the update endpoint with the RoutInspId
+                dataType: "json",
+                type: "PUT", // Use PUT method for update
+                data: JSON.stringify(userData),
+                success: function (data) {
+                    // Update the displayed table with the updated data
+                    $("#routassignedOfficerCell").text(data.routassignedOfficer);
+                    $("#routlastDateCell").text(data.routlastDate);
+                    $("#routdepartmentCell").text(data.routdepartment);
+                    $("#routtalukCell").text(data.routtaluk);
+                },
+            });
+            showAlert();
+            } else {
+                alert("Please fill all the required fields");
+            }
+        }
+
+
+        function getroutInspId(id){
+                 $.ajax({
+                       contentType: "application/json;charset=UTF-8",
+                       url: "${pageContext.request.contextPath}api/routinsp/getById/" + id,
+                       dataType: "json",
+                       type: "GET",
+                       success:function(data){
+                          getProfile(data)
+
+                       }
+                  });
+            }
+
+
+        function getroutInsp(id) {
+            $("#tablelist").hide();
+            $("#Reportind").show();
+
+            $.ajax({
+                contentType: "application/json;charset=UTF-8",
+                url: "/api/routinsp/getById/" + id,
+                dataType: "json",
+                type: "GET",
+                cache: !1,
+                processData: !1,
+                success: function(data) {
+
+                    $("#RoutInspIdSing").text(data.routinspId);
+                    $("#RoutDepartmentSing").text(data.routdepartment);
+                    $("#RoutDescriptionSing").text(data.routdescription);
+                    $("#RoutLastDateSing").text(data.routlastDate);
+                    $("#RoutAssignedOfficerSing").text(data.routassignedOfficer);
+                    $("#RoutDistrictSing").text(data.district);
+                    $("#RoutTalukSing").text(data.routtaluk);
+
+                    var descriptionHtml = '';
+                    for (var i = 0; i < data.routdescription.length; i++) {
+                        descriptionHtml += data.routdescription[i].routInspContent + '<br>';
+                    }
+                    $("#RoutDescriptionSing").html(descriptionHtml);
+
+                }
+            });
+        }
+
+         function deleteRoutInsp(id) {
+            if (confirm("Are you sure you want to delete this inspection?")) {
+                $.ajax({
+                    contentType: "application/json;charset=UTF-8",
+                    url: "/api/routinsp/delete/" + id, // Use the delete endpoint with the InspId
+                    type: "DELETE",
+                    success: function () {
+                        // Remove the deleted row from the displayed table
+                        $("#" + id).remove();
+                        alert("Inspection deleted successfully.");
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Failed to delete inspection: " + error);
+                    },
+                });
+            }
+        }
+
+<!--            $.ajax({-->
+<!--            contentType: "application/json;charset=UTF-8",-->
+<!--            url: "/api/taluk/getAllTaluk",-->
+<!--            dataType: "json",-->
+<!--            type: "GET",-->
+<!--            success: function(data) {-->
+
+<!--                $("#RoutDistrictSing").text(data.district);-->
+<!--            }-->
+<!--        });-->
 
 </script>
 </body>

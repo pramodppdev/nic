@@ -15,10 +15,10 @@
 <main>
     <div class="grid">
         <div class="wrapper">
-            <select  id="routTalukDrop" ></select>
+            <select  id="adhocTalukDrop" ></select>
         </div>
         <div class="wrapper" >
-            <select  id="routDeptDrop" ></select>
+            <select  id="adhocDeptDrop" ></select>
         </div>
     </div>
 
@@ -30,7 +30,7 @@
     <button id="addButton">Add Question</button>
 
     <div class="btn">
-        <button onclick="saveRoutineinsp()" class="submit-btn">Add</button>
+        <button onclick="saveAdhocInsp()" class="submit-btn">Add</button>
         <button class="cancel-btn">Cancel</button>
     </div>
     <div class="alert-container" id="alertContainer">
@@ -44,7 +44,6 @@
 <script>
 
     $(document).ready(function() {
-
 
 <!--        Taluk dropdown list start-->
 
@@ -60,7 +59,7 @@
                for (var i = 0; i < talukData.length; i++) {
                    s += '<option value="' + talukData[i].talukName + '">' + talukData[i].talukName + '</option>';
                }
-               $("#routTalukDrop").html(s); // Updated ID here
+               $("#adhocTalukDrop").html(s); // Updated ID here
            }
         });
 
@@ -81,7 +80,7 @@
                for (var i = 0; i < deptdata.length; i++) {
                    s += '<option value="' + deptdata[i].deptName + '">' + deptdata[i].deptName + '</option>';
                }
-               $("#routDeptDrop").html(s);
+               $("#adhocDeptDrop").html(s);
            }
        });
 
@@ -95,37 +94,37 @@
 
             });
 
-        function saveRoutineinsp() {
+        function saveAdhocInsp() {
             const userData = {
-                routtaluk: $("#routTalukDrop").val(),
-                routdepartment: $("#routDeptDrop").val(),
-                routdescription: [],
+                adhoctaluk: $("#adhocTalukDrop").val(),
+                adhocdepartment: $("#adhocDeptDrop").val(),
+                adhocdescription: [],
 
             };
 
             // Get all dynamically generated input fields with their routInspAns values
                $("#inputContainer").find(".input-container").each(function() {
-                const routInspContent = $(this).find("input[type='text']").val();
+                const adhocInspContent = $(this).find("input[type='text']").val();
                 const imgReqCheckbox = $(this).find("input[type='checkbox']");
 
                 // Determine the value for imgReq based on checkbox status
                 const imgReqValue = imgReqCheckbox.is(":checked") ? "Yes" : "No";
 
                 // Create an object for each routInspContent and imgReq
-                const inspObject = {
-                    routInspContent: routInspContent,
+                const adhocObject = {
+                    adhocInspContent: adhocInspContent,
                     imgReq: imgReqValue
                 };
 
-                // Push the object to the routdescription array
-                userData.routdescription.push(inspObject);
+                // Push the object to the adhocdescription array
+                userData.adhocdescription.push(adhocObject);
             });
 
 
 
             $.ajax({
                 contentType: "application/json;charset=UTF-8",
-                url: "/api/routinsp/save",
+                url: "/api/adhoc/save",
                 dataType: "json",
                 type: "POST",
                 cache: !1,

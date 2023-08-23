@@ -16,7 +16,7 @@
 <main>
     <div id="tablelist">
         <div class="table-name">
-            <h2>Routine Assignment</h2>
+            <h2>AdHoc Assignment</h2>
         </div>
         <div class="table-container">
             <table>
@@ -41,19 +41,19 @@
             <table>
                 <tr>
                     <th class="assign-head">Inspection ID</th>
-                    <td id="RoutInspIdSing"></td>
+                    <td id="AdhocInspIdSing"></td>
                 </tr>
                 <tr>
                     <th class="assign-head">Taluk</th>
-                    <td id="RoutTalukSing"></td>
+                    <td id="AdhocTalukSing"></td>
                 </tr>
                 <tr>
                     <th class="assign-head">Department</th>
-                    <td id="RoutDepartmentSing"></td>
+                    <td id="AdhocDepartmentSing"></td>
                 </tr>
                 <tr>
                     <th class="assign-head">Description</th>
-                    <td id="RoutDescriptionSing"></td>
+                    <td id="AdhocDescriptionSing"></td>
                 </tr>
             </table>
         </div>
@@ -62,12 +62,12 @@
                 <select  id="officerDrop" ></select>
             </div>
             <div class="wrapper" >
-                <input type="date" id="RoutlastDate" >
+                <input type="date" id="AdhoclastDate" >
                 <label>Due date</label>
             </div>
         </div>
         <div class="btn">
-            <button class="submit-btn" onclick="updateRoutAssignment()">Assign</button>
+            <button class="submit-btn" onclick="updateAdhocAssignment()">Assign</button>
             <button class="cancel-btn">Cancel</button>
         </div>
         <div class="alert-container" id="alertContainer">
@@ -111,42 +111,42 @@
         var assignList="";
         $.ajax({
             contentType: "application/json;charset=UTF-8",
-            url: "/api/routinsp/getAllRoutInsp",
+            url: "/api/adhoc/getAllAdhoc",
             dataType: "json",
             type: "GET",
             async:false,
             success:function(data){
                for(i=0;i<data.length;i++){
-               assignList += '<tr id="' + data[i].routinspId + '">'; // Add ID attribute
-               assignList=assignList+' <td>'+data[i].routdepartment +'</td>';
+               assignList += '<tr id="' + data[i].adhocinspId + '">'; // Add ID attribute
+               assignList=assignList+' <td>'+data[i].adhocdepartment +'</td>';
 
                assignList=assignList+' <td>'+data[i].designation +'</td>';
 
-               if(data[i].routlastDate==null)
+               if(data[i].adhoclastDate==null)
                {
                assignList=assignList+' <td>';
-               assignList=assignList+'<a href="javascript:getProfile(\''+data[i].routinspId+'\')" title="Assign">';
+               assignList=assignList+'<a href="javascript:getProfile(\''+data[i].adhocinspId+'\')" title="Assign">';
                assignList=assignList+'<p style="font-size:15px;">Not assigned</p>';
                }
                else{
-               assignList=assignList+' <td>'+data[i].routlastDate +'</td>'
+               assignList=assignList+' <td>'+data[i].adhoclastDate +'</td>'
 
                }
 
-               if(data[i].routassignedOfficer==null)
+               if(data[i].adhocassignedOfficer==null)
                {
                assignList=assignList+' <td>';
-               assignList=assignList+'<a href="javascript:getroutInsp(\''+data[i].routinspId+'\')" title="Assign">';
+               assignList=assignList+'<a href="javascript:getAdhocInsp(\''+data[i].adhocinspId+'\')" title="Assign">';
                assignList=assignList+'<button class="btn" id="tablelist">Assign</button></a>';
                }
                else{
-                assignList=assignList+' <td>'+data[i].routassignedOfficer +'</td>';
+                assignList=assignList+' <td>'+data[i].adhocassignedOfficer +'</td>';
                }
 
                assignList=assignList+' <td>';
-               assignList=assignList+'<a href="javascript:getroutInsp(\''+data[i].routinspId+'\')" title="Edit">';
+               assignList=assignList+'<a href="javascript:getAdhocInsp(\''+data[i].adhocinspId+'\')" title="Edit">';
                assignList=assignList+'<i>&#9997;&#xFE0E;</i> </a>';
-               assignList=assignList+'<a href="javascript:deleteRoutInsp(\''+data[i].routinspId+'\')" title="Delete">';
+               assignList=assignList+'<a href="javascript:deleteAdhocInsp(\''+data[i].adhocinspId+'\')" title="Delete">';
                assignList=assignList+'<b style="color:#FF0000">&#x1F5D1;</b> </a>';
                assignList=assignList+'</td></tr>';
 
@@ -156,33 +156,33 @@
         });
     });
 
-     function updateRoutAssignment() {
-        var routinspId = $("#RoutInspIdSing").text(); // Get the RoutInspId from the displayed table
-        var routassignedOfficer = $("#officerDrop").val();
-        var routlastDate = $("#RoutlastDate").val();
-        var routdepartment = $("#RoutDepartmentSing").text();
-        var routtaluk = $("#RoutTalukSing").text();
+     function updateAdhocAssignment() {
+        var adhocinspId = $("#AdhocInspIdSing").text(); // Get the adhocinspId from the displayed table
+        var adhocassignedOfficer = $("#officerDrop").val();
+        var adhoclastDate = $("#AdhoclastDate").val();
+        var adhocdepartment = $("#AdhocDepartmentSing").text();
+        var adhoctaluk = $("#AdhocTalukSing").text();
 
-        if (routassignedOfficer && routlastDate) {
+        if (adhocassignedOfficer && adhoclastDate) {
             var userData = {
-                routassignedOfficer: routassignedOfficer,
-                routlastDate: routlastDate,
-                routdepartment: routdepartment,
-                routtaluk: routtaluk,
+                adhocassignedOfficer: adhocassignedOfficer,
+                adhoclastDate: adhoclastDate,
+                adhocdepartment: adhocdepartment,
+                adhoctaluk: adhoctaluk,
             };
 
             $.ajax({
                 contentType: "application/json;charset=UTF-8",
-                url: "/api/routinsp/update/" + routinspId, // Use the update endpoint with the RoutInspId
+                url: "/api/adhoc/update/" + adhocinspId, // Use the update endpoint with the adhocinspId
                 dataType: "json",
                 type: "PUT", // Use PUT method for update
                 data: JSON.stringify(userData),
                 success: function (data) {
                     // Update the displayed table with the updated data
-                    $("#routassignedOfficerCell").text(data.routassignedOfficer);
-                    $("#routlastDateCell").text(data.routlastDate);
-                    $("#routdepartmentCell").text(data.routdepartment);
-                    $("#routtalukCell").text(data.routtaluk);
+                    $("#adhocassignedOfficerCell").text(data.adhocassignedOfficer);
+                    $("#adhoclastDateCell").text(data.adhoclastDate);
+                    $("#adhocdepartmentCell").text(data.adhocdepartment);
+                    $("#adhoctalukCell").text(data.adhoctaluk);
                 },
             });
             showAlert();
@@ -192,7 +192,7 @@
         }
 
 
-        function getroutInspId(id){
+        function getadhocinspId(id){
                  $.ajax({
                        contentType: "application/json;charset=UTF-8",
                        url: "${pageContext.request.contextPath}api/routinsp/getById/" + id,
@@ -206,42 +206,42 @@
             }
 
 
-        function getroutInsp(id) {
+        function getAdhocInsp(id) {
             $("#tablelist").hide();
             $("#assignment").show();
 
             $.ajax({
                 contentType: "application/json;charset=UTF-8",
-                url: "/api/routinsp/getById/" + id,
+                url: "/api/adhoc/getById/" + id,
                 dataType: "json",
                 type: "GET",
                 cache: !1,
                 processData: !1,
                 success: function(data) {
 
-                    $("#RoutInspIdSing").text(data.routinspId);
-                    $("#RoutDepartmentSing").text(data.routdepartment);
-                    $("#RoutDescriptionSing").text(data.routdescription);
-                    $("#RoutLastDateSing").text(data.routlastDate);
-                    $("#RoutroutassignedOfficerSing").text(data.routassignedOfficer);
-                    $("#RoutDistrictSing").text(data.district);
-                    $("#RoutTalukSing").text(data.routtaluk);
+                    $("#AdhocInspIdSing").text(data.adhocinspId);
+                    $("#AdhocDepartmentSing").text(data.adhocdepartment);
+                    $("#AdhocDescriptionSing").text(data.adhocdescription);
+                    $("#AdhocLastDateSing").text(data.adhoclastDate);
+                    $("#AdhocroutassignedOfficerSing").text(data.adhocassignedOfficer);
+                    $("#AdhocDistrictSing").text(data.district);
+                    $("#AdhocTalukSing").text(data.adhoctaluk);
 
                     var descriptionHtml = '';
-                    for (var i = 0; i < data.routdescription.length; i++) {
-                        descriptionHtml += data.routdescription[i].routInspContent + '<br>';
+                    for (var i = 0; i < data.adhocdescription.length; i++) {
+                        descriptionHtml += data.adhocdescription[i].adhocInspContent + '<br>';
                     }
-                    $("#RoutDescriptionSing").html(descriptionHtml);
+                    $("#AdhocDescriptionSing").html(descriptionHtml);
 
                 }
             });
         }
 
-         function deleteRoutInsp(id) {
+         function deleteAdhocInsp(id) {
             if (confirm("Are you sure you want to delete this inspection?")) {
                 $.ajax({
                     contentType: "application/json;charset=UTF-8",
-                    url: "/api/routinsp/delete/" + id, // Use the delete endpoint with the InspId
+                    url: "/api/adhoc/delete/" + id, // Use the delete endpoint with the InspId
                     type: "DELETE",
                     success: function () {
                         // Remove the deleted row from the displayed table

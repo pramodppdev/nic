@@ -27,9 +27,20 @@ public class RoutInspController {
         return routInspService.getAllRoutInsp();
     }
 
+    @GetMapping("/count")
+    public int rountCount(){
+        return routInspService.routCount();
+    }
+
     @GetMapping("/getById/{id}")
     public ResponseEntity<RoutInsp> getById(@PathVariable("id") String id){
         return new ResponseEntity<RoutInsp>(routInspService.getById(id), HttpStatus.OK);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> updateRout(@PathVariable("id")String id, @RequestBody RoutInsp routInsp){
+        routInspService.updateRoutInsp(routInsp,id);
+        return new ResponseEntity<String>("Routine Inspection Updated Sucessfully",HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -37,4 +48,6 @@ public class RoutInspController {
         routInspService.deleteRoutInsp(id);
         return new ResponseEntity<String>("RoutInsp Deleted Successfully", HttpStatus.OK);
     }
+
+
 }

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>NIC</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/form.css">
+  <link rel="stylesheet" href="css/routine.css">
+  <link rel="stylesheet" href="css/alert.css">
+  <script src="script/alert.js"></script>
+  <script src="script/dynamic_fields.js"></script>
+</head>
+<body>
+  <div th:replace="~{fragment/nav :: nav}"> </div>
+    <main>
+      <div class="grid">
+        <div class="wrapper">
+          <input type="text" id="TempName" required>
+          <label>Templet Name</label>
+        </div>
+        <div class="wrapper">
+          <select name="" id="TempLevel">
+            <option value="Select Level">Select Level</option>
+            <option value="District">District</option>
+            <option value="Taluk">Taluk</option>
+          </select>
+        </div>
+
+      </div>
+      <div id="inputContainer" class="input-container">
+      </div>
+      <button id="addButton" class="add-btn">Add Input Field</button>
+
+      <div class="btn">
+        <button onclick="saveTemplet()" class="submit-btn">Add</button>
+        <button class="cancel-btn">Cancel</button>
+      </div>
+      <div class="alert-container" id="alertContainer">
+        <div class="alert-message">
+          Added Data Successfully!
+          <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+          <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
+        </div>
+      </div>
+    </main>
+</body>
+<script>
+     $(document).ready(function() {
+
+        function saveTemplet() {
+
+                var tempName = $("#TempName").val();
+                var tempLevel = $("#TempLevel").val();
+
+
+
+                if (tempName && tempLevel) {
+                    var userData = {
+                        tempName: tempName,
+                        tempLevel: tempLevel,
+                    }
+
+                    $.ajax({
+                        contentType: "application/json;charset=UTF-8",
+                        url: "/api/quetemplet/save",
+                        dataType: "json",
+                        type: "POST",
+                        cache: !1,
+                        processData: !1,
+                        data: JSON.stringify(userData),
+                        complete: function(xhr) {
+                            console.log(data)
+                        }
+                    });
+                    showAlert();
+                } else {
+                    alert("Please fill all the required fields");
+                }
+        }
+
+
+     }
+
+     function saveRoutineinsp() {
+            const userData = {
+                routtaluk: $("#routTalukDrop").val(),
+                routdepartment: $("#routDeptDrop").val(),
+                routdescription: [],
+
+            };
+
+            // Get all dynamically generated input fields with their routInspAns values
+               $("#inputContainer").find(".input-container").each(function() {
+                const routInspContent = $(this).find("input[type='text']").val();
+                const imgReqCheckbox = $(this).find("input[type='checkbox']");
+
+                // Determine the value for imgReq based on checkbox status
+                const imgReqValue = imgReqCheckbox.is(":checked") ? "Yes" : "No";
+
+                // Create an object for each routInspContent and imgReq
+                const inspObject = {
+                    routInspContent: routInspContent,
+                    imgReq: imgReqValue
+                };
+
+                // Push the object to the routdescription array
+                userData.routdescription.push(inspObject);
+            });
+
+
+
+            $.ajax({
+                contentType: "application/json;charset=UTF-8",
+                url: "/api/routinsp/save",
+                dataType: "json",
+                type: "POST",
+                cache: !1,
+                processData: !1,
+                data: JSON.stringify(userData),
+                success: function(response) {
+                    console.log(response); // If needed, handle the response from the server
+                },
+                error: function(error) {
+                    console.error("error"); // If needed, handle the error from the server
+                }
+            });
+
+            showAlert();
+        }
+</script>
+</html>

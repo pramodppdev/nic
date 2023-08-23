@@ -3,7 +3,8 @@
 <head>
   <title>NIC</title>
   <link rel="stylesheet" href="/css/main.css">
-<!-- <script src="script/script.js"></script>-->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 <body>
 
@@ -12,22 +13,22 @@
 
   <main>
     <div class="card-container">
-      <div class="card" id="inspection">
+      <div class="card" >
         <div class="card-content">
-          <div class="number">100</div>
-          <div class="card-name">Number of Inspections</div>
+          <div class="number" id="inspectionCount">Loading...</div>
+          <div class="card-name">Routine Inspections</div>
         </div>
       </div>
-      <div class="card" id="pending">
+      <div class="card" >
         <div class="card-content">
           <div class="number">10</div>
-          <div class="card-name">Pending Inspections</div>
+          <div class="card-name">Ad-Hoc Inspections</div>
         </div>
       </div>
-      <div class="card" id="completed">
+      <div class="card" >
         <div class="card-content">
-          <div class="number">90</div>
-          <div class="card-name">Completed Inspections</div>
+          <div class="number" id="grevienceCount">Loading..</div>
+          <div class="card-name">Grevience Inspections</div>
         </div>
       </div>
       <div class="card">
@@ -38,5 +39,46 @@
       </div>
     </div>
   </main>
+
+  <script>
+        $(document).ready(function() {
+
+            // Rountine inspection count
+            $.ajax({
+                url: '/api/routinsp/count',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+<!--                    console.log('Success', data);-->
+
+                    $('#inspectionCount').text(data);
+                },
+                error: function() {
+                    $('#inspectionCount').text('Error fetching count');
+                }
+            });
+
+            // Ad-Hoc inspection count
+
+
+            // Grevieance inspection count
+            $.ajax({
+                url: '/api/inspection/count',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+<!--                    console.log('Success', data);-->
+
+                    $('#grevienceCount').text(data);
+                },
+                error: function() {
+                    $('#inspectionCount').text('Error fetching count');
+                }
+            });
+
+
+
+        });
+  </script>
 </body>
 </html>

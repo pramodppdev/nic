@@ -14,6 +14,10 @@ public interface InspectionService {
 
     Inspection getById(String id);
 
+    Inspection updateInsp(Inspection inspection, String id);
+
     void deleteInsp(String id);
+
+    int inspCout();
 
 }

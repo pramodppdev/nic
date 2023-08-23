@@ -1,11 +1,8 @@
 package insp.nic.Service.serviceImpl;
 
-import insp.nic.Service.DepartmentService;
 import insp.nic.Service.DesignationService;
 import insp.nic.exception.ResourceNotFoundException;
-import insp.nic.model.Department;
 import insp.nic.model.Designation;
-import insp.nic.repo.DepartmentRepo;
 import insp.nic.repo.DesignationRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
