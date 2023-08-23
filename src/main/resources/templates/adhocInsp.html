@@ -22,10 +22,7 @@
         </div>
     </div>
 
-    <div id="inputContainer">
-        <div class="input-container">
-
-        </div>
+    <div id="inputContainer" class="input-container">
     </div>
     <button id="addButton">Add Question</button>
 
@@ -42,6 +39,54 @@
     </div>
 </main>
 <script>
+
+    function saveAdhocInsp() {
+            const userData = {
+                adhoctaluk: $("#adhocTalukDrop").val(),
+                adhocdepartment: $("#adhocDeptDrop").val(),
+                adhocdescription: [],
+
+            };
+
+            // Get all dynamically generated input fields with their adhocInspAns values
+               $("#inputContainer").find(".input-container").each(function() {
+                const adhocInspContent = $(this).find("input[type='text']").val();
+                const imgReqCheckbox = $(this).find("input[type='checkbox']");
+
+                // Determine the value for imgReq based on checkbox status
+                const imgReqValue = imgReqCheckbox.is(":checked") ? "Yes" : "No";
+
+                // Create an object for each adhocInspContent and imgReq
+                const adhocObject = {
+                    adhocInspContent: adhocInspContent,
+                    imgReq: imgReqValue
+                };
+
+                // Push the object to the adhocdescription array
+                userData.adhocdescription.push(adhocObject);
+            });
+
+
+
+            $.ajax({
+                contentType: "application/json;charset=UTF-8",
+                url: "/api/adhoc/save",
+                dataType: "json",
+                type: "POST",
+                cache: !1,
+                processData: !1,
+                data: JSON.stringify(userData),
+                success: function(response) {
+                    console.log(response); // If needed, handle the response from the server
+                },
+                error: function(error) {
+                    console.error("error"); // If needed, handle the error from the server
+                }
+            });
+
+            showAlert();
+        }
+
 
     $(document).ready(function() {
 
@@ -87,59 +132,8 @@
 
 <!--        Department dropdown list end-->
 
+      });
 
-
-            $("#tablelist").show();
-            $("#saveInspbody").show();
-
-            });
-
-        function saveAdhocInsp() {
-            const userData = {
-                adhoctaluk: $("#adhocTalukDrop").val(),
-                adhocdepartment: $("#adhocDeptDrop").val(),
-                adhocdescription: [],
-
-            };
-
-            // Get all dynamically generated input fields with their routInspAns values
-               $("#inputContainer").find(".input-container").each(function() {
-                const adhocInspContent = $(this).find("input[type='text']").val();
-                const imgReqCheckbox = $(this).find("input[type='checkbox']");
-
-                // Determine the value for imgReq based on checkbox status
-                const imgReqValue = imgReqCheckbox.is(":checked") ? "Yes" : "No";
-
-                // Create an object for each routInspContent and imgReq
-                const adhocObject = {
-                    adhocInspContent: adhocInspContent,
-                    imgReq: imgReqValue
-                };
-
-                // Push the object to the adhocdescription array
-                userData.adhocdescription.push(adhocObject);
-            });
-
-
-
-            $.ajax({
-                contentType: "application/json;charset=UTF-8",
-                url: "/api/adhoc/save",
-                dataType: "json",
-                type: "POST",
-                cache: !1,
-                processData: !1,
-                data: JSON.stringify(userData),
-                success: function(response) {
-                    console.log(response); // If needed, handle the response from the server
-                },
-                error: function(error) {
-                    console.error("error"); // If needed, handle the error from the server
-                }
-            });
-
-            showAlert();
-        }
 
 </script>
 </body>

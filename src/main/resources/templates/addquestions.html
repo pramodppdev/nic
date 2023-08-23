@@ -4,13 +4,15 @@
   <title>NIC</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/form.css">
-  <link rel="stylesheet" href="css/routine.css">
-  <link rel="stylesheet" href="css/alert.css">
-  <script src="script/alert.js"></script>
-  <script src="script/dynamic_fields.js"></script>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/form.css">
+  <link rel="stylesheet" href="/css/routine.css">
+  <link rel="stylesheet" href="/css/alert.css">
+  <script src="/script/alert.js"></script>
+  <script src="/script/dynamic_fields.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+
 <body>
   <div th:replace="~{fragment/nav :: nav}"> </div>
     <main>
@@ -26,11 +28,11 @@
             <option value="Taluk">Taluk</option>
           </select>
         </div>
-
       </div>
+
       <div id="inputContainer" class="input-container">
       </div>
-      <button id="addButton" class="add-btn">Add Input Field</button>
+      <button id="addButton">Add Input Field</button>
 
       <div class="btn">
         <button onclick="saveTemplet()" class="submit-btn">Add</button>
@@ -46,73 +48,38 @@
     </main>
 </body>
 <script>
-     $(document).ready(function() {
 
-        function saveTemplet() {
-
-                var tempName = $("#TempName").val();
-                var tempLevel = $("#TempLevel").val();
-
-
-
-                if (tempName && tempLevel) {
-                    var userData = {
-                        tempName: tempName,
-                        tempLevel: tempLevel,
-                    }
-
-                    $.ajax({
-                        contentType: "application/json;charset=UTF-8",
-                        url: "/api/quetemplet/save",
-                        dataType: "json",
-                        type: "POST",
-                        cache: !1,
-                        processData: !1,
-                        data: JSON.stringify(userData),
-                        complete: function(xhr) {
-                            console.log(data)
-                        }
-                    });
-                    showAlert();
-                } else {
-                    alert("Please fill all the required fields");
-                }
-        }
-
-
-     }
-
-     function saveRoutineinsp() {
+     function saveTemplet() {
             const userData = {
-                routtaluk: $("#routTalukDrop").val(),
-                routdepartment: $("#routDeptDrop").val(),
-                routdescription: [],
+                tempName: $("#TempName").val(),
+                tempLevel: $("#TempLevel").val(),
+                tempDiscription: [],
 
             };
 
-            // Get all dynamically generated input fields with their routInspAns values
+            // Get all dynamically generated input fields with their tempAns values
                $("#inputContainer").find(".input-container").each(function() {
-                const routInspContent = $(this).find("input[type='text']").val();
+                const tempContent = $(this).find("input[type='text']").val();
                 const imgReqCheckbox = $(this).find("input[type='checkbox']");
 
                 // Determine the value for imgReq based on checkbox status
                 const imgReqValue = imgReqCheckbox.is(":checked") ? "Yes" : "No";
 
-                // Create an object for each routInspContent and imgReq
-                const inspObject = {
-                    routInspContent: routInspContent,
+                // Create an object for each tempContent and imgReq
+                const tempObject = {
+                    tempContent: tempContent,
                     imgReq: imgReqValue
                 };
 
-                // Push the object to the routdescription array
-                userData.routdescription.push(inspObject);
+                // Push the object to the tempDiscription array
+                userData.tempDiscription.push(tempObject);
             });
 
 
 
             $.ajax({
                 contentType: "application/json;charset=UTF-8",
-                url: "/api/routinsp/save",
+                url: "/api/quetemplet/save",
                 dataType: "json",
                 type: "POST",
                 cache: !1,
@@ -128,5 +95,6 @@
 
             showAlert();
         }
+
 </script>
 </html>
