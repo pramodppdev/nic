@@ -20,11 +20,24 @@
         <div class="wrapper" >
             <select  id="routDeptDrop" ></select>
         </div>
+        <div class="wrapper" >
+            <select  id="routTempDrop" ></select>
+        </div>
     </div>
 
-    <div id="inputContainer" class="input-container">
+<!--    <div id="inputContainer" class="input-container">-->
+<!--    </div>-->
+
+    <div class="questions-container">
+        <div class="questions">
+            <p id="TempDescriptionSing"></p>
+            <input type="checkbox" name="" id="ques">
+            <label for="ques">image required</label>
+        </div>
+
     </div>
-    <button id="addButton">Add Question</button>
+
+    <button id="addButton">Add Templet</button>
 
     <div class="btn">
         <button onclick="saveRoutineinsp()" class="submit-btn">Add</button>
@@ -73,10 +86,10 @@
            url: "/api/department/getAllDept",
            dataType: "json",
            async:false,
-           success: function (deptdata) {
+           success: function (deptData) {
                var s = '<option value="-1">Select Department</option>';
-               for (var i = 0; i < deptdata.length; i++) {
-                   s += '<option value="' + deptdata[i].deptName + '">' + deptdata[i].deptName + '</option>';
+               for (var i = 0; i < deptData.length; i++) {
+                   s += '<option value="' + deptData[i].deptName + '">' + deptData[i].deptName + '</option>';
                }
                $("#routDeptDrop").html(s);
            }
@@ -84,6 +97,27 @@
 
 
 <!--        Department dropdown list end-->
+
+<!--        Templet dropdown list start-->
+
+
+        $.ajax({
+           contentType: "application/json;charset=UTF-8",
+           type: "GET",
+           url: "/api/quetemplet/getAllTemp",
+           dataType: "json",
+           async:false,
+           success: function (tempData) {
+               var s = '<option value="-1">Select Templet</option>';
+               for (var i = 0; i < tempData.length; i++) {
+                   s += '<option value="' + tempData[i].tempName + '">' + tempData[i].tempName + '</option>';
+               }
+               $("#routTempDrop").html(s);
+           }
+       });
+
+
+<!--        Templet dropdown list end-->
 
 
 
@@ -96,6 +130,7 @@
             const userData = {
                 routtaluk: $("#routTalukDrop").val(),
                 routdepartment: $("#routDeptDrop").val(),
+                routTempName: $("#routTempDrop").val(),
                 routdescription: [],
 
             };
@@ -137,6 +172,45 @@
             });
 
             showAlert();
+        }
+
+        function gettempId(id){
+                 $.ajax({
+                       contentType: "application/json;charset=UTF-8",
+                       url: "${pageContext.request.contextPath}api/quetemplet/getById/" + id,
+                       dataType: "json",
+                       type: "GET",
+                       success:function(data){
+                          getProfile(data)
+
+                       }
+                  });
+            }
+
+
+        function gettemp(id) {
+            $("#tablelist").hide();
+            $("#questions").show();
+
+            $.ajax({
+                contentType: "application/json;charset=UTF-8",
+                url: "/api/quetemplet/getById/" + id,
+                dataType: "json",
+                type: "GET",
+                cache: !1,
+                processData: !1,
+                success: function(data) {
+
+                    $("#TempIdSing").text(data.tempId);
+
+                    var descriptionHtml = '';
+                    for (var i = 0; i < data.tempDiscription.length; i++) {
+                        descriptionHtml += data.tempDiscription[i].tempContent + '<br>';
+                    }
+                    $("#TempDescriptionSing").html(descriptionHtml);
+
+                }
+            });
         }
 
 </script>

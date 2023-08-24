@@ -120,4 +120,9 @@ public class HomeController {
         return "addquestions";
     }
 
+    @GetMapping("/viewquestions")
+    public String viewquestions(){
+        return "viewquestions";
+    }
+
 }

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>NIC</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/table.css">
+    <link rel="stylesheet" href="/css/alert.css">
+    <script src="/script/alert.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div th:replace="~{fragment/nav :: nav}"> </div>
+
+<main>
+    <div id="tablelist">
+        <div class="table-name">
+            <h2>Routine Reports</h2>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                <tr>
+                    <th>Templet Name</th>
+                    <th>Level</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="tempList">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="questions">
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th class="assign-head">Questions</th>
+                    <td id="TempDescriptionSing"></td>
+                </tr>
+            </table>
+        </div>
+        <h2>IMAGES</h2>
+        <div class="grid">
+            <div class="wrapper">
+                <img src="/imgs/photo1.png">
+            </div>
+            <div class="wrapper" >
+                <img src="/imgs/photo1.png">
+            </div>
+            <div class="wrapper" >
+                <img src="/imgs/photo1.png">
+            </div>
+            <div class="wrapper" >
+                <img src="/imgs/photo1.png">
+            </div>
+            <div class="wrapper" >
+                <img src="/imgs/photo1.png">
+            </div>
+            <div class="wrapper" >
+                <img src="/imgs/photo1.png">
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+
+    $(document).ready(function() {
+
+    <!--        Officer dropdown list start-->
+
+       $.ajax({
+           contentType: "application/json;charset=UTF-8",
+           type: "GET",
+           url: "/api/officer/getAllOfficer",
+           dataType: "json",
+           async:false,
+           success: function (officerData) {
+               var s = '<option value="-1">Select Officer</option>';
+               for (var i = 0; i < officerData.length; i++) {
+                   s += '<option value="' + officerData[i].officerName + '">' + officerData[i].officerName + '</option>';
+               }
+               $("#officerDrop").html(s); // Updated ID here
+           }
+        });
+
+    <!--        Officer dropdown list end-->
+
+        $("#tablelist").show();
+        $("#questions").hide();
+
+        var tempList="";
+        $.ajax({
+            contentType: "application/json;charset=UTF-8",
+            url: "/api/quetemplet/getAllTemp",
+            dataType: "json",
+            type: "GET",
+            async:false,
+            success:function(data){
+               for(i=0;i<data.length;i++){
+
+                 if(data[i].routassignedOfficer!==null && data[i].lastDate!==null){
+                     tempList += '<tr id="' + data[i].tempId + '">'; // Add ID attribute
+                     tempList=tempList+' <td>'+data[i].tempName +'</td>';
+                     tempList=tempList+' <td>'+data[i].tempLevel +'</td>';
+
+                     tempList=tempList+' <td>';
+                     tempList=tempList+'<a href="javascript:gettemp(\''+data[i].tempId+'\')" title="View">';
+                     tempList=tempList+'<i>&#x1F441;</i> </a>';
+                     tempList=tempList+'<a href="javascript:deleteTemp(\''+data[i].tempId+'\')" title="Delete">';
+                     tempList=tempList+'<b style="color:#FF0000">&#x1F5D1;</b> </a>';
+                     tempList=tempList+'</td></tr>';
+                 }
+
+               }
+
+                $("#tempList").html(tempList);
+            }
+        });
+      });
+
+        function gettempId(id){
+                 $.ajax({
+                       contentType: "application/json;charset=UTF-8",
+                       url: "${pageContext.request.contextPath}api/quetemplet/getById/" + id,
+                       dataType: "json",
+                       type: "GET",
+                       success:function(data){
+                          getProfile(data)
+
+                       }
+                  });
+            }
+
+
+        function gettemp(id) {
+            $("#tablelist").hide();
+            $("#questions").show();
+
+            $.ajax({
+                contentType: "application/json;charset=UTF-8",
+                url: "/api/quetemplet/getById/" + id,
+                dataType: "json",
+                type: "GET",
+                cache: !1,
+                processData: !1,
+                success: function(data) {
+
+                    $("#TempIdSing").text(data.tempId);
+
+                    var descriptionHtml = '';
+                    for (var i = 0; i < data.tempDiscription.length; i++) {
+                        descriptionHtml += data.tempDiscription[i].tempContent + '<br>';
+                    }
+                    $("#TempDescriptionSing").html(descriptionHtml);
+
+                }
+            });
+        }
+
+         function deleteTemp(id) {
+            if (confirm("Are you sure you want to delete this templet?")) {
+                $.ajax({
+                    contentType: "application/json;charset=UTF-8",
+                    url: "/api/quetemplet/delete/" + id, // Use the delete endpoint with the tempId
+                    type: "DELETE",
+                    success: function () {
+                        // Remove the deleted row from the displayed table
+                        $("#" + id).remove();
+                        alert("Templet deleted successfully.");
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Failed to delete templet: " + error);
+                    },
+                });
+            }
+        }
+
+<!--            $.ajax({-->
+<!--            contentType: "application/json;charset=UTF-8",-->
+<!--            url: "/api/taluk/getAllTaluk",-->
+<!--            dataType: "json",-->
+<!--            type: "GET",-->
+<!--            success: function(data) {-->
+
+<!--                $("#RoutDistrictSing").text(data.district);-->
+<!--            }-->
+<!--        });-->
+
+</script>
+</body>
+</html>
