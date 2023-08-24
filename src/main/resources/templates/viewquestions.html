@@ -38,32 +38,21 @@
         <div class="table-container">
             <table>
                 <tr>
+                    <th class="assign-head">Template Name</th>
+                    <td id="TempNameSing"></td>
+                </tr>
+                <tr>
+                    <th class="assign-head">Level</th>
+                    <td id="TempLevelSing"></td>
+                </tr>
+                <tr>
                     <th class="assign-head">Questions</th>
                     <td id="TempDescriptionSing"></td>
                 </tr>
             </table>
         </div>
-        <h2>IMAGES</h2>
-        <div class="grid">
-            <div class="wrapper">
-                <img src="/imgs/photo1.png">
-            </div>
-            <div class="wrapper" >
-                <img src="/imgs/photo1.png">
-            </div>
-            <div class="wrapper" >
-                <img src="/imgs/photo1.png">
-            </div>
-            <div class="wrapper" >
-                <img src="/imgs/photo1.png">
-            </div>
-            <div class="wrapper" >
-                <img src="/imgs/photo1.png">
-            </div>
-            <div class="wrapper" >
-                <img src="/imgs/photo1.png">
-            </div>
-        </div>
+
+
     </div>
 </main>
 
@@ -151,6 +140,8 @@
                 success: function(data) {
 
                     $("#TempIdSing").text(data.tempId);
+                    $("#TempNameSing").text(data.tempName);
+                    $("#TempLevelSing").text(data.tempLevel);
 
                     var descriptionHtml = '';
                     for (var i = 0; i < data.tempDiscription.length; i++) {
@@ -171,7 +162,7 @@
                     success: function () {
                         // Remove the deleted row from the displayed table
                         $("#" + id).remove();
-                        alert("Templet deleted successfully.");
+                        alert("Template deleted successfully.");
                     },
                     error: function (xhr, status, error) {
                         alert("Failed to delete templet: " + error);
@@ -180,16 +171,7 @@
             }
         }
 
-<!--            $.ajax({-->
-<!--            contentType: "application/json;charset=UTF-8",-->
-<!--            url: "/api/taluk/getAllTaluk",-->
-<!--            dataType: "json",-->
-<!--            type: "GET",-->
-<!--            success: function(data) {-->
 
-<!--                $("#RoutDistrictSing").text(data.district);-->
-<!--            }-->
-<!--        });-->
 
 </script>
 </body>
