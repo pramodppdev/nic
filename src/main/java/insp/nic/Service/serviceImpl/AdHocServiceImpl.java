@@ -16,17 +16,17 @@ public class AdHocServiceImpl implements AdHocService {
     private AdHocRepo adHocRepo;
 
     @Override
-    public AdHoc saveRoutInsp(AdHoc adHoc) {
+    public AdHoc saveAdhocInsp(AdHoc adHoc) {
         return adHocRepo.save(adHoc);
     }
 
     @Override
-    public List<AdHoc> getAllRoutInsp() {
+    public List<AdHoc> getAllAdhocInsp() {
         return adHocRepo.findAll();
     }
 
     @Override
-    public AdHoc updateRoutInsp(AdHoc adHoc, String id) {
+    public AdHoc updateAdhocInsp(AdHoc adHoc, String id) {
         AdHoc existingAdHoc = adHocRepo.findById(id).orElseThrow(
                 ()-> new ResourceNotFoundException("Inspection not Found","Id",id));
 
@@ -50,7 +50,7 @@ public class AdHocServiceImpl implements AdHocService {
     }
 
     @Override
-    public void deleteRoutInsp(String id) {
+    public void deleteAdhocInsp(String id) {
         adHocRepo.findById(id).orElseThrow(()->  new ResourceNotFoundException("RoutInsp","Id",id));
         adHocRepo.deleteById(id);
     }
