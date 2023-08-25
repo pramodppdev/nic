@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/css/routine.css">
     <link rel="stylesheet" href="/css/alert.css">
     <script src="/script/alert.js"></script>
-    <script src="/script/dynamic_fields.js"></script>
+<!--    <script src="/script/dynamic_fields.js"></script>-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
@@ -28,7 +28,6 @@
     <div id="inputContainer" class="input-container">
     </div>
 
-    <button id="addButton">Add Templet</button>
 
     <div class="btn">
         <button onclick="saveRoutineinsp()" class="submit-btn">Add</button>
@@ -105,7 +104,37 @@
                }
                $("#routTempDrop").html(s);
            }
+
+
+
        });
+
+        $("#routTempDrop").change(function() {
+        var selectedTemplate = $(this).val();
+
+        $.ajax({
+            contentType: "application/json;charset=UTF-8",
+            type: "GET",
+            url: "/api/quetemplet/getAllTemp",
+            dataType: "json",
+            async: false,
+            success: function(tempData) {
+                var selectedTemp = tempData.find(function(temp) {
+                    return temp.tempName === selectedTemplate;
+                });
+
+                if (selectedTemp) {
+                    populateTempDiscription(selectedTemp.tempDiscription);
+                }
+            },
+            error: function(error) {
+                console.error("Error fetching tempData from API:", error);
+            }
+        });
+    });
+
+
+
 
 
 <!--        Templet dropdown list end-->
@@ -117,51 +146,137 @@
 
             });
 
-        function saveRoutineinsp() {
-            const userData = {
-                routtaluk: $("#routTalukDrop").val(),
-                routdepartment: $("#routDeptDrop").val(),
-                routTempName: $("#routTempDrop").val(),
-                routdescription: [],
+<!--        function saveRoutineinsp() {-->
+<!--            const userData = {-->
+<!--                routtaluk: $("#routTalukDrop").val(),-->
+<!--                routdepartment: $("#routDeptDrop").val(),-->
+<!--                routTempName: $("#routTempDrop").val(),-->
+<!--                routdescription: [],-->
 
-            };
+<!--            };-->
 
-               $("#inputContainer").find(".input-container").each(function() {
-                const routInspContent = $(this).find("input[type='text']").val();
-                const imgReqCheckbox = $(this).find("input[type='checkbox']");
+<!--&lt;!&ndash;               $("#inputContainer").find(".input-container").each(function() {&ndash;&gt;-->
+<!--&lt;!&ndash;                const routInspContent = $(this).find("input[type='text']").val();&ndash;&gt;-->
+<!--&lt;!&ndash;                const imgReqCheckbox = $(this).find("input[type='checkbox']");&ndash;&gt;-->
 
-                const imgReqValue = imgReqCheckbox.is(":checked") ? "Yes" : "No";
+<!--&lt;!&ndash;                const imgReqValue = imgReqCheckbox.is(":checked") ? "Yes" : "No";&ndash;&gt;-->
 
-                const inspObject = {
-                    routInspContent: routInspContent,
-                    imgReq: imgReqValue
+<!--&lt;!&ndash;                const inspObject = {&ndash;&gt;-->
+<!--&lt;!&ndash;                    routInspContent: routInspContent,&ndash;&gt;-->
+<!--&lt;!&ndash;                    imgReq: imgReqValue&ndash;&gt;-->
+<!--&lt;!&ndash;                };&ndash;&gt;-->
+
+<!--&lt;!&ndash;                userData.routdescription.push(inspObject);&ndash;&gt;-->
+<!--&lt;!&ndash;            });&ndash;&gt;-->
+
+
+
+<!--            $.ajax({-->
+<!--                contentType: "application/json;charset=UTF-8",-->
+<!--                url: "/api/routinsp/save",-->
+<!--                dataType: "json",-->
+<!--                type: "POST",-->
+<!--                cache: !1,-->
+<!--                processData: !1,-->
+<!--                data: JSON.stringify(userData),-->
+<!--                success: function(response) {-->
+<!--                    console.log(response);-->
+<!--                },-->
+<!--                error: function(error) {-->
+<!--                    console.error("error");-->
+<!--                }-->
+<!--            });-->
+
+<!--            showAlert();-->
+<!--        }-->
+
+
+            function saveRoutineinsp() {
+                const userData = {
+                    routtaluk: $("#routTalukDrop").val(),
+                    routdepartment: $("#routDeptDrop").val(),
+                    routTempName: $("#routTempDrop").val(),
+                    routdescription: [],
                 };
 
-                userData.routdescription.push(inspObject);
-            });
+                const inputFields = document.querySelectorAll(".template-container input[type='text']");
+                const checkboxInputs = document.querySelectorAll(".template-container input[type='checkbox']");
+
+                inputFields.forEach(function (inputField, index) {
+            <!--        console.log(inputField);-->
+                    const routInspContent = inputField.placeholder;
+
+                    const imgReqValue = checkboxInputs[index].checked ? "Yes" : "No";
+
+                    const inspObject = {
+                        routInspContent: routInspContent,
+                        imgReq: imgReqValue
+                    };
+
+                    userData.routdescription.push(inspObject);
+                });
+
+                $.ajax({
+                    contentType: "application/json;charset=UTF-8",
+                    url: "/api/routinsp/save",
+                    dataType: "json",
+                    type: "POST",
+                    cache: false,
+                    processData: false,
+                    data: JSON.stringify(userData),
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.error("Error:", error);
+                    }
+                });
+
+                showAlert();
+            }
 
 
 
-            $.ajax({
-                contentType: "application/json;charset=UTF-8",
-                url: "/api/routinsp/save",
-                dataType: "json",
-                type: "POST",
-                cache: !1,
-                processData: !1,
-                data: JSON.stringify(userData),
-                success: function(response) {
-                    console.log(response);
-                },
-                error: function(error) {
-                    console.error("error");
-                }
-            });
+function populateTempDiscription(tempDiscription) {
+    const inputContainer = document.getElementById("inputContainer");
+    inputContainer.innerHTML = ""; // Clear previous content
+    let inputCounter = 0;
+    const maxFields = 15;
 
-            showAlert();
+    function createInputField(temp) {
+        if (inputCounter < maxFields) {
+            const inputWrapper = document.createElement("div");
+            inputWrapper.classList.add("template-container");
+
+            const inputField = document.createElement("input");
+            inputField.type = "text";
+            inputField.name = "inputField" + inputCounter;
+            inputField.placeholder = temp.tempContent;
+            inputField.disabled = true;
+
+            const checkboxLabel = document.createElement("label");
+            const checkbox = document.createElement("input");
+            checkboxLabel.appendChild(document.createTextNode("Image Required"));
+            checkbox.type = "checkbox";
+            checkboxLabel.appendChild(checkbox);
+
+            inputWrapper.appendChild(inputField);
+            inputWrapper.appendChild(checkboxLabel);
+            inputContainer.appendChild(inputWrapper);
+            inputCounter++;
+        } else {
+            alert("You have reached the maximum limit of input fields (15).");
         }
+    }
 
+    tempDiscription.forEach(function (temp) {
+        createInputField(temp);
+    });
 
+<!--    document.getElementById("addButton").addEventListener("click", function() {-->
+<!--        createInputField({ tempContent: `Question ${inputCounter + 1}` });-->
+<!--    });-->
+}
 
 </script>
 </body>
