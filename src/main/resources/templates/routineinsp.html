@@ -126,21 +126,17 @@
 
             };
 
-            // Get all dynamically generated input fields with their routInspAns values
                $("#inputContainer").find(".input-container").each(function() {
                 const routInspContent = $(this).find("input[type='text']").val();
                 const imgReqCheckbox = $(this).find("input[type='checkbox']");
 
-                // Determine the value for imgReq based on checkbox status
                 const imgReqValue = imgReqCheckbox.is(":checked") ? "Yes" : "No";
 
-                // Create an object for each routInspContent and imgReq
                 const inspObject = {
                     routInspContent: routInspContent,
                     imgReq: imgReqValue
                 };
 
-                // Push the object to the routdescription array
                 userData.routdescription.push(inspObject);
             });
 
@@ -155,54 +151,17 @@
                 processData: !1,
                 data: JSON.stringify(userData),
                 success: function(response) {
-                    console.log(response); // If needed, handle the response from the server
+                    console.log(response);
                 },
                 error: function(error) {
-                    console.error("error"); // If needed, handle the error from the server
+                    console.error("error");
                 }
             });
 
             showAlert();
         }
 
-        function gettempId(id){
-                 $.ajax({
-                       contentType: "application/json;charset=UTF-8",
-                       url: "${pageContext.request.contextPath}api/quetemplet/getById/" + id,
-                       dataType: "json",
-                       type: "GET",
-                       success:function(data){
-                          getProfile(data)
 
-                       }
-                  });
-            }
-
-
-        function gettemp(id) {
-            $("#tablelist").hide();
-            $("#questions").show();
-
-            $.ajax({
-                contentType: "application/json;charset=UTF-8",
-                url: "/api/quetemplet/getById/" + id,
-                dataType: "json",
-                type: "GET",
-                cache: !1,
-                processData: !1,
-                success: function(data) {
-
-                    $("#TempIdSing").text(data.tempId);
-
-                    var descriptionHtml = '';
-                    for (var i = 0; i < data.tempDiscription.length; i++) {
-                        descriptionHtml += data.tempDiscription[i].tempContent + '<br>';
-                    }
-                    $("#TempDescriptionSing").html(descriptionHtml);
-
-                }
-            });
-        }
 
 </script>
 </body>
