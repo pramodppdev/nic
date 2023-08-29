@@ -125,4 +125,10 @@ public class HomeController {
         return "viewquestions";
     }
 
+    @GetMapping("/inspunit")
+    public String inspUnit(){
+        return "inspection_unit";
+    }
+
+
 }

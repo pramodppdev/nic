@@ -13,13 +13,16 @@ public class Designation {
 
     private String designationName;
 
+    private String level;
+
     public Designation() {
     }
 
-    public Designation(String desgId, String department, String designation) {
+    public Designation(String desgId, String department, String designationName, String level) {
         this.desgId = desgId;
         this.department = department;
-        this.designationName = designation;
+        this.designationName = designationName;
+        this.level = level;
     }
 
     public String getDesgId() {
@@ -44,5 +47,13 @@ public class Designation {
 
     public void setDesignationName(String designationName) {
         this.designationName = designationName;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 }
