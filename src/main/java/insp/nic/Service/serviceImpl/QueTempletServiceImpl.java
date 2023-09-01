@@ -26,6 +26,16 @@ public class QueTempletServiceImpl implements QueTempletService {
     }
 
     @Override
+    public List<QueTemplet> getTempByLev(String tempLevel) {
+        return queTempletRepo.getTempByLev(tempLevel);
+    }
+
+    @Override
+    public List<QueTemplet> getTempByLD(String tempLevel, String tempDept) {
+        return queTempletRepo.getTempByLD(tempLevel, tempDept);
+    }
+
+    @Override
     public QueTemplet updateTemp(QueTemplet queTemplet, String id) {
         QueTemplet existingQueTemplate = queTempletRepo.findById(id).orElseThrow(
                 ()-> new ResourceNotFoundException("Inspection not Found","Id",id));

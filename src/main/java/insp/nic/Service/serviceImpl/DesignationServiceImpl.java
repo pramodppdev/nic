@@ -26,6 +26,16 @@ public class DesignationServiceImpl implements DesignationService {
     }
 
     @Override
+    public List<Designation> getDesigByTal(String desigTaluk) {
+        return designationRepo.getDesigByTal(desigTaluk);
+    }
+
+    @Override
+    public List<Designation> getDesigByTD(String desigTaluk, String department) {
+        return designationRepo.getDesigByTD(desigTaluk, department);
+    }
+
+    @Override
     public Designation getById(String id) {
         return designationRepo.findById(id).orElseThrow(()->  new ResourceNotFoundException("Designation","Id",id));
     }

@@ -15,15 +15,18 @@ public class QueTemplet {
 
     private String tempLevel;
 
+    private String tempDept;
+
     private List<TempDetails> tempDiscription;
 
     public QueTemplet() {
     }
 
-    public QueTemplet(String tempId, String tempName, String tempLevel, List<TempDetails> tempDiscription) {
+    public QueTemplet(String tempId, String tempName, String tempLevel, String tempDept, List<TempDetails> tempDiscription) {
         this.tempId = tempId;
         this.tempName = tempName;
         this.tempLevel = tempLevel;
+        this.tempDept = tempDept;
         this.tempDiscription = tempDiscription;
     }
 
@@ -49,6 +52,14 @@ public class QueTemplet {
 
     public void setTempLevel(String tempLevel) {
         this.tempLevel = tempLevel;
+    }
+
+    public String getTempDept() {
+        return tempDept;
+    }
+
+    public void setTempDept(String tempDept) {
+        this.tempDept = tempDept;
     }
 
     public List<TempDetails> getTempDiscription() {

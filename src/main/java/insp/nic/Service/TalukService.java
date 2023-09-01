@@ -13,6 +13,8 @@ public interface TalukService {
 
     List<Taluk> getAllTaluk();
 
+    List<Taluk> getTakByDist(String district);
+
     Taluk getById(String id);
 
     void deleteTaluk(String id);
