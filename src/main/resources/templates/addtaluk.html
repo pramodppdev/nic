@@ -39,6 +39,7 @@
               <thead>
                 <tr>
                   <th>Taluk name</th>
+                    <th>District</th>
                     <th>Actions</th>
                 </tr>
               </thead>
@@ -89,6 +90,7 @@ $(document).ready(function() {
                talukList += '<tr id="' + data[i].talukId + '">'; // Add ID attribute
 
                talukList=talukList+' <td>'+data[i].talukName +'</td>';
+               talukList=talukList+' <td>'+data[i].district +'</td>';
 
                talukList=talukList+' <td>';
                talukList=talukList+'<a href="javascript:deleteTaluk(\''+data[i].talukId+'\')" title="Delete">';

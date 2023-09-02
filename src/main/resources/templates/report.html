@@ -107,7 +107,6 @@
             url: "/api/inspection/getAllInsp",
             dataType: "json",
             type: "GET",
-            type: "GET",
             async:false,
             success:function(data){
                for(i=0;i<data.length;i++){
@@ -117,9 +116,6 @@
                      reportList=reportList+' <td>'+data[i].department +'</td>';
                      reportList=reportList+' <td>'+data[i].assignedOfficer +'</td>';
                      reportList=reportList+' <td>'+data[i].status +'</td>';
-
-
-
 
 
                      reportList=reportList+' <td>';

@@ -16,7 +16,7 @@
 <main>
     <div id="tablelist">
         <div class="table-name">
-            <h2>Routine Reports</h2>
+            <h2>Templates</h2>
         </div>
         <div class="table-container">
             <table>
@@ -51,33 +51,12 @@
                 </tr>
             </table>
         </div>
-
-
     </div>
 </main>
 
 <script>
 
     $(document).ready(function() {
-
-    <!--        Officer dropdown list start-->
-
-       $.ajax({
-           contentType: "application/json;charset=UTF-8",
-           type: "GET",
-           url: "/api/officer/getAllOfficer",
-           dataType: "json",
-           async:false,
-           success: function (officerData) {
-               var s = '<option value="-1">Select Officer</option>';
-               for (var i = 0; i < officerData.length; i++) {
-                   s += '<option value="' + officerData[i].officerName + '">' + officerData[i].officerName + '</option>';
-               }
-               $("#officerDrop").html(s); // Updated ID here
-           }
-        });
-
-    <!--        Officer dropdown list end-->
 
         $("#tablelist").show();
         $("#questions").hide();

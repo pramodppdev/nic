@@ -15,6 +15,13 @@
 <main>
     <div class="grid">
         <div class="wrapper">
+            <select name="" id="TempLevel">
+                <option value="Select Level">Select Level</option>
+                <option value="District">District</option>
+                <option value="Taluk">Taluk</option>
+            </select>
+        </div>
+        <div class="wrapper">
             <select  id="routTalukDrop" ></select>
         </div>
         <div class="wrapper" >
@@ -22,6 +29,9 @@
         </div>
         <div class="wrapper" >
             <select  id="routTempDrop" ></select>
+        </div>
+        <div class="wrapper" >
+            <select  id="inspUnitDrop" ></select>
         </div>
     </div>
 
@@ -104,9 +114,6 @@
                }
                $("#routTempDrop").html(s);
            }
-
-
-
        });
 
         $("#routTempDrop").change(function() {
@@ -132,12 +139,28 @@
             }
         });
     });
-
-
-
-
-
 <!--        Templet dropdown list end-->
+
+
+<!--        unit dropdown list start-->
+
+
+        $.ajax({
+           contentType: "application/json;charset=UTF-8",
+           type: "GET",
+           url: "/api/inspunit/getAllInspUnit",
+           dataType: "json",
+           async:false,
+           success: function (inspUnitData) {
+               var s = '<option value="-1">Select Unit</option>';
+               for (var i = 0; i < inspUnitData.length; i++) {
+                   s += '<option value="' + inspUnitData[i].unitName + '">' + inspUnitData[i].unitName + '</option>';
+               }
+               $("#inspUnitDrop").html(s);
+           }
+       });
+<!--        unit dropdown list end-->
+
 
 
 

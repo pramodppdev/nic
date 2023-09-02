@@ -27,6 +27,11 @@ public class TalukController {
         return talukService.getAllTaluk();
     }
 
+    @GetMapping("/getTakByDist/{district}")
+    public List<Taluk> getTakByDist(@PathVariable("district") String district){
+        return talukService.getTakByDist(district);
+    }
+
     @GetMapping("/getById/{id}")
     public ResponseEntity<Taluk> getById(@PathVariable("id") String id){
         return new ResponseEntity<Taluk>(talukService.getById(id), HttpStatus.OK);

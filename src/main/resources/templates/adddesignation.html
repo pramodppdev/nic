@@ -16,6 +16,9 @@
 <main>
     <div class="grid">
         <div class="wrapper">
+            <select  id="talukDrop" ></select>
+        </div>
+        <div class="wrapper">
             <select  id="deptDrop" ></select>
         </div>
         <div class="wrapper">
@@ -38,6 +41,7 @@
         <table>
             <thead>
             <tr>
+                <th>Taluk</th>
                 <th>Department</th>
                 <th>Designation name</th>
                 <th>Actions</th>
@@ -74,6 +78,26 @@ $(document).ready(function() {
 
 <!--        Department dropdown list end-->
 
+<!--        Taluk dropdown list start-->
+
+       $.ajax({
+           contentType: "application/json;charset=UTF-8",
+           type: "GET",
+           url: "/api/taluk/getAllTaluk",
+           dataType: "json",
+           async:false,
+           success: function (talukData) {
+               var s = '<option value="-1">Select Taluk</option>';
+               for (var i = 0; i < talukData.length; i++) {
+                   s += '<option value="' + talukData[i].talukName + '">' + talukData[i].talukName + '</option>';
+               }
+               $("#talukDrop").html(s); // Updated ID here
+           }
+        });
+
+<!--        Taluk dropdown list end-->
+
+
 
 
             $("#tablelist").show();
@@ -89,7 +113,7 @@ $(document).ready(function() {
             success:function(data){
                for(i=0;i<data.length;i++){
                designationList += '<tr id="' + data[i].desgId + '">'; // Add ID attribute
-
+               designationList=designationList+' <td>'+data[i].desigTaluk +'</td>';
                designationList=designationList+' <td>'+data[i].department +'</td>';
                designationList=designationList+' <td>'+data[i].designationName +'</td>';
 
@@ -109,12 +133,14 @@ $(document).ready(function() {
 
             var designationName = $("#DesignationName").val();
             var department = $("#deptDrop").val();
+            var desigTaluk = $("#talukDrop").val();
 
 
-            if (designationName && department) {
+            if (designationName && department && desigTaluk) {
                 var userData = {
                     designationName: designationName,
                     department: department,
+                    desigTaluk: desigTaluk,
                 }
 
                 $.ajax({
