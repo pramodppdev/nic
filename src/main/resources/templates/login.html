@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login-Form</title>
     <link rel="stylesheet" href="/css/login.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 <body>
     <div class="content">
@@ -13,18 +15,57 @@
         <div class="text">ZILLA PANCHAYAT, BALLARI</div>
         <form >
             <div class="wrapper">
-                <input type="text" required>
+                <input type="text" id="ExecutiveUserName" required>
                 <label>username</label>
             </div>
             <div class="wrapper">
-                <input type="password" required>
+                <input type="password" id="ExecutivePasswd" required>
                 <label>password</label>
             </div>
             <div id="login">
-                <a href="/index" class="login-btn">Login</a>
+                <a class="login-btn" onclick="login()">Login</a>
             </div>
 
         </form>
     </div>
+<script>
+    function login() {
+
+            var executiveUserName = $("#ExecutiveUserName").val();
+            var executivePasswd = $("#ExecutivePasswd").val();
+
+
+            var executiveVo = {
+                executiveUserName: executiveUserName,
+                executivePasswd: executivePasswd
+
+            };
+
+
+                $.ajax({
+                    contentType: "application/json;charset=UTF-8",
+                    url: "/auth/exec",
+                    dataType: "json",
+                    type: "POST",
+                    cache: !1,
+                    async:false,
+                    processData: !1,
+                    data: JSON.stringify(executiveVo),
+                    complete: function(xhr) {
+                    if (xhr.status === 200) {
+                            console.log(xhr)
+                            window.location.href = "/index";
+                        } else {
+                            alert("Invalid credentials");
+
+                            console.log("Error: " + xhr.status);
+                        }
+
+
+                    }
+                });
+
+            }
+</script>
 </body>
 </html>

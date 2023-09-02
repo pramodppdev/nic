@@ -13,13 +13,19 @@ public class Designation {
 
     private String designationName;
 
+    private String desigTaluk;
+
+    private String level;
+
     public Designation() {
     }
 
-    public Designation(String desgId, String department, String designation) {
+    public Designation(String desgId, String department, String designationName, String desigTaluk, String level) {
         this.desgId = desgId;
         this.department = department;
-        this.designationName = designation;
+        this.designationName = designationName;
+        this.desigTaluk = desigTaluk;
+        this.level = level;
     }
 
     public String getDesgId() {
@@ -44,5 +50,21 @@ public class Designation {
 
     public void setDesignationName(String designationName) {
         this.designationName = designationName;
+    }
+
+    public String getDesigTaluk() {
+        return desigTaluk;
+    }
+
+    public void setDesigTaluk(String desigTaluk) {
+        this.desigTaluk = desigTaluk;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 }

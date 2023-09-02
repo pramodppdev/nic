@@ -12,6 +12,10 @@ public interface QueTempletService {
 
     List<QueTemplet> getAllTemp();
 
+    List<QueTemplet> getTempByLev(String tempLevel);
+
+    List<QueTemplet> getTempByLD(String tempLevel, String tempDept);
+
     QueTemplet updateTemp(QueTemplet queTemplet,String id);
 
     QueTemplet getById(String id);
