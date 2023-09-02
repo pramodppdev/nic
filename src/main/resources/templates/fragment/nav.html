@@ -2,7 +2,14 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+
+    <script>
+      function logout() {
+        document.cookie = "JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        window.location.href = "/";
+      }
+    </script>
+
 
 </head>
 <body>
@@ -13,7 +20,7 @@
       <img src="/imgs/logo.png" alt="">&nbsp;&nbsp;&nbsp;
       <span>ZILLA PANCHAYATH<br>BALLARI</span>
       <div class="logout-btn">
-        <a href="/"><button>Logout</button></a>
+        <button onclick="logout()">Logout</button>
       </div>
     </div>
   </header>
@@ -29,7 +36,6 @@
     </nav>
   </aside>
 </div>
-
 
 </body>
 </html>
