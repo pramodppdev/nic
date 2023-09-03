@@ -53,6 +53,33 @@
 
 $(document).ready(function() {
 
+<!--&lt;!&ndash;UserSesssion name start&ndash;&gt;-->
+
+<!--        $.ajax({-->
+<!--            type: "GET",-->
+<!--            url: "/session/session_user",-->
+<!--            dataType: "text",-->
+<!--            success: function(response) {-->
+<!--                if (response) {-->
+<!--                    // You have successfully retrieved the username-->
+<!--                    var username = response;-->
+<!--                    // Now you can use the username in your JavaScript logic-->
+<!--                    console.log("Username: " + username);-->
+
+<!--                    // Example: Update an element with the retrieved username-->
+<!--                    $("#usernameElement").text(username);-->
+<!--                } else {-->
+<!--                    console.log("Username not found in the response.");-->
+<!--                }-->
+<!--            },-->
+<!--            error: function(error) {-->
+<!--                console.error("Error fetching username:", error);-->
+<!--            }-->
+<!--        });-->
+
+
+<!--&lt;!&ndash;USerSession name End&ndash;&gt;-->
+
     <!--        District dropdown list start-->
 
        $.ajax({
@@ -151,6 +178,9 @@ $(document).ready(function() {
                 });
             }
         }
+
+
+
 
 
 </script>

@@ -1,5 +1,8 @@
 package insp.nic.common;
 
+import insp.nic.model.Executive;
+import insp.nic.repo.ExecutiveRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +17,9 @@ import javax.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/session")
 public class UserSessionMangement {
+
+    @Autowired
+    private ExecutiveRepo executiveRepo;
 
     private String getSessionUsername(HttpSession session) {
         // Get the SecurityContext from the session
@@ -37,9 +43,31 @@ public class UserSessionMangement {
         String username = getSessionUsername(session);
 
         if (username != null) {
-            return "Hello, " + username + "!";
+            return username ;
         } else {
-            return "Hello, Guest!";
+            return "not Logged in";
         }
     }
+
+
+    @GetMapping("/getUserDist")
+    public String getUserDist(HttpSession session){
+        String username = getSessionUsername(session);
+
+        if (username!= null){
+            Executive executive = executiveRepo.findAllByUserName(username);
+            if(executive != null){
+                return executive.getDistrict();
+            }
+            else {
+                return "District not Found for User";
+            }
+        }
+        else {
+            return "Not logged in";
+        }
+    }
+
+
+
 }
