@@ -179,11 +179,11 @@ public class HomeController {
         return "fail";
     }
 
-    @GetMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse respons){
-        request.getSession(false).invalidate();
-        SecurityContextHolder.clearContext();
-        return "redirect:/";
+    @RequestMapping("/logout")
+    String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.invalidate();
+        return "/";
     }
 
 

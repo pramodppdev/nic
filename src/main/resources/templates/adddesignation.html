@@ -16,8 +16,15 @@
 <main>
     <div class="grid">
         <div class="wrapper">
-            <select  id="talukDrop" ></select>
+            <select name="" id="Level">
+                <option value="Select Level">Select Level</option>
+                <option value="District">District</option>
+                <option value="Taluk">Taluk</option>
+            </select>
         </div>
+<!--        <div class="wrapper">-->
+<!--            <select  id="talukDrop" ></select>-->
+<!--        </div>-->
         <div class="wrapper">
             <select  id="deptDrop" ></select>
         </div>
@@ -41,7 +48,7 @@
         <table>
             <thead>
             <tr>
-                <th>Taluk</th>
+                <th>Level</th>
                 <th>Department</th>
                 <th>Designation name</th>
                 <th>Actions</th>
@@ -113,7 +120,7 @@ $(document).ready(function() {
             success:function(data){
                for(i=0;i<data.length;i++){
                designationList += '<tr id="' + data[i].desgId + '">'; // Add ID attribute
-               designationList=designationList+' <td>'+data[i].desigTaluk +'</td>';
+               designationList=designationList+' <td>'+data[i].level +'</td>';
                designationList=designationList+' <td>'+data[i].department +'</td>';
                designationList=designationList+' <td>'+data[i].designationName +'</td>';
 
@@ -134,6 +141,7 @@ $(document).ready(function() {
             var designationName = $("#DesignationName").val();
             var department = $("#deptDrop").val();
             var desigTaluk = $("#talukDrop").val();
+            var level = $("#Level").val();
 
 
             if (designationName && department && desigTaluk) {
@@ -141,6 +149,7 @@ $(document).ready(function() {
                     designationName: designationName,
                     department: department,
                     desigTaluk: desigTaluk,
+                    level: level,
                 }
 
                 $.ajax({

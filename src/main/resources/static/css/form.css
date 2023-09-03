@@ -151,3 +151,73 @@ p{
 #label{
     font-weight: lighter;
 }
+
+.wrapper .select2-selection--single,
+.wrapper .select2-container .select2-selection--single {
+    /* Your custom styles here */
+    margin-top: 50px;
+    margin-left: 50px;
+    padding: 13px;
+    outline: none;
+    font-size: 16px;
+    color: rgb(71, 78, 15);
+    border-radius: 10px;
+    border: none;
+    background-color: #f1f1f1;
+    width: 90%;
+    box-shadow: inset -3px -3px 7px #ffffff, inset 3px 3px 5px #ceced1;
+}
+
+.wrapper .select2-selection--single .select2-selection__arrow,
+.wrapper .select2-container .select2-selection--single .select2-selection__arrow {
+    /* Remove the default arrow background */
+    padding:10px;
+    background-color: transparent;
+    border-left: none;
+}
+
+.wrapper .select2-selection--single .select2-selection__placeholder,
+.wrapper .select2-container .select2-selection--single .select2-selection__placeholder {
+    /* Style the placeholder text */
+        padding:10px;
+
+    color: rgb(71, 78, 15);
+    font-size: 16px;
+}
+
+/* Apply custom styles to selected items in the Select2 dropdown */
+.wrapper .select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #f1f1f1;
+    padding:10px;
+    color: rgb(71, 78, 15);
+    border: none;
+    border-radius: 10px;
+    padding: 0 5px;
+    margin: 2px;
+}
+
+.wrapper .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    background-color: transparent;
+
+    color: red;
+    font-weight: bold;
+    font-size: 14px;
+    border: none;
+    margin-right: 5px;
+}
+
+.wrapper .select2-container--default .select2-selection--multiple .select2-selection__choice:hover {
+    background-color: #ceced1;
+    color: rgb(71, 78, 15);
+
+}
+
+/* Apply custom styles to disabled Select2 dropdown */
+.wrapper .select2-container--disabled .select2-selection--single,
+.wrapper .select2-container--disabled .select2-selection--multiple {
+    background-color: #f1f1f1;
+        padding:10px;
+
+    color: rgb(71, 78, 15);
+    cursor: not-allowed;
+}
