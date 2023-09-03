@@ -7,8 +7,14 @@
     <link rel="stylesheet" href="/css/routine.css">
     <link rel="stylesheet" href="/css/alert.css">
     <script src="/script/alert.js"></script>
-<!--    <script src="/script/dynamic_fields.js"></script>-->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+
+    <!--    <script src="/script/dynamic_fields.js"></script>-->
 </head>
 <body>
 <div th:replace="~{fragment/nav :: nav}"> </div>
@@ -30,13 +36,32 @@
         <div class="wrapper" >
             <select  id="routTempDrop" ></select>
         </div>
-        <div class="wrapper" >
-            <select  id="inspUnitDrop" ></select>
+
+<!--        <div class="selected-items">-->
+<!--            Selected Units: <span id="selectedUnits"></span>-->
+<!--        </div>-->
+
+
+
+    </div>
+    <div class="grid">
+        <div class="wrapper">
+
+            <select id="inspUnitSelect"  aria-multiselectable="true" style="width: 300px;" multiple>
+
+            </select>
+            <label class="select2-selection__placeholder" id="lableHide">Select Unit</label>
+
+
         </div>
     </div>
 
+
+
     <div id="inputContainer" class="input-container">
     </div>
+
+
 
 
     <div class="btn">
@@ -131,7 +156,7 @@
                 });
 
                 if (selectedTemp) {
-                    populateTempDiscription(selectedTemp.tempDiscription);
+                    populateTempDiscription(selectedTemp.tempDiscription,);
                 }
             },
             error: function(error) {
@@ -145,20 +170,41 @@
 <!--        unit dropdown list start-->
 
 
-        $.ajax({
-           contentType: "application/json;charset=UTF-8",
-           type: "GET",
-           url: "/api/inspunit/getAllInspUnit",
-           dataType: "json",
-           async:false,
-           success: function (inspUnitData) {
-               var s = '<option value="-1">Select Unit</option>';
-               for (var i = 0; i < inspUnitData.length; i++) {
-                   s += '<option value="' + inspUnitData[i].unitName + '">' + inspUnitData[i].unitName + '</option>';
-               }
-               $("#inspUnitDrop").html(s);
-           }
-       });
+       var $select = $('#inspUnitSelect');
+
+    $.ajax({
+        contentType: "application/json;charset=UTF-8",
+        type: "GET",
+        url: "/api/inspunit/getAllInspUnit",
+        dataType: "json",
+        async: false,
+        success: function (inspUnitData) {
+            inspUnitData.forEach(function (unit) {
+                $select.append(new Option(unit.unitName, unit.unitName, false, false));
+            });
+
+            // Initialize Select2 with multiple options
+            $select.select2({
+                closeOnSelect: false, // Allow keeping the dropdown open after selections
+            });
+
+            // Handle selection change
+            $select.on('change', function () {
+                var selectedValues = $select.val();
+                var selectedUnits = selectedValues ? selectedValues.join(', ') : '';
+                $('#selectedUnits').text(selectedUnits);
+
+                // Check the number of selected items
+                var minSelectedItems = 4;
+                if (selectedValues && selectedValues.length > minSelectedItems) {
+                      $select.select2('close');
+                    alert('You have reached the maximum selection limit.');
+<!--                    $select.val(null).trigger('change');-->
+                }
+            });
+        }
+    });
+
 <!--        unit dropdown list end-->
 
 
@@ -222,40 +268,64 @@
                     routdescription: [],
                 };
 
-                const inputFields = document.querySelectorAll(".template-container input[type='text']");
-                const checkboxInputs = document.querySelectorAll(".template-container input[type='checkbox']");
-
-                inputFields.forEach(function (inputField, index) {
-            <!--        console.log(inputField);-->
-                    const routInspContent = inputField.placeholder;
-
-                    const imgReqValue = checkboxInputs[index].checked ? "Yes" : "No";
-
-                    const inspObject = {
-                        routInspContent: routInspContent,
-                        imgReq: imgReqValue
-                    };
-
-                    userData.routdescription.push(inspObject);
-                });
-
+                // Fetch template data
                 $.ajax({
                     contentType: "application/json;charset=UTF-8",
-                    url: "/api/routinsp/save",
+                    type: "GET",
+                    url: "/api/quetemplet/getAllTemp",
                     dataType: "json",
-                    type: "POST",
-                    cache: false,
-                    processData: false,
-                    data: JSON.stringify(userData),
-                    success: function(response) {
-                        console.log(response);
-                    },
-                    error: function(error) {
-                        console.error("Error:", error);
-                    }
-                });
+                    async: false,
+                    success: function (tempData) {
+                        if (tempData.length === 0) {
+                            alert("Template data not found.");
+                            return;
+                        }
 
-                showAlert();
+                        // Find the selected template
+                        const selectedTemplate = tempData.find((temp) => temp.tempName === userData.routTempName);
+
+                        if (!selectedTemplate) {
+                            alert("Selected template not found in the template data.");
+                            return;
+                        }
+
+                        // Loop through template description and build userData
+                        selectedTemplate.tempDiscription.forEach((tempDesc) => {
+                            const routInspContent = tempDesc.tempContent;
+                            const imgReqValue = tempDesc.imgReq;
+
+                            const inspObject = {
+                                routInspContent: routInspContent,
+                                imgReq: imgReqValue,
+                            };
+
+                            userData.routdescription.push(inspObject);
+                        });
+
+                        // Now userData contains the correct imgReq values
+
+                        $.ajax({
+                            contentType: "application/json;charset=UTF-8",
+                            url: "/api/routinsp/save",
+                            dataType: "json",
+                            type: "POST",
+                            cache: false,
+                            processData: false,
+                            data: JSON.stringify(userData),
+                            success: function (response) {
+                                console.log(response);
+                            },
+                            error: function (error) {
+                                console.error("Error:", error);
+                            },
+                        });
+
+                        showAlert();
+                    },
+                    error: function (error) {
+                        console.error("Error fetching template data from API:", error);
+                    },
+                });
             }
 
 
@@ -275,17 +345,21 @@ function populateTempDiscription(tempDiscription) {
             inputField.type = "text";
             inputField.name = "inputField" + inputCounter;
             inputField.placeholder = temp.tempContent;
+            console.log(temp.tempContent)
+            console.log(temp.imgReq)
+
             inputField.disabled = true;
 
-            const checkboxLabel = document.createElement("label");
-            const checkbox = document.createElement("input");
-            checkboxLabel.appendChild(document.createTextNode("Image Required"));
-            checkbox.type = "checkbox";
-            checkboxLabel.appendChild(checkbox);
+
 
             inputWrapper.appendChild(inputField);
-            inputWrapper.appendChild(checkboxLabel);
             inputContainer.appendChild(inputWrapper);
+            if (temp.imgReq=="Yes") {
+                const imgRequiredLabel = document.createElement("label");
+                imgRequiredLabel.appendChild(document.createTextNode("Image Required"));
+
+                inputWrapper.appendChild(imgRequiredLabel);
+            }
             inputCounter++;
         } else {
             alert("You have reached the maximum limit of input fields (15).");
