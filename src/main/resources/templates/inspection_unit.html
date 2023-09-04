@@ -67,6 +67,7 @@
             <thead>
             <tr>
                 <th>Level</th>
+                <th>Taluk</th>
                 <th>Department</th>
                 <th>Unit Name</th>
 
@@ -100,26 +101,7 @@
             });
     <!--userDistrict End-->
 
-        <!--        Taluk dropdown list start-->
 
-
-       $.ajax({
-           contentType: "application/json;charset=UTF-8",
-           type: "GET",
-           url: "/api/taluk/getTakByDist/",
-           dataType: "json",
-           async:false,
-           success: function (talukData) {
-               var s = '<option value="-1">Select Taluk</option>';
-               for (var i = 0; i < talukData.length; i++) {
-                   s += '<option value="' + talukData[i].talukName + '">' + talukData[i].talukName + '</option>';
-               }
-               $("#routTalukDrop").html(s); // Updated ID here
-           }
-        });
-
-
-<!--        Taluk dropdown list end-->
 
 
 
@@ -164,6 +146,7 @@
 
                    designationList=designationList+' <td>'+data[i].level +'</td>';
 
+                   designationList=designationList+' <td>'+data[i].taluk +'</td>';
                    designationList=designationList+' <td>'+data[i].dept +'</td>';
                    designationList=designationList+' <td>'+data[i].unitName +'</td>';
 
@@ -184,7 +167,7 @@
 
                 var dept = $("#deptDrop").val();
                 var level = $("#Level").val();
-                var taluk = $("#routTalukDrop").val();
+                var taluk = $("#TalukDrop").val();
                 var unitName = $("#UnitName").val();
                 var assignedMonth = $("#assignedMonth").val();
                 var assignedOfficer = $("#officerDrop").val();

@@ -11,6 +11,8 @@ public class RoutInsp {
     @Id
     private String routinspId;
 
+    private String level;
+
     private String routtaluk;
 
     private String routdepartment;
@@ -33,11 +35,14 @@ public class RoutInsp {
 
     private String routdistrict;
 
+    private List<String> inspUnits;
+
     public RoutInsp() {
     }
 
-    public RoutInsp(String routinspId, String routtaluk, String routdepartment, String routTempName, List<RoutInspDetails> routdescription, String routDesig, String routlastDate, String routstatus, String routassignedOfficer, String routcreatedAt, String routcreatedBy, String routdistrict) {
+    public RoutInsp(String routinspId, String level, String routtaluk, String routdepartment, String routTempName, List<RoutInspDetails> routdescription, String routDesig, String routlastDate, String routstatus, String routassignedOfficer, String routcreatedAt, String routcreatedBy, String routdistrict, List<String> inspUnits) {
         this.routinspId = routinspId;
+        this.level = level;
         this.routtaluk = routtaluk;
         this.routdepartment = routdepartment;
         this.routTempName = routTempName;
@@ -49,6 +54,7 @@ public class RoutInsp {
         this.routcreatedAt = routcreatedAt;
         this.routcreatedBy = routcreatedBy;
         this.routdistrict = routdistrict;
+        this.inspUnits = inspUnits;
     }
 
     public String getRoutinspId() {
@@ -57,6 +63,14 @@ public class RoutInsp {
 
     public void setRoutinspId(String routinspId) {
         this.routinspId = routinspId;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 
     public String getRouttaluk() {
@@ -145,5 +159,13 @@ public class RoutInsp {
 
     public void setRoutdistrict(String routdistrict) {
         this.routdistrict = routdistrict;
+    }
+
+    public List<String> getInspUnits() {
+        return inspUnits;
+    }
+
+    public void setInspUnits(List<String> inspUnits) {
+        this.inspUnits = inspUnits;
     }
 }
