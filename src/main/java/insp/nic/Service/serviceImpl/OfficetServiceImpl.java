@@ -33,6 +33,11 @@ public class OfficetServiceImpl implements OfficerService {
     }
 
     @Override
+    public List<Officer> getOfficerByLTDD(String level, String taluk, String officerDept, String designation) {
+        return officerRepo.getOfficerByLTDptDes(level,taluk,officerDept,designation);
+    }
+
+    @Override
     public void deleteOfficer(String id) {
         officerRepo.findById(id).orElseThrow(()->  new ResourceNotFoundException("Officer","Id",id));
         officerRepo.deleteById(id);

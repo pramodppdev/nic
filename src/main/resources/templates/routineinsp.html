@@ -19,23 +19,31 @@
 <body>
 <div th:replace="~{fragment/nav :: nav}"> </div>
 <main>
+    <h2>Routine Inspections</h2>
     <div class="grid">
         <div class="wrapper">
-            <select name="" id="TempLevel">
+            <select name="" id="Level">
                 <option value="Select Level">Select Level</option>
                 <option value="District">District</option>
                 <option value="Taluk">Taluk</option>
             </select>
         </div>
         <div class="wrapper">
-            <select  id="routTalukDrop" ></select>
+            <select  id="TalukDrop" ></select>
         </div>
         <div class="wrapper" >
             <select  id="routDeptDrop" ></select>
         </div>
         <div class="wrapper" >
-            <select  id="routTempDrop" ></select>
+            <select  id="designationDrop" ></select>
         </div>
+
+        <div class="wrapper" >
+            <select  id="officerDrop" ></select>
+        </div>
+
+
+
 
 <!--        <div class="selected-items">-->
 <!--            Selected Units: <span id="selectedUnits"></span>-->
@@ -44,6 +52,17 @@
 
 
     </div>
+
+    <div class="grid">
+        <div class="wrapper" >
+            <select  id="routTempDrop" ></select>
+        </div>
+
+
+    </div>
+    <!--    Selected Template question will be listed    -->
+    <div id="inputContainer" class="input-container"></div>
+
     <div class="grid">
         <div class="wrapper">
 
@@ -58,8 +77,8 @@
 
 
 
-    <div id="inputContainer" class="input-container">
-    </div>
+<!--    <div id="inputContainer" class="input-container">-->
+<!--    </div>-->
 
 
 
@@ -80,27 +99,52 @@
 
     $(document).ready(function() {
 
+    <!--userDistrict start-->
+            $.ajax({
+                type: "GET",
+                url: "/session/getUserDist",
+                success: function (data) {
+                    // Display the district result in the div
+                    $("#districtResult").val(data);
+                    getTaluksByDistrict(data);
 
-<!--        Taluk dropdown list start-->
+                },
+                error: function (error) {
+                    console.error("Error fetching user district:", error);
+                }
+            });
+    <!--userDistrict End-->
 
+    <!--    Department designation Filter Start-->
 
-       $.ajax({
-           contentType: "application/json;charset=UTF-8",
-           type: "GET",
-           url: "/api/taluk/getAllTaluk",
-           dataType: "json",
-           async:false,
-           success: function (talukData) {
-               var s = '<option value="-1">Select Taluk</option>';
-               for (var i = 0; i < talukData.length; i++) {
-                   s += '<option value="' + talukData[i].talukName + '">' + talukData[i].talukName + '</option>';
-               }
-               $("#routTalukDrop").html(s); // Updated ID here
-           }
+        // Add an event handler for the "Level" dropdown (#Level)
+        $("#Level, #routDeptDrop").on("change", function () {
+            var selectedLevel = $("#Level").val();
+            var selectedDept = $("#routDeptDrop").val();
+
+            // Call the function to fetch and populate Designations by Level and Depatmet
+            fetchDesignationsByLevelAndTaluk(selectedLevel, selectedDept);
         });
 
+    <!--Dept designation Filter Stop-->
 
-<!--        Taluk dropdown list end-->
+    <!--    officer Filter Start-->
+
+        // Add an event handler for the "Level" dropdown (#Level)
+        $("#Level,#TalukDrop, #routDeptDrop, #designationDrop").on("change", function () {
+            var selectedLevel = $("#Level").val();
+            var selectedTaluk = $("#TalukDrop").val();
+            var selectedDept = $("#routDeptDrop").val();
+            var selectedDesignation = $("#designationDrop").val();
+
+            // Call the function to fetch and populate Designations by Level and Depatmet
+            fetchOfficersByLTDD(selectedLevel, selectedTaluk, selectedDept, selectedDesignation);
+        });
+
+    <!--officer Filter Stop-->
+
+
+
 
 <!--        Department dropdown list start-->
 
@@ -345,8 +389,8 @@ function populateTempDiscription(tempDiscription) {
             inputField.type = "text";
             inputField.name = "inputField" + inputCounter;
             inputField.placeholder = temp.tempContent;
-            console.log(temp.tempContent)
-            console.log(temp.imgReq)
+<!--            console.log(temp.tempContent)-->
+<!--            console.log(temp.imgReq)-->
 
             inputField.disabled = true;
 
@@ -374,6 +418,61 @@ function populateTempDiscription(tempDiscription) {
 <!--        createInputField({ tempContent: `Question ${inputCounter + 1}` });-->
 <!--    });-->
 }
+
+
+        function getTaluksByDistrict(district) {
+                $.ajax({
+                    type: "GET",
+                    url: `/api/taluk/getTakByDist/${district}`,
+                   success: function (talukData) {
+                       var s = '<option value="-1">Select Taluk</option>';
+                       for (var i = 0; i < talukData.length; i++) {
+                           s += '<option value="' + talukData[i].talukName + '">' + talukData[i].talukName + '</option>';
+                       }
+                       $("#TalukDrop").html(s); // Updated ID here
+                   }
+                });
+            }
+
+
+        function fetchDesignationsByLevelAndTaluk(level, dept) {
+                $.ajax({
+                    type: "GET",
+                    url: "/api/designation/getDesigByLevel/" + level + "/" + dept,
+                    dataType: "json",
+                    success: function (designationData) {
+                        var s = '<option value="-1">Select Designation</option>';
+                        for (var i = 0; i < designationData.length; i++) {
+                            s += '<option value="' + designationData[i].designationName + '">' + designationData[i].designationName + '</option>';
+                        }
+                        // Assuming you have a dropdown for Designations with id "designationDrop"
+                        $("#designationDrop").html(s);
+                    },
+                    error: function (error) {
+                        console.error("Error fetching Designations by Level and Department:", error);
+                    }
+                });
+            }
+
+        function  fetchOfficersByLTDD(level,taluk,dept,designation){
+            $.ajax({
+                type: "GET",
+                url: "/api/officer/getOfficerByLTDD/" + level + "/" + taluk + "/" + dept + "/" + designation,
+                dataType: "json",
+                success: function (data) {
+                   var s = '<option value="-1">Select Officer</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            s += '<option value="' + data[i].officerName + '">' + data[i].officerName + '</option>';
+                        }
+                        $("#officerDrop").html(s);
+                    },
+                error: function (error) {
+                    // Handle any errors here
+                    console.error("Error:", error);
+                }
+            });
+
+        }
 
 </script>
 </body>

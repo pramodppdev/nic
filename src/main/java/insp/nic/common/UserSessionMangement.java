@@ -69,6 +69,25 @@ public class UserSessionMangement {
 
     }
 
+    @GetMapping("/updateHead")
+    public String updateUserDistHead(HttpSession session){
+        String username = getSessionUsername(session);
+
+        if (username!= null){
+            Executive executive = executiveRepo.findAllByUserName(username);
+            if(executive != null){
+                return executive.getDistrict().toUpperCase();
+            }
+            else {
+                return "District not Found for User";
+            }
+        }
+        else {
+            return "Not logged in";
+        }
+
+    }
+
 
 
 }

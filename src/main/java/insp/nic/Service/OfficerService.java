@@ -14,5 +14,8 @@ public interface OfficerService {
 
     Officer getById(String id);
 
+    List<Officer> getOfficerByLTDD(String level, String taluk, String officerDept, String designation);
+
+
     void deleteOfficer(String id);
 }

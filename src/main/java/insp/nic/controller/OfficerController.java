@@ -33,6 +33,12 @@ public class OfficerController {
         return new ResponseEntity<Officer>(officerService.getById(id), HttpStatus.OK);
     }
 
+    @GetMapping("/getOfficerByLTDD/{level}/{taluk}/{department}/{designation}")
+    public List<Officer> getOffLTDD(@PathVariable("level") String level, @PathVariable("taluk") String taluk,
+                                    @PathVariable("department") String department, @PathVariable("designation") String designation){
+        return officerService.getOfficerByLTDD(level,taluk,department,designation);
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteOfficer(@PathVariable("id") String id){
         officerService.deleteOfficer(id);
