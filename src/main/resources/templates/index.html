@@ -21,7 +21,7 @@
       </div>
       <div class="card" >
         <div class="card-content">
-          <div class="number">10</div>
+          <div class="number" id="adhocCount">Loading...</div>
           <div class="card-name">Ad-Hoc Inspections</div>
         </div>
       </div>
@@ -60,6 +60,20 @@
 
             // Ad-Hoc inspection count
 
+            $.ajax({
+                url: '/api/adhoc/count',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+<!--                    console.log('Success', data);-->
+
+                    $('#adhocCount').text(data);
+                },
+                error: function() {
+                    $('#adhocCount').text('Error fetching count');
+                }
+            });
+
 
             // Grevieance inspection count
             $.ajax({
@@ -72,7 +86,7 @@
                     $('#grevienceCount').text(data);
                 },
                 error: function() {
-                    $('#inspectionCount').text('Error fetching count');
+                    $('#grevienceCount').text('Error fetching count');
                 }
             });
 

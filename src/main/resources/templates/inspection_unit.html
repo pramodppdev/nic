@@ -14,11 +14,9 @@
 <body>
 <div th:replace="~{fragment/nav :: nav}"> </div>
 <main>
-    <div class="grid">
-        <div class="wrapper">
-            <select  id="deptDrop" ></select>
-        </div>
+    <h2>Inspection Unit Section</h2>
 
+    <div class="grid">
         <div class="wrapper">
             <select name="" id="Level">
                 <option value="Select Level">Select Level</option>
@@ -28,7 +26,13 @@
         </div>
 
         <div class="wrapper">
-            <select  id="routTalukDrop" ></select>
+            <select  id="deptDrop" ></select>
+        </div>
+
+
+
+        <div class="wrapper">
+            <select  id="TalukDrop" ></select>
         </div>
 
         <div class="wrapper">
@@ -63,6 +67,7 @@
             <thead>
             <tr>
                 <th>Level</th>
+                <th>Taluk</th>
                 <th>Department</th>
                 <th>Unit Name</th>
 
@@ -79,47 +84,28 @@
 
     $(document).ready(function() {
 
-    <!--        Officer dropdown list start-->
+    <!--userDistrict start-->
+            $.ajax({
+                type: "GET",
+                url: "/session/getUserDist",
+                success: function (data) {
+                    // Display the district result in the div
+                    $("#districtResult").val(data);
 
-       $.ajax({
-           contentType: "application/json;charset=UTF-8",
-           type: "GET",
-           url: "/api/officer/getAllOfficer",
-           dataType: "json",
-           async:false,
-           success: function (officerData) {
-               var s = '<option value="-1">Select Officer</option>';
-               for (var i = 0; i < officerData.length; i++) {
-                   s += '<option value="' + officerData[i].officerName + '">' + officerData[i].officerName + '</option>';
-               }
-               $("#officerDrop").html(s); // Updated ID here
-           }
-        });
+                    getTaluksByDistrict(data);
 
-
-    <!--        Officer dropdown list end-->
+                },
+                error: function (error) {
+                    console.error("Error fetching user district:", error);
+                }
+            });
+    <!--userDistrict End-->
 
 
-    <!--        Taluk dropdown list start-->
 
 
-       $.ajax({
-           contentType: "application/json;charset=UTF-8",
-           type: "GET",
-           url: "/api/taluk/getAllTaluk",
-           dataType: "json",
-           async:false,
-           success: function (talukData) {
-               var s = '<option value="-1">Select Taluk</option>';
-               for (var i = 0; i < talukData.length; i++) {
-                   s += '<option value="' + talukData[i].talukName + '">' + talukData[i].talukName + '</option>';
-               }
-               $("#routTalukDrop").html(s); // Updated ID here
-           }
-        });
 
 
-<!--        Taluk dropdown list end-->
 
     <!--        Department dropdown list start-->
 
@@ -160,6 +146,7 @@
 
                    designationList=designationList+' <td>'+data[i].level +'</td>';
 
+                   designationList=designationList+' <td>'+data[i].taluk +'</td>';
                    designationList=designationList+' <td>'+data[i].dept +'</td>';
                    designationList=designationList+' <td>'+data[i].unitName +'</td>';
 
@@ -180,7 +167,7 @@
 
                 var dept = $("#deptDrop").val();
                 var level = $("#Level").val();
-                var taluk = $("#routTalukDrop").val();
+                var taluk = $("#TalukDrop").val();
                 var unitName = $("#UnitName").val();
                 var assignedMonth = $("#assignedMonth").val();
                 var assignedOfficer = $("#officerDrop").val();
@@ -217,7 +204,7 @@
             }
 
             function deleteDesignation(id) {
-                if (confirm("Are you sure you want to delete this Designation?")) {
+                if (confirm("Are you sure you want to delete this Unit?")) {
                     $.ajax({
                         contentType: "application/json;charset=UTF-8",
                         url: "/api/inspunit/delete/" + id, // Use the delete endpoint with the desgId
@@ -234,6 +221,20 @@
                 }
             }
 
+
+            function getTaluksByDistrict(district) {
+                $.ajax({
+                    type: "GET",
+                    url: `/api/taluk/getTakByDist/${district}`,
+                   success: function (talukData) {
+                       var s = '<option value="-1">Select Taluk</option>';
+                       for (var i = 0; i < talukData.length; i++) {
+                           s += '<option value="' + talukData[i].talukName + '">' + talukData[i].talukName + '</option>';
+                       }
+                       $("#TalukDrop").html(s); // Updated ID here
+                   }
+                });
+            }
 
 </script>
 </body>

@@ -33,6 +33,10 @@ public class DesignationController {
     public List<Designation> getDesigByTal(@PathVariable("desigTaluk") String desigTaluk){
         return designationService.getDesigByTal(desigTaluk);
     }
+    @GetMapping("/getDesigByLevel/{level}/{department}")
+    public List<Designation> getDesigByLevel(@PathVariable("level") String level,@PathVariable("department") String department){
+        return designationService.getDesigByLevel(level,department);
+    }
 
     @GetMapping("/getDesigByTD/{desigTaluk}/{department}")
     public List<Designation> getDesigByTD(@PathVariable("desigTaluk") String desigTaluk,@PathVariable("department") String department){

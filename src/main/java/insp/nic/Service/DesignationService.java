@@ -15,6 +15,10 @@ public interface DesignationService {
 
     List<Designation> getDesigByTal(String desigTaluk);
 
+
+
+    List<Designation> getDesigByLevel(String level, String department);
+
     List<Designation> getDesigByTD(String desigTaluk, String department);
 
     Designation getById(String id);

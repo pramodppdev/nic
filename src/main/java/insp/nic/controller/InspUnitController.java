@@ -1,7 +1,6 @@
 package insp.nic.controller;
 
 import insp.nic.Service.InspUnitService;
-import insp.nic.model.Department;
 import insp.nic.model.InspectionUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +29,13 @@ public class InspUnitController {
     @GetMapping("/getById/{id}")
     public ResponseEntity<InspectionUnit> getById(@PathVariable("id") String id){
         return new ResponseEntity<InspectionUnit> (inspUnitService.getById(id), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/getUnitByLTDept/{level}/{taluk}/{dept}")
+    public List<InspectionUnit> getUnitByLTDept(@PathVariable("level") String level, @PathVariable("taluk") String taluk,
+                                                @PathVariable("dept") String dept){
+        return inspUnitService.getUnitByLTDept(level,taluk,dept);
     }
 
     @DeleteMapping("/delete/{id}")

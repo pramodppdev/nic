@@ -51,6 +51,11 @@ public class InspUnitServiceImpl implements InspUnitService {
     }
 
     @Override
+    public List<InspectionUnit> getUnitByLTDept(String level, String taluk, String dept) {
+        return inspUnitRepo.getUnitByLTDept(level,taluk,dept);
+    }
+
+    @Override
     public void deleteInspectionUnit(String id) {
         inspUnitRepo.findById(id).orElseThrow(()->  new ResourceNotFoundException("InspUnit","Id",id));
         inspUnitRepo.deleteById(id);

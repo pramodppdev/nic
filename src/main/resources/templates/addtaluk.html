@@ -14,10 +14,10 @@
 <body>
 <div th:replace="~{fragment/nav :: nav}"> </div>
   <main>
-    <div class="grid">
-        <div class="wrapper">
-            <select  id="districtDrop" ></select>
-        </div>
+      <h2>Taluk Section</h2>
+
+      <div class="grid">
+
         <div class="wrapper">
             <input type="text" id="TalukName" required>
             <label>Taluk</label>
@@ -52,6 +52,23 @@
 <script>
 
 $(document).ready(function() {
+
+<!--userDistrict start-->
+            $.ajax({
+                type: "GET",
+                url: "/session/getUserDist",
+                success: function (data) {
+                    // Display the district result in the div
+                    $("#districtResult").val(data);
+                },
+                error: function (error) {
+                    console.error("Error fetching user district:", error);
+                }
+            });
+<!--userDistrict End-->
+
+
+
 
 <!--&lt;!&ndash;UserSesssion name start&ndash;&gt;-->
 
@@ -134,7 +151,7 @@ $(document).ready(function() {
       function saveTaluk() {
 
             var talukName = $("#TalukName").val();
-            var district = $("#districtDrop").val();
+            var district = $("#districtResult").val();
 
 
             if (talukName && district) {

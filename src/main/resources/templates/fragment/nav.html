@@ -4,6 +4,23 @@
     <meta charset="UTF-8">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+  <script>
+  $(document).ready(function() {
+    // Fetch data from your REST endpoint
+    $.ajax({
+        type: "GET",
+        url: "/session/updateHead",
+        success: function (data) {
+            // Update the content of the <span> using Thymeleaf expression
+            $("#districtResult").text('ZILLA PANCHAYATH <br>' + data);
+        },
+        error: function (error) {
+            console.error("Error fetching data:", error);
+        }
+    });
+});
+
+</script>
 
 
 </head>
@@ -13,9 +30,10 @@
   <header>
     <div class="top-bar">
       <img src="/imgs/logo.png" alt="">&nbsp;&nbsp;&nbsp;
-      <span>ZILLA PANCHAYATH<br>BALLARI</span>
+      <span id="districtResult">ZILLA PANCHAYATH <br>BALLARI</span>
+
       <div class="logout-btn">
-        <a class="logout-btn" th:href="@{/logout}">Logout</a>
+        <a  th:href="@{/logout}">Logout</a>
       </div>
     </div>
   </header>

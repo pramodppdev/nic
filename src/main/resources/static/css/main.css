@@ -92,6 +92,14 @@ main
 
 
 }
+
+h2{
+    margin-left:26px;
+}
+
+h3{
+    margin-left:26px;
+}
 .card-container {
   width: 97%;
   padding: 35px 1px;
