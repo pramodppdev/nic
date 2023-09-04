@@ -14,11 +14,9 @@
 <body>
 <div th:replace="~{fragment/nav :: nav}"> </div>
 <main>
-    <div class="grid">
-        <div class="wrapper">
-            <select  id="deptDrop" ></select>
-        </div>
+    <h2>Inspection Unit Section</h2>
 
+    <div class="grid">
         <div class="wrapper">
             <select name="" id="Level">
                 <option value="Select Level">Select Level</option>
@@ -28,7 +26,13 @@
         </div>
 
         <div class="wrapper">
-            <select  id="routTalukDrop" ></select>
+            <select  id="deptDrop" ></select>
+        </div>
+
+
+
+        <div class="wrapper">
+            <select  id="TalukDrop" ></select>
         </div>
 
         <div class="wrapper">
@@ -79,34 +83,30 @@
 
     $(document).ready(function() {
 
-    <!--        Officer dropdown list start-->
+    <!--userDistrict start-->
+            $.ajax({
+                type: "GET",
+                url: "/session/getUserDist",
+                success: function (data) {
+                    // Display the district result in the div
+                    $("#districtResult").val(data);
 
-       $.ajax({
-           contentType: "application/json;charset=UTF-8",
-           type: "GET",
-           url: "/api/officer/getAllOfficer",
-           dataType: "json",
-           async:false,
-           success: function (officerData) {
-               var s = '<option value="-1">Select Officer</option>';
-               for (var i = 0; i < officerData.length; i++) {
-                   s += '<option value="' + officerData[i].officerName + '">' + officerData[i].officerName + '</option>';
-               }
-               $("#officerDrop").html(s); // Updated ID here
-           }
-        });
+                    getTaluksByDistrict(data);
 
+                },
+                error: function (error) {
+                    console.error("Error fetching user district:", error);
+                }
+            });
+    <!--userDistrict End-->
 
-    <!--        Officer dropdown list end-->
-
-
-    <!--        Taluk dropdown list start-->
+        <!--        Taluk dropdown list start-->
 
 
        $.ajax({
            contentType: "application/json;charset=UTF-8",
            type: "GET",
-           url: "/api/taluk/getAllTaluk",
+           url: "/api/taluk/getTakByDist/",
            dataType: "json",
            async:false,
            success: function (talukData) {
@@ -120,6 +120,10 @@
 
 
 <!--        Taluk dropdown list end-->
+
+
+
+
 
     <!--        Department dropdown list start-->
 
@@ -234,6 +238,20 @@
                 }
             }
 
+
+            function getTaluksByDistrict(district) {
+                $.ajax({
+                    type: "GET",
+                    url: `/api/taluk/getTakByDist/${district}`,
+                   success: function (talukData) {
+                       var s = '<option value="-1">Select Taluk</option>';
+                       for (var i = 0; i < talukData.length; i++) {
+                           s += '<option value="' + talukData[i].talukName + '">' + talukData[i].talukName + '</option>';
+                       }
+                       $("#TalukDrop").html(s); // Updated ID here
+                   }
+                });
+            }
 
 </script>
 </body>

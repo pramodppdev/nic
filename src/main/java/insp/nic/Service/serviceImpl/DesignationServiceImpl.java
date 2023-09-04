@@ -31,6 +31,11 @@ public class DesignationServiceImpl implements DesignationService {
     }
 
     @Override
+    public List<Designation> getDesigByLevel(String level, String department) {
+        return designationRepo.getDesigByLevel(level,department);
+    }
+
+    @Override
     public List<Designation> getDesigByTD(String desigTaluk, String department) {
         return designationRepo.getDesigByTD(desigTaluk, department);
     }

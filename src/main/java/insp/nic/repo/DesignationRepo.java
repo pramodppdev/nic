@@ -14,6 +14,9 @@ public interface DesignationRepo extends MongoRepository<Designation,String> {
     @Query(value = "{'desigTaluk':?0}")
     List<Designation> getDesigByTal(String desigTaluk);
 
+    @Query(value = "{'level':?0, 'department':?1}")
+    List<Designation> getDesigByLevel(String level,String department);
+
     @Query(value = "{'desigTaluk':?0, 'department':?1}")
     List<Designation> getDesigByTD(String desigTaluk, String department);
 
