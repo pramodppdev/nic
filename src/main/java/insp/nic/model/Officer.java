@@ -25,6 +25,7 @@ public class Officer {
     private String createdAt;
 
     private String createdBy;
+
     private String level;
 
     public Officer() {

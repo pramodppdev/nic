@@ -1,8 +1,13 @@
 package insp.nic.model;
 
 
+import jdk.jfr.Timestamp;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.Date;
 
 @Document(collection = "taluk")
 public class Taluk {
@@ -12,16 +17,17 @@ public class Taluk {
 
     private String talukName;
 
-    private String district;
+    @DBRef
+    private District district;
 
-    private String createdAt;
+    private Date createdAt;
 
     private String createdBy;
 
     public Taluk() {
     }
 
-    public Taluk(String talukId, String talukName, String district, String createdAt, String createdBy) {
+    public Taluk(String talukId, String talukName, District district, Date createdAt, String  createdBy) {
         this.talukId = talukId;
         this.talukName = talukName;
         this.district = district;
@@ -45,19 +51,19 @@ public class Taluk {
         this.talukName = talukName;
     }
 
-    public String getDistrict() {
+    public District getDistrict() {
         return district;
     }
 
-    public void setDistrict(String district) {
+    public void setDistrict(District district) {
         this.district = district;
     }
 
-    public String getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
