@@ -15,7 +15,6 @@ public class Designation {
 
     private String designationName;
 
-
     private String level;
 
     public Designation() {

@@ -2,6 +2,7 @@ package insp.nic.model;
 
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "inspection")
@@ -12,7 +13,8 @@ public class Inspection {
 
     private String taluk;
 
-    private String department;
+    @DBRef
+    private Department department;
 
     private String description;
 
@@ -33,7 +35,7 @@ public class Inspection {
     public Inspection() {
     }
 
-    public Inspection(String inspId, String taluk, String department, String description, String designation, String lastDate, String status, String assignedOfficer, String createdAt, String createdBy, String district) {
+    public Inspection(String inspId, String taluk, Department department, String description, String designation, String lastDate, String status, String assignedOfficer, String createdAt, String createdBy, String district) {
         this.inspId = inspId;
         this.taluk = taluk;
         this.department = department;
@@ -63,11 +65,11 @@ public class Inspection {
         this.taluk = taluk;
     }
 
-    public String getDepartment() {
+    public Department getDepartment() {
         return department;
     }
 
-    public void setDepartment(String department) {
+    public void setDepartment(Department department) {
         this.department = department;
     }
 

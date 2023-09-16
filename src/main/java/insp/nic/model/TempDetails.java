@@ -1,8 +1,13 @@
 package insp.nic.model;
 
+import org.springframework.data.annotation.Id;
+
 import java.sql.Blob;
 
 public class TempDetails {
+
+    @Id
+    private String queId;
 
     private String tempContent;
 
@@ -15,11 +20,20 @@ public class TempDetails {
     public TempDetails() {
     }
 
-    public TempDetails(String tempContent, String tempAns, String imgReq, Blob image) {
+    public TempDetails(String queId, String tempContent, String tempAns, String imgReq, Blob image) {
+        this.queId = queId;
         this.tempContent = tempContent;
         this.tempAns = tempAns;
         this.imgReq = imgReq;
         this.image = image;
+    }
+
+    public String getQueId() {
+        return queId;
+    }
+
+    public void setQueId(String queId) {
+        this.queId = queId;
     }
 
     public String getTempContent() {
