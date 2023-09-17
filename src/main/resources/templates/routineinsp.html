@@ -159,7 +159,7 @@
            success: function (deptData) {
                var s = '<option value="-1">Select Department</option>';
                for (var i = 0; i < deptData.length; i++) {
-                   s += '<option value="' + deptData[i].deptName + '">' + deptData[i].deptName + '</option>';
+                   s += '<option value="' + deptData[i].deptId + '">' + deptData[i].deptName + '</option>';
                }
                $("#routDeptDrop").html(s);
            }
@@ -180,7 +180,7 @@
            success: function (tempData) {
                var s = '<option value="-1">Select Templet</option>';
                for (var i = 0; i < tempData.length; i++) {
-                   s += '<option value="' + tempData[i].tempName + '">' + tempData[i].tempName + '</option>';
+                   s += '<option value="' + tempData[i].tempId + '">' + tempData[i].tempName + '</option>';
                }
                $("#routTempDrop").html(s);
            }
@@ -213,11 +213,6 @@
 
 
 <!--        unit dropdown list start-->
-
-
-
-
-
 
 
            var $select = $('#inspUnitSelect');
@@ -279,16 +274,15 @@
 
 
             function saveRoutineinsp() {
-                const userData = {
+                var userData = {
 
                     level: $("#Level").val(),
-                    routtaluk: $("#TalukDrop").val(),
-                    routdepartment: $("#routDeptDrop").val(),
-                    routDesig: $("#designationDrop").val(),
+                    talukId: $("#TalukDrop").val(),
+                    deptId: $("#routDeptDrop").val(),
+                    desgId: $("#designationDrop").val(),
                     routassignedOfficer: $("#officerDrop").val(),
                     routdistrict: $("#districtResult").val(),
                     inspUnits: $("#inspUnitSelect").val(),
-
 
                     routTempName: $("#templateDrop").val(),
                     routdescription: [],
@@ -325,7 +319,7 @@
                                 imgReq: imgReqValue,
                             };
 
-                            userData.routdescription.push(inspObject);
+                                userData.routdescription.push(inspObject);
                         });
 
                         // Now userData contains the correct imgReq values
@@ -409,7 +403,7 @@ function populateTempDiscription(tempDiscription) {
                    success: function (talukData) {
                        var s = '<option value="-1">Select Taluk</option>';
                        for (var i = 0; i < talukData.length; i++) {
-                           s += '<option value="' + talukData[i].talukName + '">' + talukData[i].talukName + '</option>';
+                           s += '<option value="' + talukData[i].talukId + '">' + talukData[i].talukName + '</option>';
                        }
                        $("#TalukDrop").html(s); // Updated ID here
                    }
@@ -425,7 +419,7 @@ function populateTempDiscription(tempDiscription) {
                     success: function (designationData) {
                         var s = '<option value="-1">Select Designation</option>';
                         for (var i = 0; i < designationData.length; i++) {
-                            s += '<option value="' + designationData[i].designationName + '">' + designationData[i].designationName + '</option>';
+                            s += '<option value="' + designationData[i].desgId + '">' + designationData[i].designationName + '</option>';
                         }
                         // Assuming you have a dropdown for Designations with id "designationDrop"
                         $("#designationDrop").html(s);
@@ -466,7 +460,7 @@ function populateTempDiscription(tempDiscription) {
                 success: function (data) {
                    var s = '<option value="-1">Select Officer</option>';
                         for (var i = 0; i < data.length; i++) {
-                            s += '<option value="' + data[i].officerName + '">' + data[i].officerName + '</option>';
+                            s += '<option value="' + data[i].officerId + '">' + data[i].officerName + '</option>';
                         }
                         $("#officerDrop").html(s);
                     },
@@ -478,11 +472,6 @@ function populateTempDiscription(tempDiscription) {
 
         }
 <!--fetch offier list by level, taluk, dept and Desig-->
-
-
-
-
-
 
 
 
