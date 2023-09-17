@@ -14,10 +14,10 @@
 <body>
 <div th:replace="~{fragment/nav :: nav}"> </div>
   <main>
-    <div class="grid">
-        <div class="wrapper">
-            <select  id="districtDrop" ></select>
-        </div>
+      <h2>Taluk Section</h2>
+
+      <div class="grid">
+
         <div class="wrapper">
             <input type="text" id="TalukName" required>
             <label>Taluk</label>
@@ -39,6 +39,7 @@
               <thead>
                 <tr>
                   <th>Taluk name</th>
+                    <th>District</th>
                     <th>Actions</th>
                 </tr>
               </thead>
@@ -52,25 +53,49 @@
 
 $(document).ready(function() {
 
-    <!--        District dropdown list start-->
+<!--userDistrict start-->
+            $.ajax({
+                type: "GET",
+                url: "/session/getUserDist",
+                success: function (data) {
+                    // Display the district result in the div
+<!--                    console.log(data)-->
+                    $("#districtResult").val(data);
 
-       $.ajax({
-           contentType: "application/json;charset=UTF-8",
-           type: "GET",
-           url: "/api/district/getAllDistrict",
-           dataType: "json",
-           async:false,
-           success: function (districtData) {
-               var s = '<option value="-1">Select District</option>';
-               for (var i = 0; i < districtData.length; i++) {
-                   s += '<option value="' + districtData[i].districtName + '">' + districtData[i].districtName + '</option>';
-               }
-               $("#districtDrop").html(s); // Updated ID here
-           }
+                },
+                error: function (error) {
+                    console.error("Error fetching user district:", error);
+                }
+            });
+<!--userDistrict End-->
+
+
+
+
+<!--UserSesssion name start-->
+
+        $.ajax({
+            type: "GET",
+            url: "/session/session_user",
+            dataType: "text",
+            success: function(response) {
+                if (response) {
+                    var username = response;
+<!--                    console.log("Username: " + username);-->
+
+                    $("#usernameElement").val(username);
+                } else {
+                    console.log("Username not found in the response.");
+                }
+            },
+            error: function(error) {
+                console.error("Error fetching username:", error);
+            }
         });
 
 
-    <!--        District dropdown list end-->
+<!--USerSession name End-->
+
 
 
 
@@ -89,6 +114,7 @@ $(document).ready(function() {
                talukList += '<tr id="' + data[i].talukId + '">'; // Add ID attribute
 
                talukList=talukList+' <td>'+data[i].talukName +'</td>';
+               talukList=talukList+' <td>'+data[i].district.districtName  +'</td>';
 
                talukList=talukList+' <td>';
                talukList=talukList+'<a href="javascript:deleteTaluk(\''+data[i].talukId+'\')" title="Delete">';
@@ -105,13 +131,24 @@ $(document).ready(function() {
       function saveTaluk() {
 
             var talukName = $("#TalukName").val();
-            var district = $("#districtDrop").val();
+            var districtId = $("#districtResult").val();
+            var createdBy = $("#usernameElement").val();
 
 
-            if (talukName && district) {
+
+            if (talukName && districtId) {
+                var timestamp = new Date().getTime();
+
                 var userData = {
                     talukName: talukName,
-                    district: district,
+                    district: {
+                         districtId: districtId
+                    },
+                    createdAt: timestamp,
+                    createdBy:createdBy
+
+
+
                 }
 
                 $.ajax({
@@ -123,7 +160,7 @@ $(document).ready(function() {
                     processData: !1,
                     data: JSON.stringify(userData),
                     complete: function(xhr) {
-                        console.log(data)
+<!--                        console.log(xhr)-->
                     }
                 });
                 showAlert();
@@ -149,6 +186,9 @@ $(document).ready(function() {
                 });
             }
         }
+
+
+
 
 
 </script>

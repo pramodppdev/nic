@@ -1,6 +1,7 @@
 package insp.nic.controller;
 
 import insp.nic.Service.QueTempletService;
+import insp.nic.model.Designation;
 import insp.nic.model.QueTemplet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,15 @@ public class QueTempletController {
         return queTempletService.getAllTemp();
     }
 
+    @GetMapping("/getTempByLev/{tempLevel}")
+    public List<QueTemplet> getTempByLev(@PathVariable("tempLevel") String tempLevel){
+        return queTempletService.getTempByLev(tempLevel);
+    }
+
+    @GetMapping("/getTempByLD/{tempLevel}/{tempDept}")
+    public List<QueTemplet> getTempByLD(@PathVariable("tempLevel") String tempLevel, @PathVariable("tempDept") String tempDept){
+        return queTempletService.getTempByLD(tempLevel,tempDept);
+    }
 
     @GetMapping("/getById/{id}")
     public ResponseEntity<QueTemplet> getById(@PathVariable("id") String id){

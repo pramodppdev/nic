@@ -1,6 +1,7 @@
 package insp.nic.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "designation")
@@ -9,17 +10,21 @@ public class Designation {
     @Id
     private String desgId;
 
-    private String department;
+    @DBRef
+    private Department department;
 
     private String designationName;
+
+    private String level;
 
     public Designation() {
     }
 
-    public Designation(String desgId, String department, String designation) {
+    public Designation(String desgId, Department department, String designationName, String level) {
         this.desgId = desgId;
         this.department = department;
-        this.designationName = designation;
+        this.designationName = designationName;
+        this.level = level;
     }
 
     public String getDesgId() {
@@ -30,11 +35,11 @@ public class Designation {
         this.desgId = desgId;
     }
 
-    public String getDepartment() {
+    public Department getDepartment() {
         return department;
     }
 
-    public void setDepartment(String department) {
+    public void setDepartment(Department department) {
         this.department = department;
     }
 
@@ -44,5 +49,13 @@ public class Designation {
 
     public void setDesignationName(String designationName) {
         this.designationName = designationName;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 }

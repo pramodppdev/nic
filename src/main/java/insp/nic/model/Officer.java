@@ -2,6 +2,7 @@ package insp.nic.model;
 
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "officer")
@@ -14,22 +15,27 @@ public class Officer {
 
     private Long officerMob;
 
-    private String officerDept;
+    @DBRef
+    private Department officerDept;
 
-    private String taluk;
+    @DBRef
+    private Taluk taluk;
 
     private String district;
 
-    private String designation;
+    @DBRef
+    private Designation designation;
 
     private String createdAt;
 
     private String createdBy;
 
+    private String level;
+
     public Officer() {
     }
 
-    public Officer(String officerId, String officerName, Long officerMob, String officerDept, String taluk, String district, String designation, String createdAt, String createdBy) {
+    public Officer(String officerId, String officerName, Long officerMob, Department officerDept, Taluk taluk, String district, Designation designation, String createdAt, String createdBy, String level) {
         this.officerId = officerId;
         this.officerName = officerName;
         this.officerMob = officerMob;
@@ -39,6 +45,7 @@ public class Officer {
         this.designation = designation;
         this.createdAt = createdAt;
         this.createdBy = createdBy;
+        this.level = level;
     }
 
     public String getOfficerId() {
@@ -65,19 +72,19 @@ public class Officer {
         this.officerMob = officerMob;
     }
 
-    public String getOfficerDept() {
+    public Department getOfficerDept() {
         return officerDept;
     }
 
-    public void setOfficerDept(String officerDept) {
+    public void setOfficerDept(Department officerDept) {
         this.officerDept = officerDept;
     }
 
-    public String getTaluk() {
+    public Taluk getTaluk() {
         return taluk;
     }
 
-    public void setTaluk(String taluk) {
+    public void setTaluk(Taluk taluk) {
         this.taluk = taluk;
     }
 
@@ -89,11 +96,11 @@ public class Officer {
         this.district = district;
     }
 
-    public String getDesignation() {
+    public Designation getDesignation() {
         return designation;
     }
 
-    public void setDesignation(String designation) {
+    public void setDesignation(Designation designation) {
         this.designation = designation;
     }
 
@@ -113,4 +120,11 @@ public class Officer {
         this.createdBy = createdBy;
     }
 
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
 }

@@ -3,6 +3,8 @@ package insp.nic.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
+
 @Document(collection = "dept")
 public class Department {
 
@@ -11,14 +13,14 @@ public class Department {
 
     private String deptName;
 
-    private String createdAt;
+    private Date createdAt;
 
     private String createdBy;
 
     public Department() {
     }
 
-    public Department(String deptId, String deptName, String createdAt, String createdBy) {
+    public Department(String deptId, String deptName, Date createdAt, String createdBy) {
         this.deptId = deptId;
         this.deptName = deptName;
         this.createdAt = createdAt;
@@ -41,11 +43,11 @@ public class Department {
         this.deptName = deptName;
     }
 
-    public String getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 

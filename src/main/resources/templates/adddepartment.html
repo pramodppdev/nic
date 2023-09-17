@@ -14,7 +14,7 @@
 <div th:replace="~{fragment/nav :: nav}"> </div>
 
   <main>
-
+    <h2>Department Section</h2>
     <div class="grid" id="saveDeptbody">
         <div class="wrapper">
             <input type="text" id="DeptName" required>
@@ -23,13 +23,13 @@
     </div>
         <div class="btn">
             <button onclick="saveDept()" class="submit-btn">Add</button>
-            <button class="cancel-btn">Cancel</button>
+            <button class="cancel-btn" onclick="location.reload()">Cancel</button>
         </div>
       <div class="alert-container" id="alertContainer">
           <div class="alert-message">
               Added Data Successfully!
               <button class="alert-button-ok" onclick="hideAlert()">OK</button>
-              <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
+              <button class="alert-button-cancel" onclick="location.reload()">Cancel</button>
           </div>
       </div>
    <div id="tablelist">

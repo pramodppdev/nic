@@ -7,27 +7,81 @@
     <link rel="stylesheet" href="/css/routine.css">
     <link rel="stylesheet" href="/css/alert.css">
     <script src="/script/alert.js"></script>
-    <script src="/script/dynamic_fields.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+
+    <!--    <script src="/script/dynamic_fields.js"></script>-->
 </head>
 <body>
 <div th:replace="~{fragment/nav :: nav}"> </div>
 <main>
+    <h2>Routine Inspections</h2>
     <div class="grid">
         <div class="wrapper">
-            <select  id="routTalukDrop" ></select>
+            <select name="" id="Level">
+                <option value="Select Level">Select Level</option>
+                <option value="District">District</option>
+                <option value="Taluk">Taluk</option>
+            </select>
+        </div>
+        <div class="wrapper">
+            <select  id="TalukDrop" ></select>
         </div>
         <div class="wrapper" >
             <select  id="routDeptDrop" ></select>
         </div>
+        <div class="wrapper" >
+            <select  id="designationDrop" ></select>
+        </div>
+
+        <div class="wrapper" >
+            <select  id="officerDrop" ></select>
+        </div>
+
+
+
+
+<!--        <div class="selected-items">-->
+<!--            Selected Units: <span id="selectedUnits"></span>-->
+<!--        </div>-->
+
+
+
     </div>
 
-    <div id="inputContainer">
-        <div class="input-container">
+    <div class="grid">
+        <div class="wrapper" >
+            <select  id="templateDrop" ></select>
+        </div>
+
+
+    </div>
+    <!--    Selected Template question will be listed    -->
+    <div id="inputContainer" class="input-container"></div>
+
+    <h3>Select Units</h3>
+    <div class="grid">
+        <div class="wrapper">
+
+            <select id="inspUnitSelect"  aria-multiselectable="true" style="width: 300px;" multiple>
+
+            </select>
+
 
         </div>
     </div>
-    <button id="addButton">Add Question</button>
+
+
+
+<!--    <div id="inputContainer" class="input-container">-->
+<!--    </div>-->
+
+
+
 
     <div class="btn">
         <button onclick="saveRoutineinsp()" class="submit-btn">Add</button>
@@ -45,27 +99,53 @@
 
     $(document).ready(function() {
 
+    <!--userDistrict start-->
+            $.ajax({
+                type: "GET",
+                url: "/session/getUserDist",
+                success: function (data) {
+                    // Display the district result in the div
+                    $("#districtResult").val(data);
+                    getTaluksByDistrict(data);
 
-<!--        Taluk dropdown list start-->
+                },
+                error: function (error) {
+                    console.error("Error fetching user district:", error);
+                }
+            });
+    <!--userDistrict End-->
 
+    <!--   level and  Department  Filter Start-->
 
-       $.ajax({
-           contentType: "application/json;charset=UTF-8",
-           type: "GET",
-           url: "/api/taluk/getAllTaluk",
-           dataType: "json",
-           async:false,
-           success: function (talukData) {
-               var s = '<option value="-1">Select Taluk</option>';
-               for (var i = 0; i < talukData.length; i++) {
-                   s += '<option value="' + talukData[i].talukName + '">' + talukData[i].talukName + '</option>';
-               }
-               $("#routTalukDrop").html(s); // Updated ID here
-           }
+        // Add an event handler for the "Level" dropdown (#Level)
+        $("#Level, #routDeptDrop").on("change", function () {
+            var selectedLevel = $("#Level").val();
+            var selectedDept = $("#routDeptDrop").val();
+
+            // Call the function to fetch and populate Designations by Level and Depatmet
+            fetchDesignationsByLevelAndTaluk(selectedLevel, selectedDept);
+            fetchTemplateByLevelAndDept(selectedLevel,selectedDept);
         });
 
+    <!--Level and Department Filter Stop-->
 
-<!--        Taluk dropdown list end-->
+    <!--    officer Filter and units Filter Start-->
+
+        // Add an event handler for the "Level" dropdown (#Level)
+        $("#Level,#TalukDrop, #routDeptDrop, #designationDrop").on("change", function () {
+            var selectedLevel = $("#Level").val();
+            var selectedTaluk = $("#TalukDrop").val();
+            var selectedDept = $("#routDeptDrop").val();
+            var selectedDesignation = $("#designationDrop").val();
+
+            // Call the function to fetch and populate Designations by Level and Depatmet
+            fetchOfficersByLTDD(selectedLevel, selectedTaluk, selectedDept, selectedDesignation);
+        });
+
+    <!--officer Filter and units Filter Stop-->
+
+
+
 
 <!--        Department dropdown list start-->
 
@@ -76,10 +156,10 @@
            url: "/api/department/getAllDept",
            dataType: "json",
            async:false,
-           success: function (deptdata) {
+           success: function (deptData) {
                var s = '<option value="-1">Select Department</option>';
-               for (var i = 0; i < deptdata.length; i++) {
-                   s += '<option value="' + deptdata[i].deptName + '">' + deptdata[i].deptName + '</option>';
+               for (var i = 0; i < deptData.length; i++) {
+                   s += '<option value="' + deptData[i].deptName + '">' + deptData[i].deptName + '</option>';
                }
                $("#routDeptDrop").html(s);
            }
@@ -88,6 +168,106 @@
 
 <!--        Department dropdown list end-->
 
+<!--        Templet dropdown list start-->
+
+
+        $.ajax({
+           contentType: "application/json;charset=UTF-8",
+           type: "GET",
+           url: "/api/quetemplet/getAllTemp",
+           dataType: "json",
+           async:false,
+           success: function (tempData) {
+               var s = '<option value="-1">Select Templet</option>';
+               for (var i = 0; i < tempData.length; i++) {
+                   s += '<option value="' + tempData[i].tempName + '">' + tempData[i].tempName + '</option>';
+               }
+               $("#routTempDrop").html(s);
+           }
+       });
+
+        $("#templateDrop").change(function() {
+        var selectedTemplate = $(this).val();
+
+        $.ajax({
+            contentType: "application/json;charset=UTF-8",
+            type: "GET",
+            url: "/api/quetemplet/getAllTemp",
+            dataType: "json",
+            async: false,
+            success: function(tempData) {
+                var selectedTemp = tempData.find(function(temp) {
+                    return temp.tempName === selectedTemplate;
+                });
+
+                if (selectedTemp) {
+                    populateTempDiscription(selectedTemp.tempDiscription,);
+                }
+            },
+            error: function(error) {
+                console.error("Error fetching tempData from API:", error);
+            }
+        });
+    });
+<!--        Templet dropdown list end-->
+
+
+<!--        unit dropdown list start-->
+
+
+
+
+
+
+
+           var $select = $('#inspUnitSelect');
+
+
+           $("#Level,#TalukDrop, #routDeptDrop").on("change", function () {
+            var selectedLevel = $("#Level").val();
+            var selectedTaluk = $("#TalukDrop").val();
+            var selectedDept = $("#routDeptDrop").val();
+
+             $.ajax({
+                    contentType: "application/json;charset=UTF-8",
+                    type: "GET",
+                    url: "/api/inspunit/getUnitByLTDept/" + selectedLevel + "/" + selectedTaluk + "/" + selectedDept,
+                    dataType: "json",
+                    async: false,
+                    success: function (inspUnitData) {
+                        inspUnitData.forEach(function (unit) {
+                            $select.append(new Option(unit.unitName, unit.unitName, false, false));
+                        });
+
+                        // Initialize Select2 with multiple options
+                        $select.select2({
+                            closeOnSelect: false, // Allow keeping the dropdown open after selections
+                        });
+
+                        // Handle selection change
+                        $select.on('change', function () {
+                            var selectedValues = $select.val();
+                            var selectedUnits = selectedValues ? selectedValues.join(', ') : '';
+                            $('#selectedUnits').text(selectedUnits);
+
+                            // Check the number of selected items
+                            var minSelectedItems = 4;
+                            if (selectedValues && selectedValues.length > minSelectedItems) {
+                                  $select.select2('close');
+                                alert('You have reached the maximum selection limit.');
+            <!--                    $select.val(null).trigger('change');-->
+                            }
+                        });
+                    }
+                });
+
+        });
+
+
+
+            <!--        unit dropdown list end-->
+
+
 
 
             $("#tablelist").show();
@@ -95,52 +275,216 @@
 
             });
 
-        function saveRoutineinsp() {
-            const userData = {
-                routtaluk: $("#routTalukDrop").val(),
-                routdepartment: $("#routDeptDrop").val(),
-                routdescription: [],
 
-            };
 
-            // Get all dynamically generated input fields with their routInspAns values
-               $("#inputContainer").find(".input-container").each(function() {
-                const routInspContent = $(this).find("input[type='text']").val();
-                const imgReqCheckbox = $(this).find("input[type='checkbox']");
 
-                // Determine the value for imgReq based on checkbox status
-                const imgReqValue = imgReqCheckbox.is(":checked") ? "Yes" : "No";
+            function saveRoutineinsp() {
+                const userData = {
 
-                // Create an object for each routInspContent and imgReq
-                const inspObject = {
-                    routInspContent: routInspContent,
-                    imgReq: imgReqValue
+                    level: $("#Level").val(),
+                    routtaluk: $("#TalukDrop").val(),
+                    routdepartment: $("#routDeptDrop").val(),
+                    routDesig: $("#designationDrop").val(),
+                    routassignedOfficer: $("#officerDrop").val(),
+                    routdistrict: $("#districtResult").val(),
+                    inspUnits: $("#inspUnitSelect").val(),
+
+
+                    routTempName: $("#templateDrop").val(),
+                    routdescription: [],
                 };
 
-                // Push the object to the routdescription array
-                userData.routdescription.push(inspObject);
-            });
+                // Fetch template data
+                $.ajax({
+                    contentType: "application/json;charset=UTF-8",
+                    type: "GET",
+                    url: "/api/quetemplet/getAllTemp",
+                    dataType: "json",
+                    async: false,
+                    success: function (tempData) {
+                        if (tempData.length === 0) {
+                            alert("Template data not found.");
+                            return;
+                        }
+
+                        // Find the selected template
+                        const selectedTemplate = tempData.find((temp) => temp.tempName === userData.routTempName);
+
+                        if (!selectedTemplate) {
+                            alert("Selected template not found in the template data.");
+                            return;
+                        }
+
+                        // Loop through template description and build userData
+                        selectedTemplate.tempDiscription.forEach((tempDesc) => {
+                            const routInspContent = tempDesc.tempContent;
+                            const imgReqValue = tempDesc.imgReq;
+
+                            const inspObject = {
+                                routInspContent: routInspContent,
+                                imgReq: imgReqValue,
+                            };
+
+                            userData.routdescription.push(inspObject);
+                        });
+
+                        // Now userData contains the correct imgReq values
+
+                        $.ajax({
+                            contentType: "application/json;charset=UTF-8",
+                            url: "/api/routinsp/save",
+                            dataType: "json",
+                            type: "POST",
+                            cache: false,
+                            processData: false,
+                            data: JSON.stringify(userData),
+                            success: function (response) {
+                                console.log(response);
+                            },
+                            error: function (error) {
+                                console.error("Error:", error);
+                            },
+                        });
+
+                        showAlert();
+                    },
+                    error: function (error) {
+                        console.error("Error fetching template data from API:", error);
+                    },
+                });
+            }
 
 
 
+function populateTempDiscription(tempDiscription) {
+    const inputContainer = document.getElementById("inputContainer");
+    inputContainer.innerHTML = ""; // Clear previous content
+    let inputCounter = 0;
+    const maxFields = 15;
+
+    function createInputField(temp) {
+        if (inputCounter < maxFields) {
+            const inputWrapper = document.createElement("div");
+            inputWrapper.classList.add("template-container");
+
+            const inputField = document.createElement("input");
+            inputField.type = "text";
+            inputField.name = "inputField" + inputCounter;
+            inputField.placeholder = temp.tempContent;
+<!--            console.log(temp.tempContent)-->
+<!--            console.log(temp.imgReq)-->
+
+            inputField.disabled = true;
+
+
+
+            inputWrapper.appendChild(inputField);
+            inputContainer.appendChild(inputWrapper);
+            if (temp.imgReq=="Yes") {
+                const imgRequiredLabel = document.createElement("label");
+                imgRequiredLabel.appendChild(document.createTextNode("Image Required"));
+
+                inputWrapper.appendChild(imgRequiredLabel);
+            }
+            inputCounter++;
+        } else {
+            alert("You have reached the maximum limit of input fields (15).");
+        }
+    }
+
+    tempDiscription.forEach(function (temp) {
+        createInputField(temp);
+    });
+
+<!--    document.getElementById("addButton").addEventListener("click", function() {-->
+<!--        createInputField({ tempContent: `Question ${inputCounter + 1}` });-->
+<!--    });-->
+}
+
+
+        function getTaluksByDistrict(district) {
+                $.ajax({
+                    type: "GET",
+                    url: `/api/taluk/getTakByDist/${district}`,
+                   success: function (talukData) {
+                       var s = '<option value="-1">Select Taluk</option>';
+                       for (var i = 0; i < talukData.length; i++) {
+                           s += '<option value="' + talukData[i].talukName + '">' + talukData[i].talukName + '</option>';
+                       }
+                       $("#TalukDrop").html(s); // Updated ID here
+                   }
+                });
+            }
+
+
+        function fetchDesignationsByLevelAndTaluk(level, dept) {
+                $.ajax({
+                    type: "GET",
+                    url: "/api/designation/getDesigByLevel/" + level + "/" + dept,
+                    dataType: "json",
+                    success: function (designationData) {
+                        var s = '<option value="-1">Select Designation</option>';
+                        for (var i = 0; i < designationData.length; i++) {
+                            s += '<option value="' + designationData[i].designationName + '">' + designationData[i].designationName + '</option>';
+                        }
+                        // Assuming you have a dropdown for Designations with id "designationDrop"
+                        $("#designationDrop").html(s);
+                    },
+                    error: function (error) {
+                        console.error("Error fetching Designations by Level and Department:", error);
+                    }
+                });
+            }
+
+
+
+            function fetchTemplateByLevelAndDept(level, dept) {
+                $.ajax({
+                    type: "GET",
+                    url: "/api/quetemplet/getTempByLD/" + level + "/" + dept,
+                    dataType: "json",
+                    success: function (templateData) {
+                        var s = '<option value="-1">Select Template</option>';
+                        for (var i = 0; i < templateData.length; i++) {
+                            s += '<option value="' + templateData[i].tempName + '">' + templateData[i].tempName + '</option>';
+                        }
+                        // Assuming you have a dropdown for Template with id "templateDrop"
+                        $("#templateDrop").html(s);
+                    },
+                    error: function (error) {
+                        console.error("Error fetching Template by Level and Department:", error);
+                    }
+                });
+            }
+
+<!--fetch offier list by level, taluk, dept and Desig-->
+        function  fetchOfficersByLTDD(level,taluk,dept,designation){
             $.ajax({
-                contentType: "application/json;charset=UTF-8",
-                url: "/api/routinsp/save",
+                type: "GET",
+                url: "/api/officer/getOfficerByLTDD/" + level + "/" + taluk + "/" + dept + "/" + designation,
                 dataType: "json",
-                type: "POST",
-                cache: !1,
-                processData: !1,
-                data: JSON.stringify(userData),
-                success: function(response) {
-                    console.log(response); // If needed, handle the response from the server
-                },
-                error: function(error) {
-                    console.error("error"); // If needed, handle the error from the server
+                success: function (data) {
+                   var s = '<option value="-1">Select Officer</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            s += '<option value="' + data[i].officerName + '">' + data[i].officerName + '</option>';
+                        }
+                        $("#officerDrop").html(s);
+                    },
+                error: function (error) {
+                    // Handle any errors here
+                    console.error("Error:", error);
                 }
             });
 
-            showAlert();
         }
+<!--fetch offier list by level, taluk, dept and Desig-->
+
+
+
+
+
+
+
 
 </script>
 </body>

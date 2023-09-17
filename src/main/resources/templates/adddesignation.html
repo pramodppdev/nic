@@ -14,7 +14,18 @@
 <body>
 <div th:replace="~{fragment/nav :: nav}"> </div>
 <main>
+    <h2>Designation Section</h2>
     <div class="grid">
+        <div class="wrapper">
+            <select name="" id="Level">
+                <option value="Select Level">Select Level</option>
+                <option value="District">District</option>
+                <option value="Taluk">Taluk</option>
+            </select>
+        </div>
+<!--        <div class="wrapper">-->
+<!--            <select  id="talukDrop" ></select>-->
+<!--        </div>-->
         <div class="wrapper">
             <select  id="deptDrop" ></select>
         </div>
@@ -38,6 +49,7 @@
         <table>
             <thead>
             <tr>
+                <th>Level</th>
                 <th>Department</th>
                 <th>Designation name</th>
                 <th>Actions</th>
@@ -65,7 +77,7 @@ $(document).ready(function() {
            success: function (deptdata) {
                var s = '<option value="-1">Select Department</option>';
                for (var i = 0; i < deptdata.length; i++) {
-                   s += '<option value="' + deptdata[i].deptName + '">' + deptdata[i].deptName + '</option>';
+                   s += '<option value="' + deptdata[i].deptId + '">' + deptdata[i].deptName + '</option>';
                }
                $("#deptDrop").html(s);
            }
@@ -73,6 +85,9 @@ $(document).ready(function() {
 
 
 <!--        Department dropdown list end-->
+
+
+
 
 
 
@@ -89,8 +104,8 @@ $(document).ready(function() {
             success:function(data){
                for(i=0;i<data.length;i++){
                designationList += '<tr id="' + data[i].desgId + '">'; // Add ID attribute
-
-               designationList=designationList+' <td>'+data[i].department +'</td>';
+               designationList=designationList+' <td>'+data[i].level +'</td>';
+               designationList=designationList+' <td>'+data[i].department.deptName +'</td>';
                designationList=designationList+' <td>'+data[i].designationName +'</td>';
 
                designationList=designationList+' <td>';
@@ -108,13 +123,17 @@ $(document).ready(function() {
       function saveDesignation() {
 
             var designationName = $("#DesignationName").val();
-            var department = $("#deptDrop").val();
+            var deptId = $("#deptDrop").val();
+            var level = $("#Level").val();
 
 
-            if (designationName && department) {
+            if (designationName && deptId && level) {
                 var userData = {
                     designationName: designationName,
-                    department: department,
+                    department: {
+                        deptId:deptId
+                    },
+                    level: level,
                 }
 
                 $.ajax({
@@ -126,7 +145,7 @@ $(document).ready(function() {
                     processData: !1,
                     data: JSON.stringify(userData),
                     complete: function(xhr) {
-                        console.log(data)
+<!--                        console.log(xhr)-->
                     }
                 });
                 showAlert();

@@ -4,6 +4,7 @@ import insp.nic.Service.DepartmentService;
 import insp.nic.Service.DesignationService;
 import insp.nic.model.Department;
 import insp.nic.model.Designation;
+import insp.nic.model.Taluk;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,20 @@ public class DesignationController {
     @GetMapping("/getAllDesignation")
     public List<Designation> getAllDesignation(){
         return designationService.getAllDesignation();
+    }
+
+    @GetMapping("/getDesigByTal/{desigTaluk}")
+    public List<Designation> getDesigByTal(@PathVariable("desigTaluk") String desigTaluk){
+        return designationService.getDesigByTal(desigTaluk);
+    }
+    @GetMapping("/getDesigByLevel/{level}/{department}")
+    public List<Designation> getDesigByLevel(@PathVariable("level") String level,@PathVariable("department") String department){
+        return designationService.getDesigByLevel(level,department);
+    }
+
+    @GetMapping("/getDesigByTD/{desigTaluk}/{department}")
+    public List<Designation> getDesigByTD(@PathVariable("desigTaluk") String desigTaluk,@PathVariable("department") String department){
+        return designationService.getDesigByTD(desigTaluk,department);
     }
 
     @GetMapping("/getById/{id}")

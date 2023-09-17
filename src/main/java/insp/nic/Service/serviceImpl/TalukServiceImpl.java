@@ -27,6 +27,12 @@ public class TalukServiceImpl implements TalukService {
     }
 
     @Override
+    public List<Taluk> getTakByDist(String district) {
+        return talukRepo.getTakByDist(district);
+    }
+
+
+    @Override
     public Taluk getById(String id) {
         return talukRepo.findById(id).orElseThrow(()->  new ResourceNotFoundException("Taluk","Id",id));
     }

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>NIC</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/table.css">
+    <link rel="stylesheet" href="/css/alert.css">
+    <script src="/script/alert.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div th:replace="~{fragment/nav :: nav}"> </div>
+
+<main>
+    <div id="tablelist">
+        <div class="table-name">
+            <h2>Templates</h2>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                <tr>
+                    <th>Templet Name</th>
+                    <th>Level</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="tempList">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="questions">
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th class="assign-head">Template Name</th>
+                    <td id="TempNameSing"></td>
+                </tr>
+                <tr>
+                    <th class="assign-head">Level</th>
+                    <td id="TempLevelSing"></td>
+                </tr>
+                <tr>
+                    <th class="assign-head">Questions</th>
+                    <td id="TempDescriptionSing"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</main>
+
+<script>
+
+    $(document).ready(function() {
+
+        $("#tablelist").show();
+        $("#questions").hide();
+
+        var tempList="";
+        $.ajax({
+            contentType: "application/json;charset=UTF-8",
+            url: "/api/quetemplet/getAllTemp",
+            dataType: "json",
+            type: "GET",
+            async:false,
+            success:function(data){
+               for(i=0;i<data.length;i++){
+
+                 if(data[i].routassignedOfficer!==null && data[i].lastDate!==null){
+                     tempList += '<tr id="' + data[i].tempId + '">'; // Add ID attribute
+                     tempList=tempList+' <td>'+data[i].tempName +'</td>';
+                     tempList=tempList+' <td>'+data[i].tempLevel +'</td>';
+
+                     tempList=tempList+' <td>';
+                     tempList=tempList+'<a href="javascript:gettemp(\''+data[i].tempId+'\')" title="View">';
+                     tempList=tempList+'<i>&#x1F441;</i> </a>';
+                     tempList=tempList+'<a href="javascript:deleteTemp(\''+data[i].tempId+'\')" title="Delete">';
+                     tempList=tempList+'<b style="color:#FF0000">&#x1F5D1;</b> </a>';
+                     tempList=tempList+'</td></tr>';
+                 }
+
+               }
+
+                $("#tempList").html(tempList);
+            }
+        });
+      });
+
+        function gettempId(id){
+                 $.ajax({
+                       contentType: "application/json;charset=UTF-8",
+                       url: "${pageContext.request.contextPath}api/quetemplet/getById/" + id,
+                       dataType: "json",
+                       type: "GET",
+                       success:function(data){
+                          getProfile(data)
+
+                       }
+                  });
+            }
+
+
+        function gettemp(id) {
+            $("#tablelist").hide();
+            $("#questions").show();
+
+            $.ajax({
+                contentType: "application/json;charset=UTF-8",
+                url: "/api/quetemplet/getById/" + id,
+                dataType: "json",
+                type: "GET",
+                cache: !1,
+                processData: !1,
+                success: function(data) {
+
+                    $("#TempIdSing").text(data.tempId);
+                    $("#TempNameSing").text(data.tempName);
+                    $("#TempLevelSing").text(data.tempLevel);
+
+                    var descriptionHtml = '';
+                    for (var i = 0; i < data.tempDiscription.length; i++) {
+                        descriptionHtml += data.tempDiscription[i].tempContent + '<br>';
+                    }
+                    $("#TempDescriptionSing").html(descriptionHtml);
+
+                }
+            });
+        }
+
+         function deleteTemp(id) {
+            if (confirm("Are you sure you want to delete this templet?")) {
+                $.ajax({
+                    contentType: "application/json;charset=UTF-8",
+                    url: "/api/quetemplet/delete/" + id, // Use the delete endpoint with the tempId
+                    type: "DELETE",
+                    success: function () {
+                        // Remove the deleted row from the displayed table
+                        $("#" + id).remove();
+                        alert("Template deleted successfully.");
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Failed to delete templet: " + error);
+                    },
+                });
+            }
+        }
+
+
+
+</script>
+</body>
+</html>

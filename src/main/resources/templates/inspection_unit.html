@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>NIC</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/table.css">
+    <link rel="stylesheet" href="/css/alert.css">
+    <script src="/script/alert.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+
+</head>
+
+<body>
+<div th:replace="~{fragment/nav :: nav}"> </div>
+<main>
+    <h2>Inspection Unit Section</h2>
+
+    <div class="grid">
+        <div class="wrapper">
+            <select name="" id="Level">
+                <option value="Select Level">Select Level</option>
+                <option value="District">District</option>
+                <option value="Taluk">Taluk</option>
+            </select>
+        </div>
+
+        <div class="wrapper">
+            <select  id="deptDrop" ></select>
+        </div>
+
+
+
+        <div class="wrapper">
+            <select  id="TalukDrop" ></select>
+        </div>
+
+        <div class="wrapper">
+            <input type="text" id="UnitName" required>
+            <label>Unit Name</label>
+        </div>
+
+<!--        <div class="wrapper">-->
+<!--            <select  id="officerDrop" ></select>-->
+<!--        </div>-->
+
+<!--        <div class="wrapper">-->
+<!--            <input type="month" id="assignedMonth" required>-->
+<!--            <label>Assigned Month</label>-->
+<!--        </div>-->
+
+
+    </div>
+    <div>
+        <button class="submit-btn" onclick="saveInspUnit()">Add </button>
+    </div>
+
+    <div class="alert-container" id="alertContainer">
+        <div class="alert-message">
+            Added Data Successfully!
+            <button class="alert-button-ok" onclick="hideAlert()">OK</button>
+            <button class="alert-button-cancel" onclick="hideAlert()">Cancel</button>
+        </div>
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Level</th>
+                <th>Taluk</th>
+                <th>Department</th>
+                <th>Unit Name</th>
+
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="designationList">
+
+            </tbody>
+        </table>
+    </div>
+</main>
+<script>
+
+    $(document).ready(function() {
+
+    <!--userDistrict start-->
+            $.ajax({
+                type: "GET",
+                url: "/session/getUserDist",
+                success: function (data) {
+                    // Display the district result in the div
+                    $("#districtResult").val(data);
+
+                    getTaluksByDistrict(data);
+
+                },
+                error: function (error) {
+                    console.error("Error fetching user district:", error);
+                }
+            });
+    <!--userDistrict End-->
+
+
+
+
+
+
+
+    <!--        Department dropdown list start-->
+
+
+            $.ajax({
+               contentType: "application/json;charset=UTF-8",
+               type: "GET",
+               url: "/api/department/getAllDept",
+               dataType: "json",
+               async:false,
+               success: function (deptdata) {
+                   var s = '<option value="-1">Select Department</option>';
+                   for (var i = 0; i < deptdata.length; i++) {
+                       s += '<option value="' + deptdata[i].deptId + '">' + deptdata[i].deptName + '</option>';
+                   }
+                   $("#deptDrop").html(s);
+               }
+           });
+
+
+    <!--        Department dropdown list end-->
+
+
+
+                $("#tablelist").show();
+                $("#saveTalukbody").show();
+
+            var designationList="";
+            $.ajax({
+                contentType: "application/json;charset=UTF-8",
+                url: "/api/inspunit/getAllInspUnit",
+                dataType: "json",
+                type: "GET",
+                async:false,
+                success:function(data){
+                   for(i=0;i<data.length;i++){
+                   designationList += '<tr id="' + data[i].id + '">'; // Add ID attribute
+
+                   designationList=designationList+' <td>'+data[i].level +'</td>';
+
+                   designationList=designationList+' <td>'+data[i].taluk.talukName +'</td>';
+                   designationList=designationList+' <td>'+data[i].dept.deptName +'</td>';
+                   designationList=designationList+' <td>'+data[i].unitName +'</td>';
+
+
+                   designationList=designationList+' <td>';
+                   designationList=designationList+'<a href="javascript:deleteDesignation(\''+data[i].id+'\')" title="Delete">';
+                   designationList=designationList+'<b style="color:#FF0000">&#x1F5D1;</b> </a>';
+                   designationList=designationList+'</td></tr>';
+
+                   }
+                    $("#designationList").html(designationList);
+                }
+            });
+          });
+
+
+          function saveInspUnit() {
+
+                var deptId = $("#deptDrop").val();
+                var level = $("#Level").val();
+                var talukId = $("#TalukDrop").val();
+                var unitName = $("#UnitName").val();
+                var assignedMonth = $("#assignedMonth").val();
+                var assignedOfficer = $("#officerDrop").val();
+
+
+
+
+                if (deptId && level) {
+                    var userData = {
+                        dept: {
+                            deptId:deptId
+                        },
+                        level:level,
+                        taluk: {
+                            talukId:talukId
+                        },
+                        unitName:unitName,
+                        assignedMonth:assignedMonth,
+                        assignedOfficer:assignedOfficer
+                    }
+
+                    $.ajax({
+                        contentType: "application/json;charset=UTF-8",
+                        url: "/api/inspunit/save",
+                        dataType: "json",
+                        type: "POST",
+                        cache: !1,
+                        processData: !1,
+                        data: JSON.stringify(userData),
+                        complete: function(xhr) {
+<!--                            console.log(xhr)-->
+                        }
+                    });
+                    showAlert();
+                } else {
+                    alert("Please fill all the required fields");
+                }
+            }
+
+            function deleteDesignation(id) {
+                if (confirm("Are you sure you want to delete this Unit?")) {
+                    $.ajax({
+                        contentType: "application/json;charset=UTF-8",
+                        url: "/api/inspunit/delete/" + id, // Use the delete endpoint with the desgId
+                        type: "DELETE",
+                        success: function () {
+                            // Remove the deleted row from the displayed table
+                            $("#" + id).remove();
+                            alert("Inspection Unit is deleted successfully.");
+                        },
+                        error: function (xhr, status, error) {
+                            alert("Failed to delete Designation: " + error);
+                        },
+                    });
+                }
+            }
+
+
+            function getTaluksByDistrict(district) {
+                $.ajax({
+                    type: "GET",
+                    url: `/api/taluk/getTakByDist/${district}`,
+                   success: function (talukData) {
+                       var s = '<option value="-1">Select Taluk</option>';
+                       for (var i = 0; i < talukData.length; i++) {
+                           s += '<option value="' + talukData[i].talukId + '">' + talukData[i].talukName + '</option>';
+                       }
+                       $("#TalukDrop").html(s); // Updated ID here
+                   }
+                });
+            }
+
+</script>
+</body>
+</html>
