@@ -231,7 +231,7 @@
                     async: false,
                     success: function (inspUnitData) {
                         inspUnitData.forEach(function (unit) {
-                            $select.append(new Option(unit.unitName, unit.unitName, false, false));
+                            $select.append(new Option(unit.unitName, unit.unitid, false, false));
                         });
 
                         // Initialize Select2 with multiple options
@@ -273,80 +273,98 @@
 
 
 
-            function saveRoutineinsp() {
-                var userData = {
+           function saveRoutineinsp() {
+                var selectedUnits = $("#inspUnitSelect").val();
 
-                    level: $("#Level").val(),
-                    talukId: $("#TalukDrop").val(),
-                    deptId: $("#routDeptDrop").val(),
-                    desgId: $("#designationDrop").val(),
-                    routassignedOfficer: $("#officerDrop").val(),
-                    routdistrict: $("#districtResult").val(),
-                    inspUnits: $("#inspUnitSelect").val(),
+                if (!selectedUnits || selectedUnits.length === 0) {
+                    alert("Please select at least one inspection unit.");
+                    return;
+                }
 
-                    routTempName: $("#templateDrop").val(),
-                    routdescription: [],
-                };
+                selectedUnits.forEach(function (unitName) {
+                    var userData = {
+                        level: $("#Level").val(),
+                        routtaluk: {
+                            talukId:$("#TalukDrop").val()
+                            },
+                        routdepartment:{
+                            deptId:$("#routDeptDrop").val()
+                            },
+                        routDesig: {
+                            desgId:$("#designationDrop").val()
+                            },
+                        routassignedOfficer:{
+                            officerId:$("#officerDrop").val()
+                            },
+                        routdistrict: $("#districtResult").val(),
+                        inspUnits: [{
+                                unitid:unitName
+                        }], // Send only one unit at a time
 
-                // Fetch template data
-                $.ajax({
-                    contentType: "application/json;charset=UTF-8",
-                    type: "GET",
-                    url: "/api/quetemplet/getAllTemp",
-                    dataType: "json",
-                    async: false,
-                    success: function (tempData) {
-                        if (tempData.length === 0) {
-                            alert("Template data not found.");
-                            return;
-                        }
+                        routTempName: $("#templateDrop").val(),
+                        routdescription: [],
+                    };
 
-                        // Find the selected template
-                        const selectedTemplate = tempData.find((temp) => temp.tempName === userData.routTempName);
+                    // Fetch template data
+                    $.ajax({
+                        contentType: "application/json;charset=UTF-8",
+                        type: "GET",
+                        url: "/api/quetemplet/getAllTemp",
+                        dataType: "json",
+                        async: false,
+                        success: function (tempData) {
+                            if (tempData.length === 0) {
+                                alert("Template data not found.");
+                                return;
+                            }
 
-                        if (!selectedTemplate) {
-                            alert("Selected template not found in the template data.");
-                            return;
-                        }
+                            // Find the selected template
+                            const selectedTemplate = tempData.find((temp) => temp.tempName === userData.routTempName);
 
-                        // Loop through template description and build userData
-                        selectedTemplate.tempDiscription.forEach((tempDesc) => {
-                            const routInspContent = tempDesc.tempContent;
-                            const imgReqValue = tempDesc.imgReq;
+                            if (!selectedTemplate) {
+                                alert("Selected template not found in the template data.");
+                                return;
+                            }
 
-                            const inspObject = {
-                                routInspContent: routInspContent,
-                                imgReq: imgReqValue,
-                            };
+                            // Loop through template description and build userData
+                            selectedTemplate.tempDiscription.forEach(function (tempDesc) {
+                                const routInspContent = tempDesc.tempContent;
+                                const imgReqValue = tempDesc.imgReq;
+
+                                const inspObject = {
+                                    routInspContent: routInspContent,
+                                    imgReq: imgReqValue,
+                                };
 
                                 userData.routdescription.push(inspObject);
-                        });
+                            });
 
-                        // Now userData contains the correct imgReq values
+                            // Now userData contains the correct imgReq values
 
-                        $.ajax({
-                            contentType: "application/json;charset=UTF-8",
-                            url: "/api/routinsp/save",
-                            dataType: "json",
-                            type: "POST",
-                            cache: false,
-                            processData: false,
-                            data: JSON.stringify(userData),
-                            success: function (response) {
-                                console.log(response);
-                            },
-                            error: function (error) {
-                                console.error("Error:", error);
-                            },
-                        });
+                            $.ajax({
+                                contentType: "application/json;charset=UTF-8",
+                                url: "/api/routinsp/save",
+                                dataType: "json",
+                                type: "POST",
+                                cache: false,
+                                processData: false,
+                                data: JSON.stringify(userData),
+                                success: function (response) {
+                                    console.log(response);
+                                },
+                                error: function (error) {
+                                    console.error("Error:", error);
+                                },
+                            });
 
-                        showAlert();
-                    },
-                    error: function (error) {
-                        console.error("Error fetching template data from API:", error);
-                    },
-                });
-            }
+                            showAlert();
+                        },
+                        error: function (error) {
+                            console.error("Error fetching template data from API:", error);
+                        },
+        });
+    });
+}
 
 
 

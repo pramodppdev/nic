@@ -1,6 +1,7 @@
 package insp.nic.controller;
 
 import insp.nic.Service.InspUnitService;
+import insp.nic.exception.ResourceNotFoundException;
 import insp.nic.model.InspectionUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,18 @@ public class InspUnitController {
     }
 
 
+    @PutMapping("/{id}")
+    public ResponseEntity<InspectionUnit> updateInspectionUnit(
+            @PathVariable(value = "id") String id,
+            @RequestBody InspectionUnit updatedInspectionUnit) {
+        try {
+            InspectionUnit updatedUnit = inspUnitService.updateInspectionUnit(updatedInspectionUnit, id);
+            return ResponseEntity.ok(updatedUnit);
+        } catch (ResourceNotFoundException e) {
+            // Handle resource not found exception
+            return ResponseEntity.notFound().build();
+        }
+    }
     @GetMapping("/getUnitByLTDept/{level}/{taluk}/{dept}")
     public List<InspectionUnit> getUnitByLTDept(@PathVariable("level") String level, @PathVariable("taluk") String taluk,
                                                 @PathVariable("dept") String dept){

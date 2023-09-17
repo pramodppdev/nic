@@ -10,7 +10,8 @@ import javax.xml.crypto.Data;
 public class InspectionUnit {
 
     @Id
-    private String id;
+    private String unitid;
+
 
     @DBRef
     private Department dept;
@@ -23,26 +24,29 @@ public class InspectionUnit {
     private String assignedMonth;
 
     private String assignedOfficer;
+    private String status;
+
 
     public InspectionUnit() {
     }
 
-    public InspectionUnit(String id, Department dept, String level, Taluk taluk, String unitName, String assignedMonth, String assignedOfficer) {
-        this.id = id;
+    public InspectionUnit(String unitid, Department dept, String level, Taluk taluk, String unitName, String assignedMonth, String assignedOfficer, String status) {
+        this.unitid = unitid;
         this.dept = dept;
         this.level = level;
         this.taluk = taluk;
         this.unitName = unitName;
         this.assignedMonth = assignedMonth;
         this.assignedOfficer = assignedOfficer;
+        this.status = status;
     }
 
-    public String getId() {
-        return id;
+    public String getUnitid() {
+        return unitid;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUnitid(String unitid) {
+        this.unitid = unitid;
     }
 
     public Department getDept() {
@@ -91,5 +95,13 @@ public class InspectionUnit {
 
     public void setAssignedOfficer(String assignedOfficer) {
         this.assignedOfficer = assignedOfficer;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

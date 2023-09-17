@@ -23,6 +23,7 @@
         <thead>
           <tr>
             <th>Department</th>
+            <th>Unit Name</th>
             <th>Officer Assigned</th>
             <th>Status</th>
             <th>Actions</th>
@@ -92,25 +93,6 @@
 
     $(document).ready(function() {
 
-    <!--        Officer dropdown list start-->
-
-       $.ajax({
-           contentType: "application/json;charset=UTF-8",
-           type: "GET",
-           url: "/api/officer/getAllOfficer",
-           dataType: "json",
-           async:false,
-           success: function (officerData) {
-               var s = '<option value="-1">Select Officer</option>';
-               for (var i = 0; i < officerData.length; i++) {
-                   s += '<option value="' + officerData[i].officerName + '">' + officerData[i].officerName + '</option>';
-               }
-               $("#officerDrop").html(s); // Updated ID here
-           }
-        });
-
-    <!--        Officer dropdown list end-->
-
         $("#tablelist").show();
         $("#Reportind").hide();
 
@@ -126,8 +108,9 @@
 
                  if(data[i].routassignedOfficer!==null && data[i].lastDate!==null){
                      reportList += '<tr id="' + data[i].routinspId + '">'; // Add ID attribute
-                     reportList=reportList+' <td>'+data[i].routdepartment +'</td>';
-                     reportList=reportList+' <td>'+data[i].routassignedOfficer +'</td>';
+                     reportList=reportList+' <td>'+data[i].routdepartment.deptName +'</td>';
+                     reportList=reportList+' <td>'+data[i].inspUnits.unitName +'</td>';
+                     reportList=reportList+' <td>'+data[i].routassignedOfficer.officerName +'</td>';
                      reportList=reportList+' <td>'+data[i].routstatus +'</td>';
 
                      reportList=reportList+' <td>';
@@ -211,12 +194,11 @@
                 success: function(data) {
 
                     $("#RoutInspIdSing").text(data.routinspId);
-                    $("#RoutDepartmentSing").text(data.routdepartment);
-                    $("#RoutDescriptionSing").text(data.routdescription);
+                    $("#RoutDepartmentSing").text(data.routdepartment.deptName);
                     $("#RoutLastDateSing").text(data.routlastDate);
-                    $("#RoutAssignedOfficerSing").text(data.routassignedOfficer);
+                    $("#RoutAssignedOfficerSing").text(data.routassignedOfficer.officerName);
                     $("#RoutDistrictSing").text(data.district);
-                    $("#RoutTalukSing").text(data.routtaluk);
+                    $("#RoutTalukSing").text(data.routtaluk.talukName);
 
                     var descriptionHtml = '';
                     for (var i = 0; i < data.routdescription.length; i++) {

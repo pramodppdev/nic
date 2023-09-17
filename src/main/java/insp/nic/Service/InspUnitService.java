@@ -20,6 +20,7 @@ public interface InspUnitService {
 
     InspectionUnit getById(String id);
 
+
     List<InspectionUnit> getUnitByLTDept(String level, String taluk, String dept);
 
     void deleteInspectionUnit(String id);
