@@ -1,6 +1,7 @@
 package insp.nic.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.xml.crypto.Data;
@@ -10,9 +11,14 @@ public class InspectionUnit {
 
     @Id
     private String id;
-    private String dept;
+
+    @DBRef
+    private Department dept;
+
     private String level;
-    private String taluk;
+
+    @DBRef
+    private Taluk taluk;
     private String unitName;
     private String assignedMonth;
 
@@ -21,7 +27,7 @@ public class InspectionUnit {
     public InspectionUnit() {
     }
 
-    public InspectionUnit(String id, String dept, String level, String taluk, String unitName, String assignedMonth, String assignedOfficer) {
+    public InspectionUnit(String id, Department dept, String level, Taluk taluk, String unitName, String assignedMonth, String assignedOfficer) {
         this.id = id;
         this.dept = dept;
         this.level = level;
@@ -39,11 +45,11 @@ public class InspectionUnit {
         this.id = id;
     }
 
-    public String getDept() {
+    public Department getDept() {
         return dept;
     }
 
-    public void setDept(String dept) {
+    public void setDept(Department dept) {
         this.dept = dept;
     }
 
@@ -55,11 +61,11 @@ public class InspectionUnit {
         this.level = level;
     }
 
-    public String getTaluk() {
+    public Taluk getTaluk() {
         return taluk;
     }
 
-    public void setTaluk(String taluk) {
+    public void setTaluk(Taluk taluk) {
         this.taluk = taluk;
     }
 

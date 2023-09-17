@@ -113,7 +113,7 @@
                success: function (deptdata) {
                    var s = '<option value="-1">Select Department</option>';
                    for (var i = 0; i < deptdata.length; i++) {
-                       s += '<option value="' + deptdata[i].deptName + '">' + deptdata[i].deptName + '</option>';
+                       s += '<option value="' + deptdata[i].deptId + '">' + deptdata[i].deptName + '</option>';
                    }
                    $("#deptDrop").html(s);
                }
@@ -138,7 +138,7 @@
                      tempList += '<tr id="' + data[i].tempId + '">'; // Add ID attribute
                      tempList=tempList+' <td>'+data[i].tempName +'</td>';
                      tempList=tempList+' <td>'+data[i].tempLevel +'</td>';
-                     tempList=tempList+' <td>'+data[i].tempDept +'</td>';
+                     tempList=tempList+' <td>'+data[i].tempDept.deptName +'</td>';
 
                      tempList=tempList+' <td>';
                      tempList=tempList+'<a href="javascript:gettemp(\''+data[i].tempId+'\')" title="View">';
@@ -157,10 +157,18 @@
 
 
       function saveTemplet() {
-            const userData = {
-                tempName: $("#TempName").val(),
-                tempLevel: $("#TempLevel").val(),
-                tempDept: $("#deptDrop").val(),
+
+            var tempName = $("#TempName").val();
+            var tempLevel = $("#TempLevel").val();
+            var deptId = $("#deptDrop").val();
+
+
+            var userData = {
+                tempName: tempName,
+                tempLevel: tempLevel,
+                tempDept: {
+                        deptId:deptId
+                    },
                 tempDiscription: [],
 
             };
@@ -197,7 +205,7 @@
                     console.log(response); // If needed, handle the response from the server
                 },
                 error: function(error) {
-                    console.error("error"); // If needed, handle the error from the server
+                    console.log(response); // If needed, handle the error from the server
                 }
             });
 

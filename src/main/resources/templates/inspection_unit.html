@@ -119,7 +119,7 @@
                success: function (deptdata) {
                    var s = '<option value="-1">Select Department</option>';
                    for (var i = 0; i < deptdata.length; i++) {
-                       s += '<option value="' + deptdata[i].deptName + '">' + deptdata[i].deptName + '</option>';
+                       s += '<option value="' + deptdata[i].deptId + '">' + deptdata[i].deptName + '</option>';
                    }
                    $("#deptDrop").html(s);
                }
@@ -146,8 +146,8 @@
 
                    designationList=designationList+' <td>'+data[i].level +'</td>';
 
-                   designationList=designationList+' <td>'+data[i].taluk +'</td>';
-                   designationList=designationList+' <td>'+data[i].dept +'</td>';
+                   designationList=designationList+' <td>'+data[i].taluk.talukName +'</td>';
+                   designationList=designationList+' <td>'+data[i].dept.deptName +'</td>';
                    designationList=designationList+' <td>'+data[i].unitName +'</td>';
 
 
@@ -165,9 +165,9 @@
 
           function saveInspUnit() {
 
-                var dept = $("#deptDrop").val();
+                var deptId = $("#deptDrop").val();
                 var level = $("#Level").val();
-                var taluk = $("#TalukDrop").val();
+                var talukId = $("#TalukDrop").val();
                 var unitName = $("#UnitName").val();
                 var assignedMonth = $("#assignedMonth").val();
                 var assignedOfficer = $("#officerDrop").val();
@@ -175,11 +175,15 @@
 
 
 
-                if (dept && level) {
+                if (deptId && level) {
                     var userData = {
-                        dept: dept,
+                        dept: {
+                            deptId:deptId
+                        },
                         level:level,
-                        taluk:taluk,
+                        taluk: {
+                            talukId:talukId
+                        },
                         unitName:unitName,
                         assignedMonth:assignedMonth,
                         assignedOfficer:assignedOfficer
@@ -194,7 +198,7 @@
                         processData: !1,
                         data: JSON.stringify(userData),
                         complete: function(xhr) {
-                            console.log(data)
+<!--                            console.log(xhr)-->
                         }
                     });
                     showAlert();
@@ -229,7 +233,7 @@
                    success: function (talukData) {
                        var s = '<option value="-1">Select Taluk</option>';
                        for (var i = 0; i < talukData.length; i++) {
-                           s += '<option value="' + talukData[i].talukName + '">' + talukData[i].talukName + '</option>';
+                           s += '<option value="' + talukData[i].talukId + '">' + talukData[i].talukName + '</option>';
                        }
                        $("#TalukDrop").html(s); // Updated ID here
                    }

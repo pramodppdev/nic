@@ -126,7 +126,7 @@
            success: function (deptdata) {
                var s = '<option value="-1">Select Department</option>';
                for (var i = 0; i < deptdata.length; i++) {
-                   s += '<option value="' + deptdata[i].deptName + '">' + deptdata[i].deptName + '</option>';
+                   s += '<option value="' + deptdata[i].deptId + '">' + deptdata[i].deptName + '</option>';
                }
                $("#deptDrop").html(s);
            }
@@ -153,8 +153,8 @@
 
                officerList=officerList+' <td>'+data[i].officerName +'</td>';
                officerList=officerList+' <td>'+data[i].level +'</td>';
-               officerList=officerList+' <td>'+data[i].officerDept +'</td>';
-               officerList=officerList+' <td>'+data[i].designation +'</td>';
+               officerList=officerList+' <td>'+data[i].officerDept.deptName +'</td>';
+               officerList=officerList+' <td>'+data[i].designation.designationName +'</td>';
 
                officerList=officerList+' <td>'+data[i].officerMob +'</td>';
 
@@ -173,20 +173,26 @@
 
             var officerName = $("#OfficerName").val();
             var officerMob = $("#OfficerMob").val();
-            var officerDept = $("#deptDrop").val();
-            var designation = $("#designationDrop").val();
-            var taluk = $("#TalukDrop").val();
+            var deptId = $("#deptDrop").val();
+            var desgId = $("#designationDrop").val();
+            var talukId = $("#TalukDrop").val();
             var level = $("#Level").val();
 
 
 
-            if (level && officerName && officerMob && officerDept && designation && taluk) {
+            if (level && officerName && officerMob) {
                 var userData = {
                     officerName: officerName,
                     officerMob: officerMob,
-                    officerDept: officerDept,
-                    designation: designation,
-                    taluk: taluk,
+                    officerDept: {
+                         deptId:deptId
+                     },
+                    designation: {
+                         desgId:desgId
+                     },
+                    taluk: {
+                         talukId:talukId
+                     },
                     level:level,
                 }
 
@@ -199,7 +205,7 @@
                     processData: !1,
                     data: JSON.stringify(userData),
                     complete: function(xhr) {
-                        console.log(data)
+<!--                        console.log(xhr)-->
                     }
                 });
                 showAlert();
@@ -234,7 +240,7 @@
                    success: function (talukData) {
                        var s = '<option value="-1">Select Taluk</option>';
                        for (var i = 0; i < talukData.length; i++) {
-                           s += '<option value="' + talukData[i].talukName + '">' + talukData[i].talukName + '</option>';
+                           s += '<option value="' + talukData[i].talukId + '">' + talukData[i].talukName + '</option>';
                        }
                        $("#TalukDrop").html(s); // Updated ID here
                    }
@@ -249,7 +255,7 @@
                     success: function (designationData) {
                         var s = '<option value="-1">Select Designation</option>';
                         for (var i = 0; i < designationData.length; i++) {
-                            s += '<option value="' + designationData[i].designationName + '">' + designationData[i].designationName + '</option>';
+                            s += '<option value="' + designationData[i].desgId + '">' + designationData[i].designationName + '</option>';
                         }
                         // Assuming you have a dropdown for Designations with id "designationDrop"
                         $("#designationDrop").html(s);

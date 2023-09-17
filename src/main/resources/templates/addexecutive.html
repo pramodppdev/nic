@@ -85,7 +85,7 @@ $(document).ready(function() {
            success: function (districtData) {
                var s = '<option value="-1">Select District</option>';
                for (var i = 0; i < districtData.length; i++) {
-                   s += '<option value="' + districtData[i].districtName + '">' + districtData[i].districtName + '</option>';
+                   s += '<option value="' + districtData[i].districtId + '">' + districtData[i].districtName + '</option>';
                }
                $("#districtDrop").html(s); // Updated ID here
            }
