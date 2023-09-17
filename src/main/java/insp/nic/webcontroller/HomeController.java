@@ -2,7 +2,9 @@ package insp.nic.webcontroller;
 
 
 import insp.nic.Service.ExecutiveService;
+import insp.nic.Service.OfficerService;
 import insp.nic.model.Executive;
+import insp.nic.model.Officer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -171,6 +173,38 @@ public class HomeController {
                 session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
                 session.setAttribute("Status", "Succees");
                 return "sucess";
+            }
+        }catch (AuthenticationException e){
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            throw new AuthenticationException("Invalid Credentials");
+        }
+        return "fail";
+    }
+
+    @Autowired
+    OfficerService officerService;
+    @PostMapping("/auth/off")
+    @ResponseBody
+    public String offAuth(HttpServletRequest request, HttpServletResponse response, @RequestBody Officer officerVO) throws AuthenticationException
+    {
+        try {
+            Officer officer = officerService.exeOffi(officerVO);
+
+            if (officer != null) {
+                HttpSession session = request.getSession(true);
+
+                List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+                authorities.add(new SimpleGrantedAuthority("USER"));
+
+                // unique authentication token
+                Authentication myToken = new UsernamePasswordAuthenticationToken(officer.getOfficerName(), officer.getPassword(), authorities);
+                SecurityContext context = SecurityContextHolder.createEmptyContext();
+                context.setAuthentication(myToken);
+
+                // session attributes values
+                session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+                session.setAttribute("Status", "Succees");
+                return "officer login sucess";
             }
         }catch (AuthenticationException e){
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
