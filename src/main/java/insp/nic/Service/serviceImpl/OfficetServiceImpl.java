@@ -3,13 +3,17 @@ package insp.nic.Service.serviceImpl;
 
 import insp.nic.Service.OfficerService;
 import insp.nic.exception.ResourceNotFoundException;
+import insp.nic.model.Executive;
 import insp.nic.model.Officer;
 import insp.nic.repo.OfficerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 
+import javax.naming.AuthenticationException;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class OfficetServiceImpl implements OfficerService {
@@ -41,5 +45,30 @@ public class OfficetServiceImpl implements OfficerService {
     public void deleteOfficer(String id) {
         officerRepo.findById(id).orElseThrow(()->  new ResourceNotFoundException("Officer","Id",id));
         officerRepo.deleteById(id);
+    }
+
+    @Override
+    public Officer exeOffi(Officer officer) throws AuthenticationException {
+
+        if (StringUtils.isEmpty(officer.getOfficerName()) ||StringUtils.isEmpty(officer.getPassword())) {
+            throw new AuthenticationException("Invalid user Credentials");
+        }
+
+        Officer authenticatedPOJO = officerRepo.findAllByName(officer.getOfficerName());
+
+
+        if (authenticatedPOJO == null ) {
+            throw new AuthenticationException("User Does not exists ");
+        }
+
+        //TODO: Credentials authentication logic
+        if(Objects.equals(officer.getOfficerName(), officer.getOfficerName())
+                && Objects.equals(officer.getPassword(), authenticatedPOJO.getPassword()))
+        {
+            authenticatedPOJO.setPassword("");
+            return authenticatedPOJO;
+        }
+
+        throw new AuthenticationException("Invalid user Credentials");
     }
 }
