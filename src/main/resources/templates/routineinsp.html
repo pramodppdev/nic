@@ -159,7 +159,7 @@
            success: function (deptData) {
                var s = '<option value="-1">Select Department</option>';
                for (var i = 0; i < deptData.length; i++) {
-                   s += '<option value="' + deptData[i].deptName + '">' + deptData[i].deptName + '</option>';
+                   s += '<option value="' + deptData[i].deptId + '">' + deptData[i].deptName + '</option>';
                }
                $("#routDeptDrop").html(s);
            }
@@ -180,7 +180,7 @@
            success: function (tempData) {
                var s = '<option value="-1">Select Templet</option>';
                for (var i = 0; i < tempData.length; i++) {
-                   s += '<option value="' + tempData[i].tempName + '">' + tempData[i].tempName + '</option>';
+                   s += '<option value="' + tempData[i].tempId + '">' + tempData[i].tempName + '</option>';
                }
                $("#routTempDrop").html(s);
            }
@@ -215,11 +215,6 @@
 <!--        unit dropdown list start-->
 
 
-
-
-
-
-
            var $select = $('#inspUnitSelect');
 
 
@@ -235,8 +230,11 @@
                     dataType: "json",
                     async: false,
                     success: function (inspUnitData) {
+
                         inspUnitData.forEach(function (unit) {
-                            $select.append(new Option(unit.unitName, unit.unitName, false, false));
+                             if (unit.status === "Not_assigned") {
+                                $select.append(new Option(unit.unitName, unit.unitid, false, false));
+                             }
                         });
 
                         // Initialize Select2 with multiple options
@@ -278,81 +276,140 @@
 
 
 
-            function saveRoutineinsp() {
-                const userData = {
+           function saveRoutineinsp() {
+                var selectedUnits = $("#inspUnitSelect").val();
 
-                    level: $("#Level").val(),
-                    routtaluk: $("#TalukDrop").val(),
-                    routdepartment: $("#routDeptDrop").val(),
-                    routDesig: $("#designationDrop").val(),
-                    routassignedOfficer: $("#officerDrop").val(),
-                    routdistrict: $("#districtResult").val(),
-                    inspUnits: $("#inspUnitSelect").val(),
+                if (!selectedUnits || selectedUnits.length === 0) {
+                    alert("Please select at least one inspection unit.");
+                    return;
+                }
 
-
-                    routTempName: $("#templateDrop").val(),
-                    routdescription: [],
-                };
-
-                // Fetch template data
-                $.ajax({
-                    contentType: "application/json;charset=UTF-8",
-                    type: "GET",
-                    url: "/api/quetemplet/getAllTemp",
-                    dataType: "json",
-                    async: false,
-                    success: function (tempData) {
-                        if (tempData.length === 0) {
-                            alert("Template data not found.");
-                            return;
-                        }
-
-                        // Find the selected template
-                        const selectedTemplate = tempData.find((temp) => temp.tempName === userData.routTempName);
-
-                        if (!selectedTemplate) {
-                            alert("Selected template not found in the template data.");
-                            return;
-                        }
-
-                        // Loop through template description and build userData
-                        selectedTemplate.tempDiscription.forEach((tempDesc) => {
-                            const routInspContent = tempDesc.tempContent;
-                            const imgReqValue = tempDesc.imgReq;
-
-                            const inspObject = {
-                                routInspContent: routInspContent,
-                                imgReq: imgReqValue,
-                            };
-
-                            userData.routdescription.push(inspObject);
-                        });
-
-                        // Now userData contains the correct imgReq values
-
-                        $.ajax({
-                            contentType: "application/json;charset=UTF-8",
-                            url: "/api/routinsp/save",
-                            dataType: "json",
-                            type: "POST",
-                            cache: false,
-                            processData: false,
-                            data: JSON.stringify(userData),
-                            success: function (response) {
-                                console.log(response);
+                selectedUnits.forEach(function (unitName) {
+                    var userData = {
+                        level: $("#Level").val(),
+                        routtaluk: {
+                            talukId:$("#TalukDrop").val()
                             },
-                            error: function (error) {
-                                console.error("Error:", error);
+                        routdepartment:{
+                            deptId:$("#routDeptDrop").val()
                             },
-                        });
+                        routDesig: {
+                            desgId:$("#designationDrop").val()
+                            },
+                        routassignedOfficer:{
+                            officerId:$("#officerDrop").val()
+                            },
+                        routdistrict: $("#districtResult").val(),
+                        inspUnits: [{
+                                unitid:unitName
+                        }], // Send only one unit at a time
 
-                        showAlert();
-                    },
-                    error: function (error) {
-                        console.error("Error fetching template data from API:", error);
-                    },
-                });
+                        routTempName: $("#templateDrop").val(),
+                        routdescription: [],
+
+
+                    };
+
+                    updateInspectionUnitStatus(unitName);
+
+
+
+                    // Fetch template data
+                    $.ajax({
+                        contentType: "application/json;charset=UTF-8",
+                        type: "GET",
+                        url: "/api/quetemplet/getAllTemp",
+                        dataType: "json",
+                        async: false,
+                        success: function (tempData) {
+                            if (tempData.length === 0) {
+                                alert("Template data not found.");
+                                return;
+                            }
+
+                            // Find the selected template
+                            const selectedTemplate = tempData.find((temp) => temp.tempName === userData.routTempName);
+
+                            if (!selectedTemplate) {
+                                alert("Selected template not found in the template data.");
+                                return;
+                            }
+
+                            // Loop through template description and build userData
+                            selectedTemplate.tempDiscription.forEach(function (tempDesc) {
+                                const routInspContent = tempDesc.tempContent;
+                                const imgReqValue = tempDesc.imgReq;
+
+                                const inspObject = {
+                                    routInspContent: routInspContent,
+                                    imgReq: imgReqValue,
+                                };
+
+                                userData.routdescription.push(inspObject);
+                            });
+
+                            // Now userData contains the correct imgReq values
+
+                            $.ajax({
+                                contentType: "application/json;charset=UTF-8",
+                                url: "/api/routinsp/save",
+                                dataType: "json",
+                                type: "POST",
+                                cache: false,
+                                processData: false,
+                                data: JSON.stringify(userData),
+                                success: function (response) {
+                                    console.log(response);
+                                },
+                                error: function (error) {
+                                    console.error("Error:", error);
+                                },
+                            });
+
+                            showAlert();
+                        },
+                        error: function (error) {
+                            console.error("Error fetching template data from API:", error);
+                        },
+        });
+    });
+}
+
+function updateInspectionUnitStatus(unitName) {
+    // First, fetch the existing data for the unit
+    $.ajax({
+        type: "GET",
+        url: `/api/inspunit/getById/${unitName}`,
+        dataType: "json",
+        success: function (existingData) {
+            if (!existingData) {
+                console.error(`Unit ${unitName} not found.`);
+                return;
             }
+
+            // Update the status to "assigned" in the existing data
+            existingData.status = "assigned";
+
+            // Make a PUT request to update the unit with the merged data
+            $.ajax({
+                contentType: "application/json;charset=UTF-8",
+                url: `/api/inspunit/update/${unitName}`,
+                dataType: "json",
+                type: "PUT",
+                data: JSON.stringify(existingData),
+                success: function (response) {
+                    console.log(`Status updated for unit ${unitName} to 'assigned'`);
+                },
+                error: function (error) {
+                    console.error(`Error updating status for unit ${unitName}:`, error);
+                },
+            });
+        },
+        error: function (error) {
+            console.error(`Error fetching unit data for ${unitName}:`, error);
+        },
+    });
+}
 
 
 
@@ -409,7 +466,7 @@ function populateTempDiscription(tempDiscription) {
                    success: function (talukData) {
                        var s = '<option value="-1">Select Taluk</option>';
                        for (var i = 0; i < talukData.length; i++) {
-                           s += '<option value="' + talukData[i].talukName + '">' + talukData[i].talukName + '</option>';
+                           s += '<option value="' + talukData[i].talukId + '">' + talukData[i].talukName + '</option>';
                        }
                        $("#TalukDrop").html(s); // Updated ID here
                    }
@@ -425,7 +482,7 @@ function populateTempDiscription(tempDiscription) {
                     success: function (designationData) {
                         var s = '<option value="-1">Select Designation</option>';
                         for (var i = 0; i < designationData.length; i++) {
-                            s += '<option value="' + designationData[i].designationName + '">' + designationData[i].designationName + '</option>';
+                            s += '<option value="' + designationData[i].desgId + '">' + designationData[i].designationName + '</option>';
                         }
                         // Assuming you have a dropdown for Designations with id "designationDrop"
                         $("#designationDrop").html(s);
@@ -466,7 +523,7 @@ function populateTempDiscription(tempDiscription) {
                 success: function (data) {
                    var s = '<option value="-1">Select Officer</option>';
                         for (var i = 0; i < data.length; i++) {
-                            s += '<option value="' + data[i].officerName + '">' + data[i].officerName + '</option>';
+                            s += '<option value="' + data[i].officerId + '">' + data[i].officerName + '</option>';
                         }
                         $("#officerDrop").html(s);
                     },
@@ -478,11 +535,6 @@ function populateTempDiscription(tempDiscription) {
 
         }
 <!--fetch offier list by level, taluk, dept and Desig-->
-
-
-
-
-
 
 
 

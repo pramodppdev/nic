@@ -10,35 +10,27 @@ public class Officer {
 
     @Id
     private String officerId;
-
     private String officerName;
-
-    private Long officerMob;
-
+    private long officerMob;
+    private String password;
     @DBRef
     private Department officerDept;
-
     @DBRef
     private Taluk taluk;
-
     private String district;
-
     @DBRef
     private Designation designation;
-
     private String createdAt;
-
     private String createdBy;
-
     private String level;
-
     public Officer() {
     }
 
-    public Officer(String officerId, String officerName, Long officerMob, Department officerDept, Taluk taluk, String district, Designation designation, String createdAt, String createdBy, String level) {
+    public Officer(String officerId, String officerName, long officerMob, String password, Department officerDept, Taluk taluk, String district, Designation designation, String createdAt, String createdBy, String level) {
         this.officerId = officerId;
         this.officerName = officerName;
         this.officerMob = officerMob;
+        this.password = password;
         this.officerDept = officerDept;
         this.taluk = taluk;
         this.district = district;
@@ -64,12 +56,20 @@ public class Officer {
         this.officerName = officerName;
     }
 
-    public Long getOfficerMob() {
+    public long getOfficerMob() {
         return officerMob;
     }
 
-    public void setOfficerMob(Long officerMob) {
+    public void setOfficerMob(long officerMob) {
         this.officerMob = officerMob;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Department getOfficerDept() {

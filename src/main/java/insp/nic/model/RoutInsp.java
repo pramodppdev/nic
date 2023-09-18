@@ -1,6 +1,7 @@
 package insp.nic.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -13,21 +14,25 @@ public class RoutInsp {
 
     private String level;
 
-    private String routtaluk;
+    @DBRef
+    private Taluk routtaluk;
 
-    private String routdepartment;
+    @DBRef
+    private Department routdepartment;
 
     private String routTempName;
 
     private List<RoutInspDetails> routdescription;
 
-    private String routDesig;
+    @DBRef
+    private Designation routDesig;
 
     private String routlastDate;
 
     private String routstatus;
 
-    private String routassignedOfficer;
+    @DBRef
+    private Officer routassignedOfficer;
 
     private String routcreatedAt;
 
@@ -35,12 +40,13 @@ public class RoutInsp {
 
     private String routdistrict;
 
-    private List<String> inspUnits;
+    @DBRef
+    private List<InspectionUnit> inspUnits;
 
     public RoutInsp() {
     }
 
-    public RoutInsp(String routinspId, String level, String routtaluk, String routdepartment, String routTempName, List<RoutInspDetails> routdescription, String routDesig, String routlastDate, String routstatus, String routassignedOfficer, String routcreatedAt, String routcreatedBy, String routdistrict, List<String> inspUnits) {
+    public RoutInsp(String routinspId, String level, Taluk routtaluk, Department routdepartment, String routTempName, List<RoutInspDetails> routdescription, Designation routDesig, String routlastDate, String routstatus, Officer routassignedOfficer, String routcreatedAt, String routcreatedBy, String routdistrict, List<InspectionUnit> inspUnits) {
         this.routinspId = routinspId;
         this.level = level;
         this.routtaluk = routtaluk;
@@ -73,19 +79,19 @@ public class RoutInsp {
         this.level = level;
     }
 
-    public String getRouttaluk() {
+    public Taluk getRouttaluk() {
         return routtaluk;
     }
 
-    public void setRouttaluk(String routtaluk) {
+    public void setRouttaluk(Taluk routtaluk) {
         this.routtaluk = routtaluk;
     }
 
-    public String getRoutdepartment() {
+    public Department getRoutdepartment() {
         return routdepartment;
     }
 
-    public void setRoutdepartment(String routdepartment) {
+    public void setRoutdepartment(Department routdepartment) {
         this.routdepartment = routdepartment;
     }
 
@@ -105,11 +111,11 @@ public class RoutInsp {
         this.routdescription = routdescription;
     }
 
-    public String getRoutDesig() {
+    public Designation getRoutDesig() {
         return routDesig;
     }
 
-    public void setRoutDesig(String routDesig) {
+    public void setRoutDesig(Designation routDesig) {
         this.routDesig = routDesig;
     }
 
@@ -129,11 +135,11 @@ public class RoutInsp {
         this.routstatus = routstatus;
     }
 
-    public String getRoutassignedOfficer() {
+    public Officer getRoutassignedOfficer() {
         return routassignedOfficer;
     }
 
-    public void setRoutassignedOfficer(String routassignedOfficer) {
+    public void setRoutassignedOfficer(Officer routassignedOfficer) {
         this.routassignedOfficer = routassignedOfficer;
     }
 
@@ -161,11 +167,11 @@ public class RoutInsp {
         this.routdistrict = routdistrict;
     }
 
-    public List<String> getInspUnits() {
+    public List<InspectionUnit> getInspUnits() {
         return inspUnits;
     }
 
-    public void setInspUnits(List<String> inspUnits) {
+    public void setInspUnits(List<InspectionUnit> inspUnits) {
         this.inspUnits = inspUnits;
     }
 }
