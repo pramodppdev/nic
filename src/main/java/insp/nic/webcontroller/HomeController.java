@@ -204,7 +204,7 @@ public class HomeController {
                 // session attributes values
                 session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
                 session.setAttribute("Status", "Succees");
-                return "officer login sucess";
+                return "Succees";
             }
         }catch (AuthenticationException e){
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

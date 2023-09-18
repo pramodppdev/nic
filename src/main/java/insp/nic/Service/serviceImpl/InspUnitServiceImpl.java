@@ -18,6 +18,8 @@ public class InspUnitServiceImpl implements InspUnitService {
 
     @Override
     public InspectionUnit saveInspectionUnit(InspectionUnit inspectionUnit) {
+
+        inspectionUnit.setStatus("Not_assigned");
         return inspUnitRepo.save(inspectionUnit);
     }
 
@@ -39,6 +41,7 @@ public class InspUnitServiceImpl implements InspUnitService {
 
         existingInspUnit.setAssignedMonth(inspectionUnit.getAssignedMonth());
         existingInspUnit.setAssignedOfficer(inspectionUnit.getAssignedOfficer());
+        existingInspUnit.setStatus(inspectionUnit.getStatus());
 
         inspUnitRepo.save(existingInspUnit);
 

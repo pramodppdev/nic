@@ -40,12 +40,13 @@ public class RoutInsp {
 
     private String routdistrict;
 
-    private List<String> inspUnits;
+    @DBRef
+    private List<InspectionUnit> inspUnits;
 
     public RoutInsp() {
     }
 
-    public RoutInsp(String routinspId, String level, Taluk routtaluk, Department routdepartment, String routTempName, List<RoutInspDetails> routdescription, Designation routDesig, String routlastDate, String routstatus, Officer routassignedOfficer, String routcreatedAt, String routcreatedBy, String routdistrict, List<String> inspUnits) {
+    public RoutInsp(String routinspId, String level, Taluk routtaluk, Department routdepartment, String routTempName, List<RoutInspDetails> routdescription, Designation routDesig, String routlastDate, String routstatus, Officer routassignedOfficer, String routcreatedAt, String routcreatedBy, String routdistrict, List<InspectionUnit> inspUnits) {
         this.routinspId = routinspId;
         this.level = level;
         this.routtaluk = routtaluk;
@@ -166,11 +167,11 @@ public class RoutInsp {
         this.routdistrict = routdistrict;
     }
 
-    public List<String> getInspUnits() {
+    public List<InspectionUnit> getInspUnits() {
         return inspUnits;
     }
 
-    public void setInspUnits(List<String> inspUnits) {
+    public void setInspUnits(List<InspectionUnit> inspUnits) {
         this.inspUnits = inspUnits;
     }
 }
