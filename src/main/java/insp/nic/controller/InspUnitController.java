@@ -33,7 +33,7 @@ public class InspUnitController {
     }
 
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<InspectionUnit> updateInspectionUnit(
             @PathVariable(value = "id") String id,
             @RequestBody InspectionUnit updatedInspectionUnit) {

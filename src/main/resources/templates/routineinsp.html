@@ -230,8 +230,11 @@
                     dataType: "json",
                     async: false,
                     success: function (inspUnitData) {
+
                         inspUnitData.forEach(function (unit) {
-                            $select.append(new Option(unit.unitName, unit.unitid, false, false));
+                             if (unit.status === "Not_assigned") {
+                                $select.append(new Option(unit.unitName, unit.unitid, false, false));
+                             }
                         });
 
                         // Initialize Select2 with multiple options
@@ -303,7 +306,13 @@
 
                         routTempName: $("#templateDrop").val(),
                         routdescription: [],
+
+
                     };
+
+                    updateInspectionUnitStatus(unitName);
+
+
 
                     // Fetch template data
                     $.ajax({
@@ -363,6 +372,42 @@
                             console.error("Error fetching template data from API:", error);
                         },
         });
+    });
+}
+
+function updateInspectionUnitStatus(unitName) {
+    // First, fetch the existing data for the unit
+    $.ajax({
+        type: "GET",
+        url: `/api/inspunit/getById/${unitName}`,
+        dataType: "json",
+        success: function (existingData) {
+            if (!existingData) {
+                console.error(`Unit ${unitName} not found.`);
+                return;
+            }
+
+            // Update the status to "assigned" in the existing data
+            existingData.status = "assigned";
+
+            // Make a PUT request to update the unit with the merged data
+            $.ajax({
+                contentType: "application/json;charset=UTF-8",
+                url: `/api/inspunit/update/${unitName}`,
+                dataType: "json",
+                type: "PUT",
+                data: JSON.stringify(existingData),
+                success: function (response) {
+                    console.log(`Status updated for unit ${unitName} to 'assigned'`);
+                },
+                error: function (error) {
+                    console.error(`Error updating status for unit ${unitName}:`, error);
+                },
+            });
+        },
+        error: function (error) {
+            console.error(`Error fetching unit data for ${unitName}:`, error);
+        },
     });
 }
 
