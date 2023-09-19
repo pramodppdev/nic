@@ -3,6 +3,7 @@ package insp.nic.Service.serviceImpl;
 import insp.nic.Service.RoutInspService;
 import insp.nic.exception.ResourceNotFoundException;
 import insp.nic.model.RoutInsp;
+import insp.nic.model.RoutInspDetails;
 import insp.nic.repo.RoutInspRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,23 +27,53 @@ public class RoutInspServiceImpl implements RoutInspService {
     }
 
     @Override
-    public RoutInsp updateRoutInsp(RoutInsp routInsp, String id) {
+    public RoutInsp updateRoutInsp(RoutInsp updatedRoutInsp, String id) {
+        // Fetch the existing RoutInsp object by ID
         RoutInsp existingRoutInsp = routInspRepo.findById(id).orElseThrow(
                 ()-> new ResourceNotFoundException("Inspection not Found","Id",id));
 
+        // Update the existing RoutInsp object's properties
+        existingRoutInsp.setLevel(updatedRoutInsp.getLevel());
+        existingRoutInsp.setRouttaluk(updatedRoutInsp.getRouttaluk());
+        existingRoutInsp.setRoutdepartment(updatedRoutInsp.getRoutdepartment());
+        existingRoutInsp.setRoutlastDate(updatedRoutInsp.getRoutlastDate());
+        existingRoutInsp.setRoutstatus(updatedRoutInsp.getRoutstatus());
+        existingRoutInsp.setRoutassignedOfficer(updatedRoutInsp.getRoutassignedOfficer());
+        existingRoutInsp.setRoutdistrict(updatedRoutInsp.getRoutdistrict());
 
-        existingRoutInsp.setRouttaluk(routInsp.getRouttaluk());
-        existingRoutInsp.setRoutdepartment(routInsp.getRoutdepartment());
-        existingRoutInsp.setRoutlastDate(routInsp.getRoutlastDate());
-        existingRoutInsp.setRoutstatus(routInsp.getRoutstatus());
+        // Update the RoutInspDetails objects within the routdescription list
+        List<RoutInspDetails> updatedRoutdescription = updatedRoutInsp.getRoutdescription();
+        if (updatedRoutdescription != null) {
+            for (RoutInspDetails updatedDetail : updatedRoutdescription) {
+                // Find the matching existing RoutInspDetails object by some unique identifier
+                // For example, if you have a unique identifier like 'routInspContent', find the matching one.
+                RoutInspDetails existingDetail = existingRoutInsp.getRoutdescription()
+                        .stream()
+                        .filter(detail -> detail.getRoutInspContent().equals(updatedDetail.getRoutInspContent()))
+                        .findFirst()
+                        .orElse(null);
 
-        existingRoutInsp.setRoutassignedOfficer(routInsp.getRoutassignedOfficer());
-        existingRoutInsp.setRoutdistrict(routInsp.getRoutdistrict());
+                // If a matching detail is found, update its properties including the image
+                if (existingDetail != null) {
+                    existingDetail.setRoutInspAns(updatedDetail.getRoutInspAns());
+                    existingDetail.setImgReq(updatedDetail.getImgReq());
 
+                    // Update the image if needed (assuming image is a byte array)
+                    byte[] updatedImage = updatedDetail.getImage();
+                    if (updatedImage != null) {
+                        existingDetail.setImage(updatedImage);
+                    }
+                }
+            }
+        }
+
+        // Save the updated RoutInsp object
         routInspRepo.save(existingRoutInsp);
 
         return existingRoutInsp;
     }
+
+
 
     @Override
     public RoutInsp getById(String id) {

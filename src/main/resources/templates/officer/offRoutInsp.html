@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Officer Dashboard</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .header {
+            background-color: #333;
+            color: #fff;
+            padding: 2px;
+            text-align: left;
+        }
+        .header .logo-name img {
+            width: 60px;
+            height: 60px;
+        }
+        .header .logo-name p{
+            font-size: 15px;
+        }
+        .header .logo-name{
+            text-align: center;
+        }
+        .topnav {
+            overflow: hidden;
+            background-color: #e9e9e9;
+        }
+
+        .topnav a {
+            float: left;
+            display: block;
+            color: black;
+            text-align: center;
+            padding: 10px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+
+
+        .topnav a.active {
+            background-color: #2196F3;
+            color: white;
+        }
+        .topnav .logout-btn {
+            float: right;
+        }
+
+        .topnav input[type=text] {
+            padding: 6px;
+            margin-top: 8px;
+            font-size: 17px;
+            border: none;
+            width:120px;
+        }
+
+        .topnav .logout-btn button {
+            float: right;
+            margin-right: 16px;
+            color: #333;
+            font-size: 15px;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            background-color: transparent;
+        }
+        .topnav .logout-btn a{
+            text-decoration: none;
+            padding: 0;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+
+        .topnav .logout-btn button:hover {
+            border-bottom: 3px solid #2196F3;
+            transition: left 250ms ease-in-out, right 250ms ease-in-out;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            justify-content: center;
+            width: 96.5%;
+            column-gap:20px;
+            margin: 20px;
+            row-gap: 20px;
+        }
+
+        .card {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+
+            border-radius: 8px;
+        }
+
+        .container a {
+            text-decoration: none;
+            color: #333;
+
+        }
+        .card h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            font-weight:bold;
+        }
+
+          .table-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow-y: scroll;
+            max-height: 500px;
+            width: min(100% - 65px);
+
+            position: relative;
+            margin-left: 25px;
+            margin-top: 2%;
+            border-radius: 10px;
+        }
+        th{
+            padding: 10px;
+            background-color: #bed8ee;
+            column-width: 400px;
+
+        }
+        td {
+            padding: 10px;
+            text-align: center;
+            background-color: #e9e9e9;
+            border-bottom: 1px solid #c7ccd4;
+        }
+        .input-container{
+             padding:10px;
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="header">
+  <div class="logo-name">
+    <img src="/imgs/logo.png" alt="">
+    <p>ZILLA PANCHAYATH,BALLARI</p>
+  </div>
+</div>
+<div class="topnav">
+  <a href="/offi/offindex">Home</a>
+
+  <div class="logout-btn">
+    <a  th:href="@{/logout}"><button type="submit">Logout</button></a>
+  </div>
+</div>
+
+    <div id="tablelist">
+      <div class="container" id="inspectionListContainer">
+
+      </div>
+    </div>
+
+    <div class="table-container" id="Reportind">
+      <table>
+        <tr>
+          <th class="assign-head">Inspection ID</th>
+          <td id="RoutInspIdSing"></td>
+        </tr>
+        <tr>
+          <th class="assign-head">Taluk</th>
+          <td id="RoutTalukSing"></td>
+        </tr>
+        <tr>
+          <th class="assign-head">Department</th>
+          <td id="RoutDepartmentSing"></td>
+        </tr>
+        <tr>
+          <th class="assign-head">Officer Assigned</th>
+          <td id="RoutAssignedOfficerSing"></td>
+        </tr>
+        <tr>
+          <th class="assign-head">Last Date</th>
+          <td id="RoutLastDateSing"></td>
+        </tr>
+        <tr>
+          <th class="assign-head">Description</th>
+          <td id="RoutDescriptionSing"></td>
+        </tr>
+      </table>
+
+    </div>
+
+
+
+<script>
+
+    $(document).ready(function() {
+        var sessionUserData = $("#SessionUserData");
+        $.ajax({
+            type: "GET",
+            url: "/session/session_user",
+            success: function (sessionUser) {
+                // Update the content of the <span> using Thymeleaf expression
+                      sessionUserData.append(sessionUser);
+            },
+            error: function (error) {
+                console.error("Error fetching data:", error);
+            }
+        });
+
+
+        $("#tablelist").show();
+        $("#Reportind").hide();
+
+        var inspectionListContainer = $("#inspectionListContainer");
+
+          $.ajax({
+            contentType: "application/json;charset=UTF-8",
+            url: "/api/routinsp/getAllRoutInsp",
+            dataType: "json",
+            type: "GET",
+            async: false,
+            success: function (data) {
+
+              for (var i = 0; i < data.length; i++) {
+                console.log(data[i]);
+                if (data[i].routassignedOfficer !== null && data[i].lastDate !== null) {
+                      var inspectionCard = $(
+                          '<a href="javascript:getroutInsp(\'' +
+                              data[i].routinspId +
+                              '\')" title="View">' +
+                              '<div class="card">' +
+                              '<span>' +
+                              data[i].inspUnits.unitName +
+                              '</span>' +
+                          '</div>' +
+                      '</a>'
+                      );
+
+                      // Append the inspection card to the container
+                      inspectionListContainer.append(inspectionCard);
+
+                }
+              }
+            },
+          });
+
+       });
+
+
+
+     function updateRoutAssignment() {
+        var routinspId = $("#RoutInspIdSing").text(); // Get the RoutInspId from the displayed table
+        var routassignedOfficer = $("#officerDrop").val();
+        var routlastDate = $("#RoutlastDate").val();
+        var routdepartment = $("#RoutDepartmentSing").text();
+        var routtaluk = $("#RoutTalukSing").text();
+
+        if (routassignedOfficer && routlastDate) {
+            var userData = {
+                routassignedOfficer: routassignedOfficer,
+                routlastDate: routlastDate,
+                routdepartment: routdepartment,
+                routtaluk: routtaluk,
+            };
+
+            $.ajax({
+                contentType: "application/json;charset=UTF-8",
+                url: "/api/routinsp/update/" + routinspId, // Use the update endpoint with the RoutInspId
+                dataType: "json",
+                type: "PUT", // Use PUT method for update
+                data: JSON.stringify(userData),
+                success: function (data) {
+                    // Update the displayed table with the updated data
+                    $("#routassignedOfficerCell").text(data.routassignedOfficer);
+                    $("#routlastDateCell").text(data.routlastDate);
+                    $("#routdepartmentCell").text(data.routdepartment);
+                    $("#routtalukCell").text(data.routtaluk);
+                },
+            });
+            showAlert();
+            } else {
+                alert("Please fill all the required fields");
+            }
+        }
+
+
+        function getroutInspId(id){
+                 $.ajax({
+                       contentType: "application/json;charset=UTF-8",
+                       url: "${pageContext.request.contextPath}api/routinsp/getById/" + id,
+                       dataType: "json",
+                       type: "GET",
+                       success:function(data){
+                          getProfile(data)
+
+                       }
+                  });
+            }
+
+
+        function getroutInsp(id) {
+            $("#tablelist").hide();
+            $("#Reportind").show();
+
+            $.ajax({
+                contentType: "application/json;charset=UTF-8",
+                url: "/api/routinsp/getById/" + id,
+                dataType: "json",
+                type: "GET",
+                cache: !1,
+                processData: !1,
+                success: function(data) {
+                  console.log(data);
+
+                    $("#RoutInspIdSing").text(data.routinspId);
+                    $("#RoutDepartmentSing").text(data.routdepartment.deptName);
+                    $("#RoutLastDateSing").text(data.routlastDate);
+                    $("#RoutAssignedOfficerSing").text(data.routassignedOfficer.officerName);
+                    $("#RoutDistrictSing").text(data.district);
+                    $("#RoutTalukSing").text(data.routtaluk.talukName);
+
+                    var descriptionHtml = '';
+                    for (var i = 0; i < data.routdescription.length; i++) {
+                        descriptionHtml += data.routdescription[i].routInspContent + '<br>';
+                    }
+                    $("#RoutDescriptionSing").html(descriptionHtml);
+
+                }
+            });
+        }
+
+         function deleteRoutInsp(id) {
+            if (confirm("Are you sure you want to delete this inspection?")) {
+                $.ajax({
+                    contentType: "application/json;charset=UTF-8",
+                    url: "/api/routinsp/delete/" + id, // Use the delete endpoint with the InspId
+                    type: "DELETE",
+                    success: function () {
+                        // Remove the deleted row from the displayed table
+                        $("#" + id).remove();
+                        alert("Inspection deleted successfully.");
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Failed to delete inspection: " + error);
+                    },
+                });
+            }
+        }
+
+<!--            $.ajax({-->
+<!--            contentType: "application/json;charset=UTF-8",-->
+<!--            url: "/api/taluk/getAllTaluk",-->
+<!--            dataType: "json",-->
+<!--            type: "GET",-->
+<!--            success: function(data) {-->
+
+<!--                $("#RoutDistrictSing").text(data.district);-->
+<!--            }-->
+<!--        });-->
+
+
+
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+</body>
+</html>

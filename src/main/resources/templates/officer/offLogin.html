@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 250px;
+           height: 200px;
+            text-align: center;
+            margin: 10px;
+        }
+
+        .login-container h2 {
+            margin-bottom: 20px;
+        }
+
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .login-container  a {
+            text-decoration: none;
+            padding: 5px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            position: relative;
+            top: 10px;
+            padding-left: 30px;
+            padding-right: 30px;
+            bottom: 10px;
+
+        }
+
+        @media (max-width: 600px) {
+            .login-container {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <h2>ZILLA PANCHAYAT</h2>
+    <form>
+        <input type="text" placeholder="Username" id="OfficerName" required>
+        <input type="password" placeholder="Password" id="Password" required>
+        <a onclick="login()">Login</a>
+    </form>
+</div>
+<script>
+    function login() {
+
+            var officerName = $("#OfficerName").val();
+            var password = $("#Password").val();
+
+
+            var officerVO = {
+                officerName: officerName,
+                password: password
+
+            };
+
+
+                $.ajax({
+                    contentType: "application/json;charset=UTF-8",
+                    url: "/auth/off",
+                    dataType: "json",
+                    type: "POST",
+                    cache: !1,
+                    async:false,
+                    processData: !1,
+                    data: JSON.stringify(officerVO),
+                    complete: function(xhr) {
+                    if (xhr.status === 200) {
+                            console.log(xhr)
+                            window.location.href = "/offi/offindex";
+                        } else {
+                            alert("Invalid credentials");
+
+                            console.log("Error: " + xhr.status);
+                        }
+
+
+                    }
+                });
+
+            }
+</script>
+</body>
+</html>
+
+

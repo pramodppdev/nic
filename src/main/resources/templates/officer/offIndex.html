@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Officer Dashboard</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .header {
+            background-color: #333;
+            color: #fff;
+            padding: 2px;
+            text-align: left;
+        }
+        .header .logo-name img {
+            width: 60px;
+            height: 60px;
+        }
+        .header .logo-name p{
+            font-size: 15px;
+        }
+        .header .logo-name{
+            text-align: center;
+        }
+        .topnav {
+            overflow: hidden;
+            background-color: #e9e9e9;
+        }
+
+        .topnav a {
+            float: left;
+            display: block;
+            color: black;
+            text-align: center;
+            padding: 10px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+
+
+        .topnav a.active {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .topnav .login-container {
+            float: right;
+        }
+
+        .topnav input[type=text] {
+            padding: 6px;
+            margin-top: 8px;
+            font-size: 17px;
+            border: none;
+            width:120px;
+        }
+
+        .topnav .login-container button {
+            float: right;
+            margin-right: 16px;
+            color: #333;
+            font-size: 15px;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            background-color: transparent;
+        }
+        .topnav .login-container a{
+            text-decoration: none;
+            padding: 0;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+
+        .topnav .login-container button:hover {
+            border-bottom: 3px solid #2196F3;
+            transition: left 250ms ease-in-out, right 250ms ease-in-out;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 80px);
+            width: fit-content;
+            margin-left:275px;
+            gap: 10px;
+
+        }
+
+        .card {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .container a {
+            text-decoration: none;
+            color: #333;
+
+        }
+        .card h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            font-weight:bold;
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="header">
+  <div class="logo-name">
+    <img src="/imgs/logo.png" alt="">
+    <p>ZILLA PANCHAYATH,BALLARI</p>
+  </div>
+</div>
+<div class="topnav">
+  <a class="active" href="#home">Home</a>
+  <div class="login-container">
+      <a  th:href="@{/logout}"><button type="submit">Logout</button></a>
+
+
+  </div>
+</div>
+<div class="container">
+  <a href="/offi/offRoutInsp">
+    <div class="card">
+      <h2>Routine Inspections</h2>
+    </div>
+  </a>
+  <a href="#">
+    <div class="card">
+      <h2>Ad-Hoc</h2>
+    </div>
+  </a>
+  <a href="#">
+    <div class="card">
+      <h2>Greviance</h2>
+    </div>
+  </a>
+</div>
+</body>
+</html>

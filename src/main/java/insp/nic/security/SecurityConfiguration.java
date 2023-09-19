@@ -59,7 +59,7 @@ public class SecurityConfiguration {
             http.exceptionHandling().accessDeniedPage("/");
             http.csrf().disable()
                     .authorizeRequests()
-                    .antMatchers("/")
+                    .antMatchers("/offi","/")
                     .permitAll()
                     .antMatchers("/auth/exec","/auth/off").permitAll()
 
@@ -73,7 +73,7 @@ public class SecurityConfiguration {
                     .authorizeRequests().antMatchers("/**").authenticated()
                     .and()
                     .formLogin()
-                    .loginPage("/")
+                    .loginPage("/offi")
                     .successForwardUrl("/index")
                     .permitAll();
 

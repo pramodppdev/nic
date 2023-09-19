@@ -38,10 +38,13 @@ public class RoutInspController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateRout(@PathVariable("id")String id, @RequestBody RoutInsp routInsp){
-        routInspService.updateRoutInsp(routInsp,id);
-        return new ResponseEntity<String>("Routine Inspection Updated Sucessfully",HttpStatus.OK);
+    public ResponseEntity<String> updateRout(@PathVariable("id")String id, @RequestBody RoutInsp updatedRoutInsp) {
+        // Update the RoutInsp object including the nested RoutInspDetails objects
+        routInspService.updateRoutInsp(updatedRoutInsp, id);
+
+        return new ResponseEntity<String>("Routine Inspection Updated Successfully", HttpStatus.OK);
     }
+
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteRoutInsp(@PathVariable("id") String id){
